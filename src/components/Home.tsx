@@ -1,6 +1,8 @@
 import React from 'react'
-import { Box } from "@chakra-ui/react"
+import { Text, Stack } from "@chakra-ui/react"
 
 export function Home(props: any) {
-    return <Box>HOME</Box>
-  }
+  return <Stack backgroundColor='red.500'>
+    <Text padding='4' fontStyle='italic' fontWeight='bold'>HOME</Text>
+  </Stack>
+}
