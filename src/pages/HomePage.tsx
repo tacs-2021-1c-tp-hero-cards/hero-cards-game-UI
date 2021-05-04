@@ -50,8 +50,15 @@ export class HomePage extends Component<{}, HomeState> {
           <Button colorScheme="orange"
                   variant="solid"
                   textColor='gray.700'
-                  onClick={() => this.redirectTo('/signIn')}>
-            Sing Up / Log In
+                  onClick={() => this.redirectTo('/logIn')}>
+            Log In
+          </Button>
+          
+          <Button colorScheme="orange"
+                  variant="solid"
+                  textColor='gray.700'
+                  onClick={() => this.redirectTo('/signUp')}>
+            Sign Up
           </Button>
 
         </Stack>
