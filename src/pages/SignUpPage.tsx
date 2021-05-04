@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Box, Button, Center, Stack, StackDivider, Text, FormControl, Input, FormLabel} from "@chakra-ui/react"
 import { Redirect } from 'react-router-dom'
 import { RequiredPasswordInput, UnrequiredPasswordInput } from '../components/PasswordInput'
+import { RequiredInput } from '../components/GenericInput'
+import { FormikExample } from '../components/GenericForm'
 
 type SignUpState = {
   redirectTo: string,
@@ -54,31 +56,8 @@ export class SignUpPage extends Component<{}, SignUpState> {
           <Stack>
             <Text fontSize='sm'>Don't worry, we won't make public any of this</Text>
 
-            <Stack direction='row'>
-              <FormControl id="username" isRequired maxWidth='300px'>
-                <FormLabel>Username</FormLabel>
-                <Input bg='white' placeholder="Enter username" />
-              </FormControl>
-              
-              <FormControl id="username" isRequired maxWidth='300px'>
-                <FormLabel>Full Name</FormLabel>
-                <Input bg='white' placeholder="Enter full name" />
-              </FormControl>
-            </Stack>
+            <FormikExample />
 
-            <Stack direction='row'>
-              <RequiredPasswordInput label='Password' placeholder='Enter password'/>
-
-              <RequiredPasswordInput label='' placeholder='Repeat password'/>
-            </Stack>
-
-            <Button colorScheme="cyan"
-                    variant="solid"
-                    textColor='gray.700'
-                    width='200px'
-                    onClick={() => this.redirectTo('/signUp')}>
-              Sing Up
-            </Button>
           </Stack>
 
           <Box fontSize='sm' padding='8px'>
