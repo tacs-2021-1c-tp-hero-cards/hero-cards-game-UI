@@ -1,6 +1,12 @@
 import axios, { AxiosInstance } from "axios";
 import config from "./config.json"
 
+type User = {
+  userName: string,
+  fullName: string,
+  password: string
+}
+
 class BackendConnector {
 
   static baseURL: string = `${config.SERVER_PROTOCOL}://${config.SERVER_HOST}:${config.SERVER_PORT}`
@@ -13,9 +19,13 @@ class BackendConnector {
     }
   })
 
-  signUp() {
+  signUp(user: User) {
     BackendConnector.connector
-      .post('/signUp', {})
+      .post('/signUp', {
+        userName: user.userName,
+        fullName: user.fullName,
+        password: user.password
+      })
       .then(function (response) {
         console.log(response.data);
         

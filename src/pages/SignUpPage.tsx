@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Box, Button, Center, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { Redirect } from 'react-router-dom'
 import { SignUpForm } from '../components/SignUpForm'
+import { ServerConnector } from '../BackendConnector'
 
 type SignUpState = {
   redirectTo: string,
@@ -54,7 +55,7 @@ export class SignUpPage extends Component<{}, SignUpState> {
           <Stack>
             <Text fontSize='sm'>Don't worry, we won't make public any of this</Text>
 
-            <SignUpForm />
+            <SignUpForm onSubmit={ServerConnector.signUp}/>
           </Stack>
 
           <Box fontSize='sm' padding='8px'>
