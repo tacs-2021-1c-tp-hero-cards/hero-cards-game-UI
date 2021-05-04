@@ -29,8 +29,8 @@ export class HomePage extends Component<{}, HomeState> {
   }
 
   content() {
-    return <Stack bg='gray.400' spacing='1px'>
-      <Box backgroundColor='red.600' borderRadius='10px'>
+    return <Stack spacing='1px'>
+      <Box backgroundColor='red.600' borderRadius='7px'>
         <Center h="100px"
                 fontStyle='italic'
                 fontWeight='bold'
@@ -43,7 +43,7 @@ export class HomePage extends Component<{}, HomeState> {
 
         <Stack padding='4'
                bg='gray.200'
-               borderRadius='20px'
+               borderRadius='7px'
                minW='150px'
                divider={<StackDivider borderColor='gray.500' />}>
 
@@ -65,7 +65,7 @@ export class HomePage extends Component<{}, HomeState> {
 
         <Stack spacing='1px'>
 
-          <Image src={'https://pressover.news/wp-content/uploads/2019/04/dc-marvel.jpg'} borderRadius='20px' />
+          <Image src={'https://pressover.news/wp-content/uploads/2019/04/dc-marvel.jpg'} borderRadius='7px' />
 
         </Stack>
 

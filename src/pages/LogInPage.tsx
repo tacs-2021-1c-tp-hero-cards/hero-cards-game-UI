@@ -29,34 +29,37 @@ export class LogInPage extends Component<{}, LogInState> {
   }
 
   content() {
-    return <Box>
-      <Stack backgroundColor='blue.500'>
+    return <Stack spacing='1px'>
+      <Box backgroundColor='blue.500' borderRadius='7px'>
         <Center>
-          <Button h="100px"
-                  fontStyle='italic'
-                  fontWeight='bold'
-                  fontSize='3xl'
-                  variant='unstyled'
+          <Button h="100px" 
+                  fontStyle='italic' 
+                  fontWeight='bold' 
+                  fontSize='3xl' 
+                  variant='unstyled' 
                   onClick={() => this.redirectTo('/')}>
-            Hero Cards Game!
+              Hero Cards Game!
           </Button>
         </Center>
-      </Stack>
+      </Box>
 
-      <Stack backgroundColor='orange.500' >
-        <Stack padding='4' divider={<StackDivider w='225px' borderColor='gray.500' />}>
+      <Stack direction='row' spacing='1px'>
+        <Stack padding='4' 
+               backgroundColor='gray.200'
+               borderRadius='7px'
+               minW='150px'
+               divider={<StackDivider w='225px' borderColor='gray.500' />}>
 
           <Button colorScheme="cyan" 
                   variant="solid" 
-                  w='200px' 
                   textColor='gray.700' 
                   onClick={() => this.redirectTo('/signUp')}>
             Sing Up
           </Button>
 
         </Stack>
-
       </Stack>
-    </Box>
+
+    </Stack>
   }
 }

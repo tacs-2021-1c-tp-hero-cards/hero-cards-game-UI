@@ -22,27 +22,26 @@ export class NotFoundPage extends Component<{}, { shouldRedirect: boolean }> {
     }
 
     content() {
-        return (
-            <Box>
-                <Stack backgroundColor='blue.500'>
-                    <Center>
-                        <Button h="100px" 
-                                fontStyle='italic' 
-                                fontWeight='bold' 
-                                fontSize='3xl' 
-                                variant='unstyled' 
-                                onClick={() => this.redirect()}>
-                            Hero Cards Game!
-                        </Button>
-                    </Center>
-                </Stack>
-
-                <Stack backgroundColor='yellow.500'>
-                    <Center padding='4' fontStyle='italic' fontWeight='bold'>
-                        404 - Page Not Found!
-                    </Center>
-                </Stack>
+        return <Stack spacing='1px'>
+            <Box backgroundColor='blue.500' borderRadius='7px'>
+                <Center>
+                    <Button h="100px"
+                            fontStyle='italic'
+                            fontWeight='bold'
+                            fontSize='3xl'
+                            variant='unstyled'
+                            onClick={() => this.redirect()}>
+                        Hero Cards Game!
+            </Button>
+                </Center>
             </Box>
-        )
+
+            <Box bg='yellow.400' borderRadius='7px'>
+                <Center padding='4' fontSize='xl' fontStyle='italic' fontWeight='bold'>
+                    404 - Page Not Found!
+                </Center>
+            </Box>
+
+        </Stack>
     }
 }

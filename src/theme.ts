@@ -1,3 +1,5 @@
 import { extendTheme } from '@chakra-ui/react'
 
-export default extendTheme({})
+export default extendTheme({
+    backgroundColor: 'gray.400'
+})

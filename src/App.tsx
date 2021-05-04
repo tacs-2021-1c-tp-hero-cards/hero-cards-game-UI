@@ -3,18 +3,21 @@ import React, { Component } from 'react'
 import { HomePage } from './pages/HomePage'
 import { LogInPage } from './pages/LogInPage'
 import { NotFoundPage } from "./pages/NotFoundPage";
+import { Box } from "@chakra-ui/layout";
+import theme from "./theme";
 
 function App() {
-  return (
+  return <Box bg={theme.backgroundColor}>
     <Router>
       <Switch>
         <Redirect exact={true} from="/" to="/home" />
         <Route exact={true} path="/home" component={HomePage} />
-        <Route path="/login" component={LogInPage} />
+        <Redirect from="/signUp" to="/logIn" />
+        <Route path="/logIn" component={LogInPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </Router>
-  )
+  </Box>
 }
 
 export default App
