@@ -44,21 +44,14 @@ export class HomePage extends Component<{}, HomeState> {
         <Stack padding='4'
                bg='gray.200'
                borderRadius='7px'
-               minW='150px'
+               minW='200px'
                divider={<StackDivider borderColor='gray.500' />}>
 
           <Button colorScheme="orange"
                   variant="solid"
                   textColor='gray.700'
-                  onClick={() => this.redirectTo('/signUp')}>
-            Sing Up
-          </Button>
-
-          <Button colorScheme="purple"
-                  variant="solid"
-                  textColor='gray.700'
-                  onClick={() => this.redirectTo('/logIn')}>
-            Log In
+                  onClick={() => this.redirectTo('/signIn')}>
+            Sing Up / Log In
           </Button>
 
         </Stack>
