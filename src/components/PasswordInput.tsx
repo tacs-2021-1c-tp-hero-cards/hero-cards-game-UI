@@ -1,39 +1,48 @@
-import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement } from "@chakra-ui/react"
-import React from "react"
+import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react"
+import React, { Component } from "react"
 
-export function RequiredPasswordInput() {
-
-    return (
-
-        <FormControl id="password" isRequired maxWidth='300px'>
-            <PasswordInput />
-        </FormControl>
-    )
+type Props = {
+    label: string,
+    placeholder: string
 }
 
-export function UnrequiredPasswordInput() {
+export class RequiredPasswordInput extends Component<Props, {}> {
 
-    return (
+    render() {
+        return (
 
-        <FormControl id="password" maxWidth='300px'>
-            <PasswordInput />
-        </FormControl>
-    )
+            <FormControl id="password" isRequired maxWidth='300px'>
+                <PasswordInput label={this.props.label} placeholder={this.props.placeholder}/>
+            </FormControl>
+        )
+    }
 }
 
-function PasswordInput() {
+export class UnrequiredPasswordInput extends Component<Props, {}> {
+
+    render() {
+        return (
+
+            <FormControl id="password" maxWidth='300px'>
+                <PasswordInput label={this.props.label} placeholder={this.props.placeholder}/>
+            </FormControl>
+        )
+    }
+}
+
+function PasswordInput(props: Props) {
     const [show, setShow] = React.useState(false)
     const handleClick = () => setShow(!show)
 
     return (
         <Box>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>{props.label}</FormLabel>
             <InputGroup size="md">
                 <Input
                     bg='white'
                     pr="4.5rem"
                     type={show ? "text" : "password"}
-                    placeholder="Enter password"
+                    placeholder={props.placeholder}
                 />
                 <InputRightElement width="4.4rem">
                     <Button h="1.75rem" size="sm" onClick={handleClick}>

@@ -44,7 +44,6 @@ export class SignInPage extends Component<{}, SignInState> {
         </Center>
       </Box>
 
-      <Stack spacing='1px'>
         <Stack padding='4'
                backgroundColor='gray.200'
                borderRadius='7px'
@@ -59,7 +58,7 @@ export class SignInPage extends Component<{}, SignInState> {
                 <Input bg='white' placeholder="Enter username" />
               </FormControl>
               
-              <UnrequiredPasswordInput />
+              <UnrequiredPasswordInput label='Password' placeholder='Enter password'/>
             </Stack>
 
             <Button colorScheme="cyan"
@@ -77,13 +76,24 @@ export class SignInPage extends Component<{}, SignInState> {
           </Box>
 
           <Stack>
+            <Text fontSize='lg'>Submit your data to sign up</Text>
+
             <Stack direction='row'>
               <FormControl id="username" isRequired maxWidth='300px'>
                 <FormLabel>Username</FormLabel>
                 <Input bg='white' placeholder="Enter username" />
               </FormControl>
               
-              <RequiredPasswordInput />
+              <FormControl id="username" isRequired maxWidth='300px'>
+                <FormLabel>Full Name</FormLabel>
+                <Input bg='white' placeholder="Enter full name" />
+              </FormControl>
+            </Stack>
+
+            <Stack direction='row'>
+              <RequiredPasswordInput label='Password' placeholder='Enter password'/>
+              
+              <RequiredPasswordInput label='' placeholder='Repeat password'/>
             </Stack>
 
             <Button colorScheme="cyan"
@@ -96,7 +106,6 @@ export class SignInPage extends Component<{}, SignInState> {
           </Stack>
 
         </Stack>
-      </Stack>
 
     </Stack>
   }
