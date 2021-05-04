@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { Box, Button, Center, Stack, StackDivider, Text, FormControl, Input, FormLabel} from "@chakra-ui/react"
+import { Box, Button, Center, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { Redirect } from 'react-router-dom'
-import { RequiredPasswordInput, UnrequiredPasswordInput } from '../components/PasswordInput'
-import { RequiredInput } from '../components/GenericInput'
-import { FormikExample } from '../components/GenericForm'
+import { SignUpForm } from '../components/SignUpForm'
 
 type SignUpState = {
   redirectTo: string,
@@ -51,13 +49,12 @@ export class SignUpPage extends Component<{}, SignUpState> {
                borderRadius='7px'
                divider={<StackDivider borderColor='gray.500' />}>
 
-          <Text fontSize='xl' fontWeight='bold' color=''>Submit your data to sign up</Text>
+          <Text fontSize='xl' fontWeight='bold'>Submit your data to sign up</Text>
 
           <Stack>
             <Text fontSize='sm'>Don't worry, we won't make public any of this</Text>
 
-            <FormikExample />
-
+            <SignUpForm />
           </Stack>
 
           <Box fontSize='sm' padding='8px'>
