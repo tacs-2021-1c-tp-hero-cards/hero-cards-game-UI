@@ -13,6 +13,29 @@ class BackendConnector {
     }
   })
 
+  signUp() {
+    BackendConnector.connector
+      .post('/signUp', {})
+      .then(function (response) {
+        console.log(response.data);
+        
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  logIn() {
+    BackendConnector.connector
+      .post('/logIn', {})
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   logOut() {
     BackendConnector.connector
       .post('/logOut', {})

@@ -1,26 +1,20 @@
-import { Box } from '@chakra-ui/layout';
-import React from 'react'
-import { Home } from './components/Home'
-import { Login } from './components/Login'
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import React, { Component } from 'react'
+import { HomePage } from './pages/HomePage'
+import { LogInPage } from './pages/LogInPage'
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 function App() {
-  return resolveURL()
+  return (
+    <Router>
+      <Switch>
+        <Redirect exact={true} from="/" to="/home" />
+        <Route exact={true} path="/home" component={HomePage} />
+        <Route path="/login" component={LogInPage} />
+        <Route component={NotFoundPage} />
+      </Switch>
+    </Router>
+  )
 }
-
-function resolveURL() {
-  switch (window.location.pathname) {
-    case '/':
-      return(<Home />);
-    case '/home':
-      return(<Home />);
-    case '/login':
-      return(<Login />);
-    default:
-      return(
-        <Box>Page not found!</Box>
-      )
-  }
-}
-
 
 export default App
