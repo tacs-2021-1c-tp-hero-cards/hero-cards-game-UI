@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Text, Stack, Image, Button, Center, StackDivider, Box } from "@chakra-ui/react"
-import { ServerConnector } from '../BackendConnector';
 
 type HomeState = {
   shouldRedirect: boolean,
@@ -26,36 +25,52 @@ export class HomePage extends Component<{}, HomeState> {
   }
 
   render() {
-    return (this.state.shouldRedirect ? <Redirect to={this.state.redirectTo}/> : this.content())
+    return this.state.shouldRedirect ? <Redirect to={this.state.redirectTo} /> : this.content()
   }
 
   content() {
-    return <Box>
-      <Stack backgroundColor='red.500'>
-        <Center h="100px" fontStyle='italic' fontWeight='bold' fontSize='3xl' borderRadius='lg' bg='red.600'>
+    return <Stack bg='gray.400' spacing='1px'>
+      <Box backgroundColor='red.600' borderRadius='10px'>
+        <Center h="100px"
+                fontStyle='italic'
+                fontWeight='bold'
+                fontSize='3xl'>
           Hero Cards Game!
         </Center>
-      </Stack>
+      </Box>
 
-      <Stack backgroundColor='darkorange' >
-        <Stack padding='4' divider={<StackDivider w='225px' borderColor='gray.500' />}>
+      <Stack direction='row' spacing='1px'>
 
-          <Button colorScheme="teal" variant="solid" w='200px' textColor='gray.700' onClick={ServerConnector.signUp}>
+        <Stack padding='4'
+               bg='gray.200'
+               borderRadius='20px'
+               minW='150px'
+               divider={<StackDivider borderColor='gray.500' />}>
+
+          <Button colorScheme="orange"
+                  variant="solid"
+                  textColor='gray.700'
+                  onClick={() => this.redirectTo('/signUp')}>
             Sing Up
           </Button>
 
-          <Button colorScheme="blue" variant="solid" w='200px' textColor='gray.700' onClick={ServerConnector.logIn}>
+          <Button colorScheme="purple"
+                  variant="solid"
+                  textColor='gray.700'
+                  onClick={() => this.redirectTo('/logIn')}>
             Log In
-          </Button>
-
-          <Button colorScheme="cyan" variant="solid" w='200px' textColor='gray.700' onClick={ServerConnector.logOut}>
-            Log Out
           </Button>
 
         </Stack>
 
-        <Image src={'https://pressover.news/wp-content/uploads/2019/04/dc-marvel.jpg'} sizes='full' />
+        <Stack spacing='1px'>
+
+          <Image src={'https://pressover.news/wp-content/uploads/2019/04/dc-marvel.jpg'} borderRadius='20px' />
+
+        </Stack>
+
       </Stack>
-    </Box>
+
+    </Stack>
   }
 }
