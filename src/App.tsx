@@ -6,6 +6,7 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { Box } from "@chakra-ui/layout";
 import theme from "./theme";
 import { SignUpPage } from "./pages/SignUpPage";
+import { UserPage } from "./pages/UserPage";
 
 function App() {
   return <Box bg={theme.backgroundColor}>
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signUp" component={SignUpPage} />
         <Redirect from='/signIn' to='/logIn'/>
         <Route path="/logIn" component={LogInPage} />
+        <Route path="/user" component={UserPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </Router>

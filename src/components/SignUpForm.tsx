@@ -1,9 +1,11 @@
 import React from 'react';
- import { Formik, Form, Field } from 'formik';
-import { FormControl, FormLabel, Input, FormErrorMessage, Button, Stack, Box, InputGroup, InputRightElement } from '@chakra-ui/react';
+import { Formik, Form } from 'formik';
+import { Button, Stack, Box } from '@chakra-ui/react';
 import { FormField, GenericForm, PasswordForm } from './Form';
+import { User } from '../commons/User';
  
-export function SignUpForm({ onSubmit }: any) {
+
+export function SignUpForm(onSubmit: (data: User) => void) {
   
   return (
     <Formik
@@ -15,14 +17,12 @@ export function SignUpForm({ onSubmit }: any) {
       }}
       onSubmit={(values: any, actions: any) => {
         onSubmit({
-          userName: values.username,
+          username: values.username,
           fullName: values.fullName,
-          password: values.password1
+          password: values.password1,
+          token: ''
         })
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2))
-          actions.setSubmitting(false)
-        }, 1000)
+        actions.setSubmitting(false)
       }}
     >
       {(props: any) => (

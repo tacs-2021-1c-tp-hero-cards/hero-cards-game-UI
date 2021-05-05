@@ -3,6 +3,8 @@ import { Box, Button, Center, Stack, StackDivider, Text } from "@chakra-ui/react
 import { Redirect } from 'react-router-dom'
 import { SignUpForm } from '../components/SignUpForm'
 import { ServerConnector } from '../BackendConnector'
+import { redirect } from '../commons/Redirect'
+import { User } from '../commons/User'
 
 type SignUpState = {
   redirectTo: string,
@@ -19,13 +21,6 @@ export class SignUpPage extends Component<{}, SignUpState> {
     }
   }
 
-  redirectTo(path: string) {
-    this.setState({
-      redirectTo: path,
-      shouldRedirect: true
-    })
-  }
-
   render() {
     return this.state.shouldRedirect ? <Redirect to={this.state.redirectTo} /> : this.content()
   }
@@ -39,7 +34,7 @@ export class SignUpPage extends Component<{}, SignUpState> {
                   fontWeight='bold'
                   fontSize='3xl'
                   variant='unstyled'
-                  onClick={() => this.redirectTo('/')}>
+                  onClick={() => redirect('/', this)}>
             Hero Cards Game!
           </Button>
         </Center>
@@ -55,11 +50,14 @@ export class SignUpPage extends Component<{}, SignUpState> {
           <Stack>
             <Text fontSize='sm'>Don't worry, we won't make public any of this</Text>
 
-            <SignUpForm onSubmit={ServerConnector.signUp}/>
+            {SignUpForm((data: User) => signUp(data, this))}
           </Stack>
 
           <Box fontSize='sm' padding='8px'>
-            <Text>¿Already have an account? <Button fontSize='sm' colorScheme="blue" variant="link" onClick={() => this.redirectTo('/logIn')}>
+            <Text>¿Already have an account? <Button fontSize='sm' 
+                                                    colorScheme="blue" 
+                                                    variant="link" 
+                                                    onClick={() => redirect('/logIn', this)}>
                 Log in!
               </Button>
             </Text>
@@ -69,4 +67,10 @@ export class SignUpPage extends Component<{}, SignUpState> {
 
     </Stack>
   }
+}
+
+function signUp(props: User, from: any) {
+  ServerConnector.signUp(props,
+                        (data) => redirect('/user', from),
+                        (error) => redirect('/error', from))
 }

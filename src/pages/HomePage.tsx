@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Text, Stack, Image, Button, Center, StackDivider, Box } from "@chakra-ui/react"
+import { redirect } from '../commons/Redirect'
 
 type HomeState = {
   shouldRedirect: boolean,
@@ -15,13 +16,6 @@ export class HomePage extends Component<{}, HomeState> {
       shouldRedirect: false,
       redirectTo: ''
     }
-  }
-
-  redirectTo(path: string) {
-    this.setState({
-      redirectTo: path,
-      shouldRedirect: true
-    })
   }
 
   render() {
@@ -50,14 +44,14 @@ export class HomePage extends Component<{}, HomeState> {
           <Button colorScheme="orange"
                   variant="solid"
                   textColor='gray.700'
-                  onClick={() => this.redirectTo('/logIn')}>
+                  onClick={() => redirect('/logIn', this)}>
             Log In
           </Button>
           
           <Button colorScheme="orange"
                   variant="solid"
                   textColor='gray.700'
-                  onClick={() => this.redirectTo('/signUp')}>
+                  onClick={() => redirect('/signUp', this)}>
             Sign Up
           </Button>
 

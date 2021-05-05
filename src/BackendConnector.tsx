@@ -1,11 +1,7 @@
 import axios, { AxiosInstance } from "axios";
+import { User } from "./commons/User";
 import config from "./config.json"
 
-type User = {
-  userName: string,
-  fullName: string,
-  password: string
-}
 
 class BackendConnector {
 
@@ -19,20 +15,22 @@ class BackendConnector {
     }
   })
 
-  signUp(user: User) {
+  signUp(user: User, onSuccess: (data: any) => void, onFailure: (error: any) => void) {
+
     BackendConnector.connector
       .post('/signUp', {
-        userName: user.userName,
+        userName: user.username,
         fullName: user.fullName,
         password: user.password
       })
       .then(function (response) {
-        console.log(response.data);
-        
+        console.log(response.data)
+        onSuccess(response.data)
       })
       .catch(function (error) {
-        console.log(error);
-      });
+        console.log(error)
+        onFailure(error)
+      })
   }
 
   logIn() {
@@ -43,18 +41,21 @@ class BackendConnector {
       })
       .catch(function (error) {
         console.log(error);
-      });
+      })
   }
 
-  logOut() {
+  logOut(token: string, onSuccess: (data: any) => void, onFailure: (error: any) => void) {
+
     BackendConnector.connector
-      .post('/logOut', {})
+      .post('/logOut', { "token": token })
       .then(function (response) {
-        console.log(response.data);
+        console.log(response.data)
+        onSuccess(response.data)
       })
       .catch(function (error) {
-        console.log(error);
-      });
+        console.log(error)
+        onFailure(error)
+      })
   }
 }
 

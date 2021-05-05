@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Box, Button, Center, Stack, StackDivider, Text, FormControl, Input, FormLabel} from "@chakra-ui/react"
 import { Redirect } from 'react-router-dom'
 import { RequiredPasswordInput, UnrequiredPasswordInput } from '../components/PasswordInput'
+import { redirect } from '../commons/Redirect'
 
 type LogInState = {
   redirectTo: string,
@@ -18,13 +19,6 @@ export class LogInPage extends Component<{}, LogInState> {
     }
   }
 
-  redirectTo(path: string) {
-    this.setState({
-      redirectTo: path,
-      shouldRedirect: true
-    })
-  }
-
   render() {
     return this.state.shouldRedirect ? <Redirect to={this.state.redirectTo} /> : this.content()
   }
@@ -38,7 +32,7 @@ export class LogInPage extends Component<{}, LogInState> {
                   fontWeight='bold'
                   fontSize='3xl'
                   variant='unstyled'
-                  onClick={() => this.redirectTo('/')}>
+                  onClick={() => redirect('/', this)}>
             Hero Cards Game!
           </Button>
         </Center>
@@ -66,7 +60,7 @@ export class LogInPage extends Component<{}, LogInState> {
                     variant="solid"
                     textColor='gray.700'
                     width='200px'
-                    onClick={() => this.redirectTo('/signUp')}>
+                    onClick={() => redirect('/signUp', this)}>
               Log In
             </Button>
           </Stack>
@@ -74,7 +68,7 @@ export class LogInPage extends Component<{}, LogInState> {
           <Box fontSize='sm' padding='8px'>
             <Text>¿You don't have an account?</Text>
             <Text>¡Sign up 
-              <Button fontSize='sm' colorScheme="blue" variant="link" onClick={() => this.redirectTo('/signUp')}>
+              <Button fontSize='sm' colorScheme="blue" variant="link" onClick={() => redirect('/signUp', this)}>
                 here
               </Button>
              for free!</Text>
