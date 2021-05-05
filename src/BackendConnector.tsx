@@ -33,21 +33,27 @@ class BackendConnector {
       })
   }
 
-  logIn() {
+  logIn(user: User, onSuccess: (data: any) => void, onFailure: (error: any) => void) {
+
     BackendConnector.connector
-      .post('/logIn', {})
+      .post('/logIn', {
+        userName: user.username,
+        password: user.password
+      })
       .then(function (response) {
-        console.log(response.data);
+        console.log(response.data)
+        onSuccess(response.data)
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(error)
+        onFailure(error)
       })
   }
 
   logOut(token: string, onSuccess: (data: any) => void, onFailure: (error: any) => void) {
 
     BackendConnector.connector
-      .post('/logOut', { "token": token })
+      .post('/logOut', { token: token })
       .then(function (response) {
         console.log(response.data)
         onSuccess(response.data)

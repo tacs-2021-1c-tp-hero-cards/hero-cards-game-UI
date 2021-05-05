@@ -5,6 +5,7 @@ import { SignUpForm } from '../components/SignUpForm'
 import { ServerConnector } from '../BackendConnector'
 import { redirect } from '../commons/Redirect'
 import { User } from '../commons/User'
+import { logIn } from '../commons/LogIn'
 
 type SignUpState = {
   redirectTo: string,
@@ -69,8 +70,8 @@ export class SignUpPage extends Component<{}, SignUpState> {
   }
 }
 
-function signUp(props: User, from: any) {
-  ServerConnector.signUp(props,
-                        (data) => redirect('/user', from),
+function signUp(user: User, from: any) {
+  ServerConnector.signUp(user,
+                        (data) => logIn(user, from),
                         (error) => redirect('/error', from))
 }
