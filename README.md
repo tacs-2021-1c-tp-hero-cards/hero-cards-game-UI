@@ -11,8 +11,14 @@
 * npm `6.14.12`
 
 ## Instrucciones para iniciar la aplicación
-* Una vez clonado y dentro del directorio del proyecto, ejecutar:
-```console
-npm run dev
-``` 
-* Acceder desde el navegador a la url local generada
+* Una vez clonado, dentro del directorio del proyecto, ejecutar:
+  - Para el modo desarrollador 
+    ```console
+    npm run dev
+    ```
+  - Para levantar una versión estable
+    ```console
+    npm run build
+    npm run serve
+    ```
+* Acceder desde el navegador a la url local generada, en el path `/` o `/home`
