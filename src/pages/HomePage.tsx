@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Text, Stack, Image, Button, Center, StackDivider, Box } from "@chakra-ui/react"
+import { Stack, Image, Button, Center, StackDivider, Box } from "@chakra-ui/react"
 import { redirect } from '../commons/Redirect'
+import { MainHeader } from '../components/MainHeader'
 
 type HomeState = {
   shouldRedirect: boolean,
@@ -24,14 +25,8 @@ export class HomePage extends Component<{}, HomeState> {
 
   content() {
     return <Stack spacing='1px'>
-      <Box backgroundColor='red.600' borderRadius='7px'>
-        <Center h="100px"
-                fontStyle='italic'
-                fontWeight='bold'
-                fontSize='3xl'>
-          Hero Cards Game!
-        </Center>
-      </Box>
+      
+      <MainHeader page={this} />
 
       <Stack direction='row' spacing='1px'>
 

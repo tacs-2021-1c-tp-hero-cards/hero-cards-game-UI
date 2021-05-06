@@ -15,16 +15,32 @@ type FormProps = {
     placeholder: string
 }
 
-export function GenericForm(props: FormProps) {
+export function UnrequiredGenericForm(props: FormProps) {
+    return <UnrequiredFormInput props={props} input={GenericFormInput} />
+}
+
+export function UnrequiredPasswordForm(props: FormProps) {
+    return <UnrequiredFormInput props={props} input={PasswordFormInput} />
+}
+
+export function RequiredGenericForm(props: FormProps) {
     return <RequiredFormInput props={props} input={GenericFormInput} />
 }
 
-export function PasswordForm(props: FormProps) {
+export function RequiredPasswordForm(props: FormProps) {
     return <RequiredFormInput props={props} input={PasswordFormInput} />
 }
 
 export function RequiredFormInput({ props, input }: any) {
     return <FormControl isInvalid={props.error && props.touched} isRequired>
+        <FormLabel htmlFor={props.id}>{props.label}</FormLabel>
+        {input(props)}
+        <FormErrorMessage>{props.error}</FormErrorMessage>
+    </FormControl>
+}
+
+export function UnrequiredFormInput({ props, input }: any) {
+    return <FormControl isInvalid={props.error && props.touched}>
         <FormLabel htmlFor={props.id}>{props.label}</FormLabel>
         {input(props)}
         <FormErrorMessage>{props.error}</FormErrorMessage>

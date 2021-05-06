@@ -1,8 +1,9 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 import { Button, Stack, Box } from '@chakra-ui/react';
-import { FormField, GenericForm, PasswordForm } from './Form';
+import { FormField, RequiredGenericForm, RequiredPasswordForm } from './Form';
 import { User } from '../commons/User';
+import { validateUsername, validateFullName, validatePassword, validateRepeatedPassword } from '../commons/InputValidations';
  
 
 export function SignUpForm(onSubmit: (data: User) => void) {
@@ -12,14 +13,14 @@ export function SignUpForm(onSubmit: (data: User) => void) {
       initialValues={{
         username: '',
         fullName: '',
-        password1: '',
-        password2: ''
+        password: '',
+        repeatedPassword: ''
       }}
       onSubmit={(values: any, actions: any) => {
         onSubmit({
           username: values.username,
           fullName: values.fullName,
-          password: values.password1,
+          password: values.password,
           token: ''
         })
         actions.setSubmitting(false)
@@ -32,7 +33,7 @@ export function SignUpForm(onSubmit: (data: User) => void) {
               <FormField id='username' 
                         validation={validateUsername}
                         formField={({ field, form }: any) => 
-                          <GenericForm field={field}
+                          <RequiredGenericForm field={field}
                                        error={form.errors.username}
                                        touched={form.touched.username}
                                        id='username'
@@ -43,7 +44,7 @@ export function SignUpForm(onSubmit: (data: User) => void) {
               <FormField id='fullName' 
                         validation={validateFullName}
                         formField={({ field, form }: any) => 
-                          <GenericForm field={field}
+                          <RequiredGenericForm field={field}
                                        error={form.errors.fullName}
                                        touched={form.touched.fullName}
                                        id='fullName'
@@ -53,24 +54,24 @@ export function SignUpForm(onSubmit: (data: User) => void) {
             </Stack>
 
             <Stack direction='row'>
-              <FormField id='password1' 
-                        validation={validatePassword1}
+              <FormField id='password' 
+                        validation={validatePassword}
                         formField={({ field, form }: any) =>  
-                          <PasswordForm field={field}
-                                        error={form.errors.password1}
-                                        touched={form.touched.password1}
-                                        id='password1'
+                          <RequiredPasswordForm field={field}
+                                        error={form.errors.password}
+                                        touched={form.touched.password}
+                                        id='password'
                                         label='Password'
                                         placeholder='Enter password'
                                         />}/>
 
-              <FormField id='password2' 
-                         validation={(value: any) => validatePassword2(value, props.values.password1)}
+              <FormField id='repeatedPassword' 
+                         validation={(value: any) => validateRepeatedPassword(value, props.values.password)}
                          formField={({ field, form }: any) => 
-                          <PasswordForm field={field}
-                                        error={form.errors.password2}
-                                        touched={form.touched.password2}
-                                        id='password2'
+                          <RequiredPasswordForm field={field}
+                                        error={form.errors.repeatedPassword}
+                                        touched={form.touched.repeatedPassword}
+                                        id='repeatedPassword'
                                         label=''
                                         placeholder='Repeat password'
                                         />}/>
@@ -91,43 +92,3 @@ export function SignUpForm(onSubmit: (data: User) => void) {
   )
 }
 
-// TODO: Impprove inputs validations
-
-function validateUsername(value: any) {
-  let error
-  if (!value) {
-    error = 'Username is required'
-  }
-
-  return error
-}
-
-function validateFullName(value: any) {
-  let error
-  if (!value) {
-    error = 'Full name is required'
-  }
-
-  return error
-}
-
-function validatePassword1(value: any) {
-  let error
-  if (!value) {
-    error = 'Password is required'
-  }
-
-  return error
-}
-
-function validatePassword2(value: any, pass1: any) {
-  let error
-
-  if (!value) {
-    error = 'Repeated password is required'
-  } else if (value !== pass1) {
-    error = 'Incorrect password'
-  }
-
-  return error
-}

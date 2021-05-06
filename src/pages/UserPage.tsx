@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { Box, Button, Center, Image, Stack, StackDivider, Text } from "@chakra-ui/react"
+import { Box, Button, Center, Image, Stack, StackDivider } from "@chakra-ui/react"
 import { Redirect } from 'react-router-dom'
 import { logOut } from '../commons/LogOut'
 import { redirect } from '../commons/Redirect'
 import { User } from '../commons/User'
+import { PageInProgress } from '../components/PageInProgress'
+import { MainHeader } from '../components/MainHeader'
 
 
 export class UserPage extends Component<User, { shouldRedirect: boolean }> {
@@ -21,18 +23,8 @@ export class UserPage extends Component<User, { shouldRedirect: boolean }> {
 
     content() {
         return <Stack spacing='1px'>
-            <Box backgroundColor='blue.500' borderRadius='7px'>
-                <Center>
-                    <Button h="100px"
-                            fontStyle='italic'
-                            fontWeight='bold'
-                            fontSize='3xl'
-                            variant='unstyled'
-                            onClick={() => redirect('/', this)}>
-                        Hero Cards Game!
-                    </Button>
-                </Center>
-            </Box>
+            
+            <MainHeader page={this} />
 
             <Box bg='cadetblue' borderRadius='7px'>
                 <Center padding='4' fontSize='xl' fontStyle='italic' fontWeight='bold'>
@@ -55,14 +47,7 @@ export class UserPage extends Component<User, { shouldRedirect: boolean }> {
                     </Button>
                 </Stack>
 
-                <Box bg='grey' borderRadius='7px' width='full'>
-                    <Center paddingTop='30px'>
-                        <Image src='https://lita.upc.edu/es/media/workinprogress_01.png'/>
-                    </Center>
-                    <Center padding='4' fontSize='xl' fontStyle='italic' fontWeight='bold'>
-                        User page in progress!
-                    </Center>
-                </Box>
+                <PageInProgress page='User' />
 
             </Stack>
         </Stack>
