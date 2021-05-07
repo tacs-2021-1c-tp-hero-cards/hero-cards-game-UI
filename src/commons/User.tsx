@@ -1,6 +1,5 @@
-import { CommonProps } from "./CommonProps";
 
-export type UserProps = CommonProps & {
+export type User = {
     username: string,
     fullName: string,
     password: string,

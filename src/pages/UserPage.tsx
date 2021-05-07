@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { Box, Button, Center, Stack, StackDivider } from "@chakra-ui/react"
 import { Redirect } from 'react-router-dom'
 import { logOut } from '../commons/LogOut'
-import { UserProps } from '../commons/User'
+import { User } from '../commons/User'
 import { PageInProgress } from '../components/PageInProgress'
 import { MainHeader } from '../components/MainHeader'
+import { getCookie } from '../commons/Cookies'
 
 
-export class UserPage extends Component<UserProps, { shouldRedirect: boolean }> {
+export class UserPage extends Component<User, { shouldRedirect: boolean }> {
 
     constructor(props: any) {
         super(props)
@@ -27,7 +28,7 @@ export class UserPage extends Component<UserProps, { shouldRedirect: boolean }> 
 
             <Box bg='cadetblue' borderRadius='7px'>
                 <Center padding='4' fontSize='xl' fontStyle='italic' fontWeight='bold'>
-                    Welcome {this.props.username}!
+                    Welcome {getCookie('username')}!
                 </Center>
             </Box>
 

@@ -21,7 +21,9 @@ export function SignUpForm(onSubmit: (data: UserProps) => void) {
           username: values.username,
           fullName: values.fullName,
           password: values.password,
-          token: ''
+          token: '',
+          cookies: '',
+          allCookies: ''
         })
         actions.setSubmitting(false)
       }}

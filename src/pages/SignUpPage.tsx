@@ -6,6 +6,7 @@ import { redirect } from '../commons/Redirect'
 import { User } from '../commons/User'
 import { signUp } from '../commons/SignUp'
 import { MainHeader } from '../components/MainHeader'
+import { setCookie } from '../commons/Cookies'
 
 type SignUpState = {
   redirectTo: string,
@@ -21,6 +22,7 @@ export class SignUpPage extends Component<{}, SignUpState> {
       redirectTo: ''
     }
   }
+
 
   render() {
     return this.state.shouldRedirect ? <Redirect to={this.state.redirectTo} /> : this.content()

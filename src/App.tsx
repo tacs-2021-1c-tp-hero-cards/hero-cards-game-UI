@@ -7,22 +7,20 @@ import { Box } from "@chakra-ui/layout";
 import theme from "./theme";
 import { SignUpPage } from "./pages/SignUpPage";
 import { UserPage } from "./pages/UserPage";
-import { UserProps } from "./commons/User";
-import { withCookies } from "react-cookie";
 
-class App extends Component<{}, UserProps> {
+class App extends Component<{}, {}> {
 
   render() {
     return <Box bg={theme.backgroundColor}>
       <Router>
         <Switch>
           <Redirect exact={true} from="/" to="/home" />
-          <Route exact={true} path="/home" component={withCookies(HomePage)} />
-          <Route path="/signUp" component={withCookies(SignUpPage)} />
+          <Route exact={true} path="/home" component={HomePage} />
+          <Route path="/signUp" component={SignUpPage} />
           <Redirect from='/signIn' to='/logIn'/>
-          <Route path="/logIn" component={withCookies(LogInPage)} />
-          <Route path="/user" component={withCookies(UserPage)} />
-          <Route component={withCookies(NotFoundPage)} />
+          <Route path="/logIn" component={LogInPage} />
+          <Route path="/user" component={UserPage} />
+          <Route component={NotFoundPage} />
         </Switch>
       </Router>
     </Box>
