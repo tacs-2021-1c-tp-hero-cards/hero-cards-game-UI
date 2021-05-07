@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { User } from "./commons/User";
+import { UserProps } from "./commons/User";
 import config from "./config.json"
 
 
@@ -15,7 +15,7 @@ class BackendConnector {
     }
   })
 
-  signUp(user: User, onSuccess: (data: any) => void, onFailure: (error: any) => void) {
+  signUp(user: UserProps, onSuccess: (data: any) => void, onFailure: (error: any) => void) {
 
     BackendConnector.connector
       .post('/signUp', {
@@ -33,7 +33,7 @@ class BackendConnector {
       })
   }
 
-  logIn(user: User, onSuccess: (data: any) => void, onFailure: (error: any) => void) {
+  logIn(user: UserProps, onSuccess: (data: any) => void, onFailure: (error: any) => void) {
 
     BackendConnector.connector
       .post('/logIn', {

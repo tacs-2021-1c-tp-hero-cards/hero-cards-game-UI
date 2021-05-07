@@ -15,6 +15,7 @@
     "formik": "^2.2.6",
     "framer-motion": "^4.1.11",
     "react": "^17.0.0",
+    "react-cookie": "^4.0.3",
     "react-dom": "^17.0.0",
     "react-router-dom": "^5.2.0",
     "yup": "^0.32.9"

@@ -2,11 +2,11 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import { Button, Stack, Box } from '@chakra-ui/react';
 import { FormField, RequiredGenericForm, RequiredPasswordForm } from './Form';
-import { User } from '../commons/User';
+import { UserProps } from '../commons/User';
 import { validateUsername, validateFullName, validatePassword, validateRepeatedPassword } from '../commons/InputValidations';
  
 
-export function SignUpForm(onSubmit: (data: User) => void) {
+export function SignUpForm(onSubmit: (data: UserProps) => void) {
   
   return (
     <Formik

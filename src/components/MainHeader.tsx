@@ -1,6 +1,7 @@
-import { Box, Center, Button } from "@chakra-ui/react";
+import { Box, Center, Button, Image, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import { redirect } from "../commons/Redirect";
+import logo from '../logo.png'
 
 
 export function MainHeader({ page }: any) {
@@ -13,7 +14,14 @@ export function MainHeader({ page }: any) {
                         fontSize='3xl'
                         variant='unstyled'
                         onClick={() => redirect('/', page)}>
-                    Hero Cards Game!
+                            
+                    <Stack direction='row'>
+                        <Image boxSize='60px' src={logo} />
+
+                        <Center>
+                            Hero Cards Game!
+                        </Center>
+                    </Stack>
                 </Button>
             </Center>
         </Box>

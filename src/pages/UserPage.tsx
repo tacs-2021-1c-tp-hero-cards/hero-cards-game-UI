@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
-import { Box, Button, Center, Image, Stack, StackDivider } from "@chakra-ui/react"
+import { Box, Button, Center, Stack, StackDivider } from "@chakra-ui/react"
 import { Redirect } from 'react-router-dom'
 import { logOut } from '../commons/LogOut'
-import { redirect } from '../commons/Redirect'
-import { User } from '../commons/User'
+import { UserProps } from '../commons/User'
 import { PageInProgress } from '../components/PageInProgress'
 import { MainHeader } from '../components/MainHeader'
 
 
-export class UserPage extends Component<User, { shouldRedirect: boolean }> {
+export class UserPage extends Component<UserProps, { shouldRedirect: boolean }> {
 
     constructor(props: any) {
         super(props)
@@ -42,7 +41,10 @@ export class UserPage extends Component<User, { shouldRedirect: boolean }> {
                     <Button colorScheme="orange"
                             variant="solid"
                             textColor='gray.700'
-                            onClick={() => logOut(this.props, this)}>
+                            onClick={() => 
+                            {console.log(this) 
+                            logOut(this.props, this)}
+                            }>
                         Log Out
                     </Button>
                 </Stack>
