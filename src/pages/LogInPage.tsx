@@ -5,7 +5,7 @@ import { UnrequiredPasswordInput } from '../components/PasswordInput'
 import { redirect } from '../commons/Redirect'
 import { LogInForm } from '../components/LogInForm'
 import { logIn } from '../commons/LogIn'
-import { UserProps } from '../commons/User'
+import { User } from '../commons/User'
 import { MainHeader } from '../components/MainHeader'
 
 type LogInState = {
@@ -40,7 +40,7 @@ export class LogInPage extends Component<{}, LogInState> {
 
         <Text fontSize='xl' fontWeight='bold' color=''>Log into your account</Text>
 
-        {LogInForm((data: UserProps) => logIn(data, this))}
+        {LogInForm((data: User) => logIn(data, this))}
 
         <Box fontSize='sm' paddingLeft='8px'>
           <Text>¿You don't have an account?</Text>
