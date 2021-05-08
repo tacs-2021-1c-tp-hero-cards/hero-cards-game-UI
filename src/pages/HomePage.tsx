@@ -1,15 +1,11 @@
-import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
-import { Stack, Image, Button, Center, StackDivider, Box } from "@chakra-ui/react"
+import React from 'react'
+import { Stack, Image, Button, StackDivider } from "@chakra-ui/react"
 import { redirect } from '../commons/Redirect'
 import { MainHeader } from '../components/MainHeader'
+import { RedirectableComponent, RedirectableState } from '../components/RedirectableComponent'
 
-type HomeState = {
-  shouldRedirect: boolean,
-  redirectTo: string
-}
 
-export class HomePage extends Component<{}, HomeState> {
+export class HomePage extends RedirectableComponent<{}, RedirectableState> {
 
   constructor(props: any) {
     super(props)
@@ -17,10 +13,6 @@ export class HomePage extends Component<{}, HomeState> {
       shouldRedirect: false,
       redirectTo: ''
     }
-  }
-
-  render() {
-    return this.state.shouldRedirect ? <Redirect to={this.state.redirectTo} /> : this.content()
   }
 
   content() {

@@ -1,24 +1,27 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Box, Button, Center, Stack, StackDivider } from "@chakra-ui/react"
-import { Redirect } from 'react-router-dom'
 import { logOut } from '../commons/LogOut'
-import { User } from '../commons/User'
 import { PageInProgress } from '../components/PageInProgress'
 import { MainHeader } from '../components/MainHeader'
 import { getCookie } from '../commons/Cookies'
+import { RedirectableComponent, RedirectableState } from '../components/RedirectableComponent'
+import { Redirect } from 'react-router-dom'
 
 
-export class UserPage extends Component<User, { shouldRedirect: boolean }> {
+export class UserPage extends RedirectableComponent<{}, RedirectableState> {
 
     constructor(props: any) {
         super(props)
         this.state = {
-            shouldRedirect: false
+            shouldRedirect: false,
+            redirectTo: ''
         }
     }
 
     render() {
-        return this.state.shouldRedirect ? <Redirect to={'/'} /> : this.content()
+        return(
+            this.state.shouldRedirect || getCookie('token') ? super.render() : <Redirect to={'/logInError'} />
+        )
     }
 
     content() {
@@ -26,7 +29,7 @@ export class UserPage extends Component<User, { shouldRedirect: boolean }> {
             
             <MainHeader page={this} />
 
-            <Box bg='cadetblue' borderRadius='7px'>
+            <Box bg='lightblue' borderRadius='7px'>
                 <Center padding='4' fontSize='xl' fontStyle='italic' fontWeight='bold'>
                     Welcome {getCookie('username')}!
                 </Center>
@@ -42,10 +45,7 @@ export class UserPage extends Component<User, { shouldRedirect: boolean }> {
                     <Button colorScheme="orange"
                             variant="solid"
                             textColor='gray.700'
-                            onClick={() => 
-                            {console.log(this) 
-                            logOut(this.props, this)}
-                            }>
+                            onClick={() => logOut(this)}>
                         Log Out
                     </Button>
                 </Stack>

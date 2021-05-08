@@ -1,25 +1,17 @@
-import React, { Component } from 'react'
-import { Box, Button, Center, Image, Stack, Text } from "@chakra-ui/react"
-import { Redirect } from 'react-router-dom'
+import React from 'react'
+import { Box, Center, Image, Stack } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
+import { RedirectableComponent, RedirectableState } from '../components/RedirectableComponent'
 
-export class NotFoundPage extends Component<{}, { shouldRedirect: boolean }> {
+
+export class NotFoundPage extends RedirectableComponent<{}, RedirectableState> {
 
     constructor(props: any) {
         super(props)
         this.state = {
-            shouldRedirect: false
+            shouldRedirect: false,
+            redirectTo: ''
         }
-    }
-
-    redirect() {
-        this.setState({
-            shouldRedirect: true
-        })
-    }
-
-    render() {
-        return this.state.shouldRedirect ? <Redirect to={'/'} /> : this.content()
     }
 
     content() {
@@ -27,7 +19,7 @@ export class NotFoundPage extends Component<{}, { shouldRedirect: boolean }> {
             <MainHeader page={this}/>
 
             <Box bg='yellow.400' borderRadius='7px'>
-                <Center padding='4' fontSize='xl' fontStyle='italic' fontWeight='bold'>
+                <Center padding='4' fontSize='xl' fontWeight='bold'>
                     404 - Page Not Found!
                 </Center>
             </Box>

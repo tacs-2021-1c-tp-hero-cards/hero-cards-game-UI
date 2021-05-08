@@ -1,19 +1,14 @@
-import React, { Component } from 'react'
-import { Box, Button, Center, Stack, StackDivider, Text, FormControl, Input, FormLabel, Image } from "@chakra-ui/react"
-import { Redirect } from 'react-router-dom'
-import { UnrequiredPasswordInput } from '../components/PasswordInput'
+import React from 'react'
+import { Box, Button, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { redirect } from '../commons/Redirect'
 import { LogInForm } from '../components/LogInForm'
 import { logIn } from '../commons/LogIn'
 import { User } from '../commons/User'
 import { MainHeader } from '../components/MainHeader'
+import { RedirectableComponent, RedirectableState } from '../components/RedirectableComponent'
 
-type LogInState = {
-  redirectTo: string,
-  shouldRedirect: boolean
-}
 
-export class LogInPage extends Component<{}, LogInState> {
+export class LogInPage extends RedirectableComponent<{}, RedirectableState> {
 
   constructor(props: any) {
     super(props)
@@ -21,10 +16,6 @@ export class LogInPage extends Component<{}, LogInState> {
       shouldRedirect: false,
       redirectTo: ''
     }
-  }
-
-  render() {
-    return this.state.shouldRedirect ? <Redirect to={this.state.redirectTo} /> : this.content()
   }
 
   content() {

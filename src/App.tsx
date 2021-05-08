@@ -7,6 +7,7 @@ import { Box } from "@chakra-ui/layout";
 import theme from "./theme";
 import { SignUpPage } from "./pages/SignUpPage";
 import { UserPage } from "./pages/UserPage";
+import { NotLoggedInPage } from "./pages/NotLoggedInPage";
 
 class App extends Component<{}, {}> {
 
@@ -20,6 +21,7 @@ class App extends Component<{}, {}> {
           <Redirect from='/signIn' to='/logIn'/>
           <Route path="/logIn" component={LogInPage} />
           <Route path="/user" component={UserPage} />
+          <Route path='/logInError' component={NotLoggedInPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </Router>

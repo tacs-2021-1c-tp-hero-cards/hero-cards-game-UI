@@ -1,19 +1,14 @@
-import React, { Component } from 'react'
-import { Box, Button, Center, Stack, StackDivider, Text } from "@chakra-ui/react"
-import { Redirect } from 'react-router-dom'
+import React from 'react'
+import { Box, Button, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { SignUpForm } from '../components/SignUpForm'
 import { redirect } from '../commons/Redirect'
 import { User } from '../commons/User'
 import { signUp } from '../commons/SignUp'
 import { MainHeader } from '../components/MainHeader'
-import { setCookie } from '../commons/Cookies'
+import { RedirectableComponent, RedirectableState } from '../components/RedirectableComponent'
 
-type SignUpState = {
-  redirectTo: string,
-  shouldRedirect: boolean
-}
 
-export class SignUpPage extends Component<{}, SignUpState> {
+export class SignUpPage extends RedirectableComponent<{}, RedirectableState> {
 
   constructor(props: any) {
     super(props)
@@ -21,11 +16,6 @@ export class SignUpPage extends Component<{}, SignUpState> {
       shouldRedirect: false,
       redirectTo: ''
     }
-  }
-
-
-  render() {
-    return this.state.shouldRedirect ? <Redirect to={this.state.redirectTo} /> : this.content()
   }
 
   content() {

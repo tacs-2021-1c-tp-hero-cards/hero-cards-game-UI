@@ -1,4 +1,4 @@
-import { Box, Center, Button, Image, Stack, Text } from "@chakra-ui/react";
+import { Box, Center, Button, Image, Stack } from "@chakra-ui/react";
 import React from "react";
 import { redirect } from "../commons/Redirect";
 import logo from '../logo.png'
