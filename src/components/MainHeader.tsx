@@ -1,4 +1,4 @@
-import { Box, Center, Button, Image, Stack } from "@chakra-ui/react";
+import { Box, Center, Button, Image, Stack, Tooltip } from "@chakra-ui/react";
 import React from "react";
 import { redirect } from "../commons/Redirect";
 import logo from '../logo.png'
@@ -16,7 +16,9 @@ export function MainHeader({ page }: any) {
                         onClick={() => redirect('/', page)}>
                             
                     <Stack direction='row'>
-                        <Image boxSize='60px' src={logo} />
+                        <Tooltip hasArrow label='Home' placement='bottom'>
+                            <Image boxSize='60px' src={logo} />
+                        </Tooltip>
 
                         <Center>
                             Hero Cards Game!

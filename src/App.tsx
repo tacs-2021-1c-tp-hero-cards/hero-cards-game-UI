@@ -8,6 +8,7 @@ import theme from "./theme";
 import { SignUpPage } from "./pages/SignUpPage";
 import { UserPage } from "./pages/UserPage";
 import { NotLoggedInPage } from "./pages/NotLoggedInPage";
+import { DecksPage } from "./pages/DecksPage";
 
 class App extends Component<{}, {}> {
 
@@ -21,6 +22,7 @@ class App extends Component<{}, {}> {
           <Redirect from='/signIn' to='/logIn'/>
           <Route path="/logIn" component={LogInPage} />
           <Route path="/user" component={UserPage} />
+          <Route path='/decks' component={DecksPage} />
           <Route path='/logInError' component={NotLoggedInPage} />
           <Route component={NotFoundPage} />
         </Switch>
