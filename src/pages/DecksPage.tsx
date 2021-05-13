@@ -46,7 +46,7 @@ export class DecksPage extends RedirectableComponent<{}, RedirectableState> {
                                     then click the button below
                                 </Center>
                                 
-                                <Button alignSelf='center' colorScheme='green'>
+                                <Button disabled alignSelf='center' colorScheme='green'>
                                     Create
                                 </Button>
                             </Stack>
@@ -55,11 +55,11 @@ export class DecksPage extends RedirectableComponent<{}, RedirectableState> {
                                 <Center fontWeight='bold' fontSize='xl'>Modify deck</Center>
                                 
                                 <Center fontSize='md' textAlign='center'>
-                                    If you want to modify an existing deck, change it's name or cards,
+                                    If you want to modify an existing deck, by changing it's name or cards,
                                     then click the button below
                                 </Center>
 
-                                <Button alignSelf='center' colorScheme='orange'>
+                                <Button disabled alignSelf='center' colorScheme='orange'>
                                     Modify
                                 </Button>
                             </Stack>
@@ -76,7 +76,7 @@ export class DecksPage extends RedirectableComponent<{}, RedirectableState> {
                                     </Text>
                                 </Center>
 
-                                <Button alignSelf='center' colorScheme='red'>
+                                <Button disabled alignSelf='center' colorScheme='red'>
                                     Remove
                                 </Button>
                             </Stack>

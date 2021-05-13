@@ -9,6 +9,7 @@ import { SignUpPage } from "./pages/SignUpPage";
 import { UserPage } from "./pages/UserPage";
 import { NotLoggedInPage } from "./pages/NotLoggedInPage";
 import { DecksPage } from "./pages/DecksPage";
+import { UnexpectedErrorPage } from "./pages/UnexpectedErrorPage";
 
 class App extends Component<{}, {}> {
 
@@ -24,6 +25,7 @@ class App extends Component<{}, {}> {
           <Route path="/user" component={UserPage} />
           <Route path='/decks' component={DecksPage} />
           <Route path='/logInError' component={NotLoggedInPage} />
+          <Route path='/error' component={UnexpectedErrorPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </Router>

@@ -48,6 +48,13 @@ export class UserPage extends RedirectableComponent<{}, RedirectableState> {
                             onClick={() => logOut(this)}>
                         Log Out
                     </Button>
+
+                    <Button colorScheme="orange"
+                            variant="solid"
+                            textColor='gray.700'
+                            onClick={() => this.redirect('/decks')}>
+                        Manage decks
+                    </Button>
                 </Stack>
 
                 <PageInProgress page='User' />
