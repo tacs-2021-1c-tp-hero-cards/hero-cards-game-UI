@@ -1,8 +1,8 @@
-import { Box, Center, Stack, StackDivider, Text, Image } from "@chakra-ui/react"
+import { Box, Center, Stack, StackDivider, Text, Image, Checkbox } from "@chakra-ui/react"
 import React from "react"
 
 
-export type Attributes = {
+export type CardAttributes = {
     id: number,
     name: string,
     powerstats: PowerStats,
@@ -19,7 +19,15 @@ export type PowerStats = {
     strength: number
 }
 
-export function Card({id, name, powerstats, imageUrl}: Attributes) {
+type Props = {
+    attributes: CardAttributes,
+    showCheckbox: boolean,
+    isChecked: () => boolean, 
+    onCheck: (e: any) => any
+}
+
+export function Card( {attributes, showCheckbox, isChecked, onCheck}: Props) {
+
     return(
         <Stack  bg='orange.200'
                 padding='4px'
@@ -32,13 +40,16 @@ export function Card({id, name, powerstats, imageUrl}: Attributes) {
 
             <Stack direction='row' >
                 <Box border='1px' borderColor='gray.500' borderRadius='full' bg='beige' >
-                    <Text>{id}</Text>
+                    <Text>{attributes.id}</Text>
                 </Box>
-                <Center boxSize='full' fontWeight='bold' >{name}</Center>
+                <Center boxSize='full' fontWeight='bold' >{attributes.name}</Center>
+                <Box hidden={!showCheckbox}>
+                    <Checkbox isChecked={isChecked()} onChange={onCheck} />
+                </Box>
             </Stack>
 
             <Box padding='10px'>
-                <Image src={imageUrl} border='2px' borderColor='gray.400' />
+                <Image src={attributes.imageUrl} border='2px' borderColor='gray.400' />
             </Box>
 
             <Stack bg='orange.100' borderRadius='2px' spacing='3px' border='2px' borderColor='orange.300'>
@@ -46,34 +57,34 @@ export function Card({id, name, powerstats, imageUrl}: Attributes) {
                 <Stack direction='row' divider={<StackDivider borderColor='orange.200' height='70px' alignSelf='center'/>}>
                     <Stack spacing='1px' paddingRight='5px' paddingLeft='5px' fontSize='xs' >
                         <Stack direction='row-reverse' >
-                            <Text>{powerstats.height}</Text>
+                            <Text>{attributes.powerstats.height}</Text>
                             <Center boxSize='full' >Height</Center>
                         </Stack>
                         <Stack direction='row-reverse' >
-                            <Text>{powerstats.weight}</Text>
+                            <Text>{attributes.powerstats.weight}</Text>
                             <Center boxSize='full' >Weight</Center>
                         </Stack>
                         <Stack direction='row-reverse' >
-                            <Text>{powerstats.intelligence}</Text>
+                            <Text>{attributes.powerstats.intelligence}</Text>
                             <Center boxSize='full' >Intelligence</Center>
                         </Stack>
                         <Stack direction='row-reverse' >
-                            <Text>{powerstats.speed}</Text>
+                            <Text>{attributes.powerstats.speed}</Text>
                             <Center boxSize='full' >Speed</Center>
                         </Stack>
                     </Stack>
                     
                     <Stack spacing='1px' fontSize='xs' paddingRight='5px' >
                         <Stack direction='row-reverse' paddingRight='10px' >
-                            <Text>{powerstats.power}</Text>
+                            <Text>{attributes.powerstats.power}</Text>
                             <Center boxSize='full' >Power</Center>
                         </Stack>
                         <Stack direction='row-reverse' paddingRight='10px' >
-                            <Text>{powerstats.combat}</Text>
+                            <Text>{attributes.powerstats.combat}</Text>
                             <Center boxSize='full' >Combat</Center>
                         </Stack>
                         <Stack direction='row-reverse' paddingRight='10px' >
-                            <Text>{powerstats.strength}</Text>
+                            <Text>{attributes.powerstats.strength}</Text>
                             <Center boxSize='full' >Strenght</Center>
                         </Stack>
                     </Stack>

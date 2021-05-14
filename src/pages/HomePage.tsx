@@ -1,10 +1,8 @@
 import React from 'react'
-import { Stack, Image, Button, StackDivider, SimpleGrid } from "@chakra-ui/react"
+import { Stack, Image, Button, StackDivider } from "@chakra-ui/react"
 import { redirect } from '../commons/Redirect'
 import { MainHeader } from '../components/MainHeader'
 import { RedirectableComponent, RedirectableState } from '../components/RedirectableComponent'
-import { Card } from '../components/Card'
-import { CardsGrid } from '../components/CardsGrid'
 
 
 export class HomePage extends RedirectableComponent<{}, RedirectableState> {
@@ -54,55 +52,7 @@ export class HomePage extends RedirectableComponent<{}, RedirectableState> {
 
       </Stack>
 
-      <CardsGrid cards={lala()}/>
     </Stack>
   }
 }
 
-
-function lala() {
-  return([
-    Card({
-      "id": 69,
-      "name": "Batman",
-      "powerstats": {
-        "height": 178,
-        "weight": 77,
-        "intelligence": 81,
-        "speed": 29,
-        "power": 63,
-        "combat": 90,
-        "strength": 40
-      },
-      "imageUrl": "https://www.superherodb.com/pictures2/portraits/10/100/10441.jpg"
-    }),
-    Card({
-      "id": 69,
-      "name": "Batman",
-      "powerstats": {
-        "height": 178,
-        "weight": 77,
-        "intelligence": 81,
-        "speed": 29,
-        "power": 63,
-        "combat": 90,
-        "strength": 40
-      },
-      "imageUrl": "https://www.superherodb.com/pictures2/portraits/10/100/10441.jpg"
-    }),
-    Card({
-      "id": 69,
-      "name": "Batman",
-      "powerstats": {
-        "height": 178,
-        "weight": 77,
-        "intelligence": 81,
-        "speed": 29,
-        "power": 63,
-        "combat": 90,
-        "strength": 40
-      },
-      "imageUrl": "https://www.superherodb.com/pictures2/portraits/10/100/10441.jpg"
-    })
-  ])
-}
