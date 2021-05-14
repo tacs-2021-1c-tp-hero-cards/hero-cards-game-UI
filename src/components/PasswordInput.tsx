@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react"
+import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement } from "@chakra-ui/react"
 import React, { Component } from "react"
 
 type Props = {
