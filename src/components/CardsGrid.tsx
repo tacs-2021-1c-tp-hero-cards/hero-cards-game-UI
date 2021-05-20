@@ -24,14 +24,16 @@ export function CardsGrid({ cards }: CardsProps) {
             <SimpleGrid minChildWidth="200px" spacing="10px">
                 {cards.map(
                     (card, index) => 
-                        <Card   attributes={card} 
-                                showCheckbox={true} 
-                                isChecked={() => checkedItems[index]}
-                                onCheck={(e) => setCheckedItems(
-                                    checkedItems.slice(0, index)
-                                        .concat([e.target.checked])
-                                        .concat(checkedItems.slice(-1, index))
-                                    )} />
+                        <Card   attributes={card}
+                                checkbox={
+                                <Checkbox   hidden={true} 
+                                            isChecked={checkedItems[index]}
+                                            onCheck={(e: any) => setCheckedItems(
+                                                checkedItems.slice(0, index)
+                                                    .concat([e.target.checked])
+                                                    .concat(checkedItems.slice(-1, index))
+                                                )}/>
+                            } />
                 )}
             </SimpleGrid>
         </Box>

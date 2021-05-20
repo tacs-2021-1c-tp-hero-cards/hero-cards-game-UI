@@ -1,24 +1,20 @@
 import React from 'react'
 import { Stack, Image, Button, StackDivider } from "@chakra-ui/react"
-import { redirect } from '../commons/Redirect'
 import { MainHeader } from '../components/MainHeader'
-import { RedirectableComponent, RedirectableState } from '../components/RedirectableComponent'
+import { useHistory } from 'react-router-dom'
 
 
-export class HomePage extends RedirectableComponent<{}, RedirectableState> {
+export function HomePage() {
+  let history = useHistory()
 
-  constructor(props: any) {
-    super(props)
-    this.state = {
-      shouldRedirect: false,
-      redirectTo: ''
-    }
+  function redirect(to: string) {
+    return () => history.push(to)
   }
 
-  content() {
-    return <Stack spacing='1px'>
+  return (
+    <Stack spacing='1px'>
       
-      <MainHeader page={this} />
+      <MainHeader />
 
       <Stack direction='row' spacing='1px'>
 
@@ -31,14 +27,14 @@ export class HomePage extends RedirectableComponent<{}, RedirectableState> {
           <Button colorScheme="orange"
                   variant="solid"
                   textColor='gray.700'
-                  onClick={() => redirect('/logIn', this)}>
+                  onClick={redirect('/logIn')}>
             Log In
           </Button>
           
           <Button colorScheme="orange"
                   variant="solid"
                   textColor='gray.700'
-                  onClick={() => redirect('/signUp', this)}>
+                  onClick={redirect('/signUp')}>
             Sign Up
           </Button>
 
@@ -53,6 +49,6 @@ export class HomePage extends RedirectableComponent<{}, RedirectableState> {
       </Stack>
 
     </Stack>
-  }
+  )
 }
 

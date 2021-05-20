@@ -1,15 +1,15 @@
 import { ServerConnector } from "../BackendConnector"
 import { setCookie } from "./Cookies"
-import { redirect } from "./Redirect"
+import { setToken } from "./Token"
 import { User } from "./User"
 
 
-export function logIn(user: User, from: any) {
+export function logIn(user: User, onSuccess: () => void, onFailure: () => void) {
     ServerConnector.logIn(user,
                          (data) => {
                              setCookie('username', user.username)
-                             setCookie('token', data.token)
-                             redirect('/user', from)
+                             setToken(data.token)
+                             onSuccess()
                             },
-                         (error) => redirect('/logInError', from))
+                         (error) => onFailure())
 }

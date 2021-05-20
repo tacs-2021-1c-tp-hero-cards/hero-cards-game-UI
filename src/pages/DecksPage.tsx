@@ -1,27 +1,25 @@
 import React from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
-import { RedirectableComponent, RedirectableState } from "../components/RedirectableComponent";
 import { MainHeader } from "../components/MainHeader";
 import { Button, Center, StackDivider } from "@chakra-ui/react";
+import { useHistory } from "react-router";
+import { useLocation } from "react-router-dom";
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
-export class DecksPage extends RedirectableComponent<{}, RedirectableState> {
-
-    constructor(props: any) {
-        super(props)
-        this.state = {
-            shouldRedirect: false,
-            redirectTo: ''
-        }
-    }
+export function DecksPage() {
+    let history = useHistory()
+    let queryParams = useQuery()
 
     // TODO: Agregar chequeo de autorización del usuario
 
-    content() {
+    function content() {
         return(
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader page={this}/>
+                    <MainHeader />
 
                     <Stack direction='row' spacing='1px'>
                         <Stack  bg='gray.200'
@@ -46,7 +44,7 @@ export class DecksPage extends RedirectableComponent<{}, RedirectableState> {
                                     then click the button below
                                 </Center>
                                 
-                                <Button disabled alignSelf='center' colorScheme='green'>
+                                <Button alignSelf='center' colorScheme='green' >
                                     Create
                                 </Button>
                             </Stack>
@@ -87,4 +85,10 @@ export class DecksPage extends RedirectableComponent<{}, RedirectableState> {
             </Box>
         )
     }
+
+    const action = queryParams.get('action')
+
+    return(
+        action ? <></> : content()
+    )
 }

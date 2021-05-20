@@ -1,31 +1,40 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { Button, Stack, Box } from '@chakra-ui/react';
+import { Button, Stack, Box, useToast } from '@chakra-ui/react';
 import { FormField, UnrequiredGenericForm, UnrequiredPasswordForm } from './Form';
-import { User } from '../commons/User';
 import { validateUsername, validatePassword } from '../commons/InputValidations';
+import { logIn } from '../commons/LogIn';
+import { useHistory } from 'react-router';
+import { SubmitDataErrorToast } from '../commons/SubmitDataErrorToast';
+import { User } from '../commons/User';
  
 
-export function LogInForm(onSubmit: (data: User) => void) {
+export function LogInForm() {
+  let history = useHistory()
+  const toast = useToast()
   
+  function redirect(to: string) {
+    history.push(to)
+  }
+
+  const initialValues = {
+    username: '',
+    fullName: '',
+    password: '',
+    token: ''
+  }
+
+  function onSubmit(user: User, actions: any) {
+    logIn(user, 
+      () => redirect('/user'), 
+      () => toast(SubmitDataErrorToast)
+    )
+    
+    actions.setSubmitting(false)
+  }
+
   return (
-    <Formik
-      initialValues={{
-        username: '',
-        fullName: '',
-        password: '',
-        repeatedPassword: ''
-      }}
-      onSubmit={(values: any, actions: any) => {
-        onSubmit({
-          username: values.username,
-          fullName: values.fullName,
-          password: values.password,
-          token: ''
-        })
-        actions.setSubmitting(false)
-      }}
-    >
+    <Formik initialValues={initialValues} onSubmit={onSubmit} >
       {(props: any) => (
         <Form>
             <Stack>

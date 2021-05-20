@@ -1,19 +1,25 @@
 import { Box, Center, Button, Image, Stack, Tooltip } from "@chakra-ui/react";
 import React from "react";
-import { redirect } from "../commons/Redirect";
+import { Link, useHistory } from "react-router-dom";
 import logo from '../logo.png'
 
 
-export function MainHeader({ page }: any) {
+export function MainHeader() {
+    let history = useHistory()
+
+    function goHome() {
+        history.push('/')
+    }
+
     return (
         <Box backgroundColor='blue.500' borderRadius='7px'>
             <Center>
-                <Button h="100px"
+                <Button height="20"
                         fontStyle='italic'
                         fontWeight='bold'
                         fontSize='3xl'
                         variant='unstyled'
-                        onClick={() => redirect('/', page)}>
+                        onClick={goHome}>
                             
                     <Stack direction='row'>
                         <Tooltip hasArrow label='Home' placement='bottom'>

@@ -1,27 +1,21 @@
 import React from 'react'
 import { Box, Button, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { SignUpForm } from '../components/SignUpForm'
-import { redirect } from '../commons/Redirect'
-import { User } from '../commons/User'
-import { signUp } from '../commons/SignUp'
 import { MainHeader } from '../components/MainHeader'
-import { RedirectableComponent, RedirectableState } from '../components/RedirectableComponent'
+import { useHistory } from 'react-router'
 
 
-export class SignUpPage extends RedirectableComponent<{}, RedirectableState> {
+export function SignUpPage() {
+  let history = useHistory()
 
-  constructor(props: any) {
-    super(props)
-    this.state = {
-      shouldRedirect: false,
-      redirectTo: ''
-    }
+  function redirect(to: string) {
+    return () => history.push(to)
   }
 
-  content() {
-    return <Stack spacing='1px'>
+  return (
+    <Stack spacing='1px'>
       
-      <MainHeader page={this} />
+      <MainHeader />
 
       <Stack padding='4'
               backgroundColor='gray.200'
@@ -33,14 +27,14 @@ export class SignUpPage extends RedirectableComponent<{}, RedirectableState> {
         <Stack>
           <Text fontSize='sm'>Don't worry, we won't make public any of this</Text>
 
-          {SignUpForm((data: User) => signUp(data, this))}
+          <SignUpForm />
         </Stack>
 
         <Box fontSize='sm' padding='8px'>
           <Text>¿Already have an account? <Button fontSize='sm' 
                                                   colorScheme="blue" 
                                                   variant="link" 
-                                                  onClick={() => redirect('/logIn', this)}>
+                                                  onClick={redirect('/logIn')}>
               Log in!
             </Button>
           </Text>
@@ -49,5 +43,5 @@ export class SignUpPage extends RedirectableComponent<{}, RedirectableState> {
       </Stack>
 
     </Stack>
-  }
+  )
 }

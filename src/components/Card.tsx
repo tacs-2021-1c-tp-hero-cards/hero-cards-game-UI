@@ -21,12 +21,10 @@ export type PowerStats = {
 
 type Props = {
     attributes: CardAttributes,
-    showCheckbox: boolean,
-    isChecked: () => boolean, 
-    onCheck: (e: any) => any
+    checkbox: any
 }
 
-export function Card( {attributes, showCheckbox, isChecked, onCheck}: Props) {
+export function Card( {attributes, checkbox}: Props) {
 
     return(
         <Stack  bg='orange.200'
@@ -43,9 +41,7 @@ export function Card( {attributes, showCheckbox, isChecked, onCheck}: Props) {
                     <Text>{attributes.id}</Text>
                 </Box>
                 <Center boxSize='full' fontWeight='bold' >{attributes.name}</Center>
-                <Box hidden={!showCheckbox}>
-                    <Checkbox isChecked={isChecked()} onChange={onCheck} />
-                </Box>
+                {checkbox}
             </Stack>
 
             <Box padding='10px'>

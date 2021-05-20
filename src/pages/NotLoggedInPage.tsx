@@ -1,42 +1,19 @@
-import React from 'react'
-import { Box, Center, Text, Stack, StackDivider, HStack, Button } from "@chakra-ui/react"
+import React, { Component } from 'react'
+import { Box, Center, Stack, StackDivider, HStack, Button } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
-import { RedirectableComponent, RedirectableState } from '../components/RedirectableComponent'
+import { useHistory } from 'react-router'
 
-type CustomState = RedirectableState & {
-    logInSubmitting: boolean,
-    signUpSubmitting: boolean
-}
 
-export class NotLoggedInPage extends RedirectableComponent<{}, CustomState> {
+export function NotLoggedInPage() {
+    let history = useHistory()
 
-    constructor(props: any) {
-        super(props)
-        this.state = {
-            shouldRedirect: false,
-            redirectTo: '',
-            logInSubmitting: false,
-            signUpSubmitting: false
-        }
+    function redirect(to: string) {
+        return () => history.push(to)
     }
 
-    onLogIn = () => {
-        this.setState({
-            logInSubmitting: true
-        })
-        this.redirect('/logIn')
-    }
-
-    onSignUp = () => {
-        this.setState({
-            signUpSubmitting: true
-        })
-        this.redirect('/signUp')
-    }
-
-    content() {
-        return <Stack spacing='1px'>
-            <MainHeader page={this}/>
+    return (
+        <Stack spacing='1px'>
+            <MainHeader />
 
             <Box bg='orange.400' borderRadius='7px'>
                 <Center padding='4' fontSize='xl' fontWeight='bold'>
@@ -58,8 +35,7 @@ export class NotLoggedInPage extends RedirectableComponent<{}, CustomState> {
                                 <Center>
                                     <Button colorScheme='teal'
                                             type='submit'
-                                            isLoading={this.state.signUpSubmitting}
-                                            onClick={this.onSignUp}>
+                                            onClick={redirect('/signUp')}>
                                         Sign up
                                     </Button>
                                 </Center>
@@ -77,8 +53,7 @@ export class NotLoggedInPage extends RedirectableComponent<{}, CustomState> {
                                 <Center>
                                     <Button colorScheme='teal'
                                             type='submit'
-                                            isLoading={this.state.logInSubmitting}
-                                            onClick={this.onLogIn}>
+                                            onClick={redirect('/logIn')}>
                                         Log in
                                     </Button>
                                 </Center>
@@ -88,5 +63,5 @@ export class NotLoggedInPage extends RedirectableComponent<{}, CustomState> {
                 </HStack>
             </Center>
         </Stack>
-    }
+    )
 }

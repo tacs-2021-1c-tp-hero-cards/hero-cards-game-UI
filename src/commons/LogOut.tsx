@@ -1,12 +1,12 @@
 import { ServerConnector } from "../BackendConnector"
 import { getCookie, setCookie } from "./Cookies"
-import { redirect } from "./Redirect"
+import { clearToken } from "./Token"
 
 
-export function logOut(from: any) {
+export function logOut(onSuccess: () => void, onFailure: () => void) {
     const token = getCookie('token')
-    setCookie('token', '')
+    clearToken()
     ServerConnector.logOut(token!,
-                           (data) => redirect('/', from),
-                           (error) => redirect('/error', from))
+                           (data) => onSuccess(),
+                           (error) => onFailure())
 }
