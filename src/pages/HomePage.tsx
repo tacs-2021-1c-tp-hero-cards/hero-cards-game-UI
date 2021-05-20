@@ -1,15 +1,14 @@
 import React from 'react'
 import { Stack, Image, Button, StackDivider } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
-import { useHistory } from 'react-router-dom'
+import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
 
 
-export function HomePage() {
-  let history = useHistory()
+export function HomePage() { return( withRedirect({}) (HomeContent) )}
 
-  function redirect(to: string) {
-    return () => history.push(to)
-  }
+type HomeProps = RedirectProps
+
+function HomeContent({ redirect }: HomeProps) {
 
   return (
     <Stack spacing='1px'>
@@ -27,14 +26,14 @@ export function HomePage() {
           <Button colorScheme="orange"
                   variant="solid"
                   textColor='gray.700'
-                  onClick={redirect('/logIn')}>
+                  onClick={() => redirect('/logIn')}>
             Log In
           </Button>
           
           <Button colorScheme="orange"
                   variant="solid"
                   textColor='gray.700'
-                  onClick={redirect('/signUp')}>
+                  onClick={() => redirect('/signUp')}>
             Sign Up
           </Button>
 

@@ -2,16 +2,14 @@ import React from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
 import { Button, Center, StackDivider } from "@chakra-ui/react";
-import { useHistory } from "react-router";
-import { useLocation } from "react-router-dom";
+import { QueryParamsProps, RedirectProps, withQueryParams, withRedirect } from "../commons/BehaviorAddOns";
 
-function useQuery() {
-    return new URLSearchParams(useLocation().search);
-}
 
-export function DecksPage() {
-    let history = useHistory()
-    let queryParams = useQuery()
+export function DecksPage() { return( withRedirect({}) (withQueryParams) (DecksContent) )}
+
+type DecksProps = RedirectProps & QueryParamsProps
+
+export function DecksContent({ redirect, queryParams }: DecksProps) {
 
     // TODO: Agregar chequeo de autorización del usuario
 

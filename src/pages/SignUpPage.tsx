@@ -2,15 +2,13 @@ import React from 'react'
 import { Box, Button, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { SignUpForm } from '../components/SignUpForm'
 import { MainHeader } from '../components/MainHeader'
-import { useHistory } from 'react-router'
+import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
 
+export function SignUpPage() { return( withRedirect({}) (SignUpContent) )}
 
-export function SignUpPage() {
-  let history = useHistory()
+type SignUpProps = RedirectProps
 
-  function redirect(to: string) {
-    return () => history.push(to)
-  }
+function SignUpContent({ redirect }: SignUpProps) {
 
   return (
     <Stack spacing='1px'>
@@ -34,7 +32,7 @@ export function SignUpPage() {
           <Text>¿Already have an account? <Button fontSize='sm' 
                                                   colorScheme="blue" 
                                                   variant="link" 
-                                                  onClick={redirect('/logIn')}>
+                                                  onClick={() => redirect('/logIn')}>
               Log in!
             </Button>
           </Text>

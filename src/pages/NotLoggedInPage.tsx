@@ -1,15 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Box, Center, Stack, StackDivider, HStack, Button } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
-import { useHistory } from 'react-router'
+import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
 
+export function NotLoggedInPage() { return( withRedirect({}) (NotLoggedInContent) )}
 
-export function NotLoggedInPage() {
-    let history = useHistory()
+type NotLoggedInProps = RedirectProps
 
-    function redirect(to: string) {
-        return () => history.push(to)
-    }
+function NotLoggedInContent({ redirect }: NotLoggedInProps) {
 
     return (
         <Stack spacing='1px'>
@@ -35,7 +33,7 @@ export function NotLoggedInPage() {
                                 <Center>
                                     <Button colorScheme='teal'
                                             type='submit'
-                                            onClick={redirect('/signUp')}>
+                                            onClick={() => redirect('/signUp')}>
                                         Sign up
                                     </Button>
                                 </Center>
@@ -53,7 +51,7 @@ export function NotLoggedInPage() {
                                 <Center>
                                     <Button colorScheme='teal'
                                             type='submit'
-                                            onClick={redirect('/logIn')}>
+                                            onClick={() => redirect('/logIn')}>
                                         Log in
                                     </Button>
                                 </Center>

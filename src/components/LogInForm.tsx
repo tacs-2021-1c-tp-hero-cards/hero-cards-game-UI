@@ -7,15 +7,14 @@ import { logIn } from '../commons/LogIn';
 import { useHistory } from 'react-router';
 import { SubmitDataErrorToast } from '../commons/SubmitDataErrorToast';
 import { User } from '../commons/User';
+import { RedirectProps, ToastProps, withRedirect, withToast } from '../commons/BehaviorAddOns';
  
 
-export function LogInForm() {
-  let history = useHistory()
-  const toast = useToast()
-  
-  function redirect(to: string) {
-    history.push(to)
-  }
+export function LogInForm() { return( withRedirect({}) (withToast) (LogInFormContent) )}
+
+type LogInFormProps = RedirectProps & ToastProps
+
+function LogInFormContent({ redirect, toast }: LogInFormProps) {
 
   const initialValues = {
     username: '',

@@ -4,21 +4,22 @@ import { logOut } from '../commons/LogOut'
 import { PageInProgress } from '../components/PageInProgress'
 import { MainHeader } from '../components/MainHeader'
 import { getCookie } from '../commons/Cookies'
-import { useHistory } from 'react-router-dom'
+import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
 
+export function UserPage() { return( withRedirect({}) (UserContent) )}
 
-export function UserPage() {
-    let history = useHistory()
+type UserProps = RedirectProps
 
-    function redirect(to: string) {
-        return () => history.push(to)
-    }
+function UserContent({ redirect, renderRedirect }: UserProps) {
 
     return(
-        getCookie('token') ?
+        getCookie('token') ? content() : renderRedirect('/logInError')
+    )
 
+    function content() {
+        return (
             <Stack spacing='1px'>
-            
+                
                 <MainHeader />
 
                 <Box bg='lightblue' borderRadius='7px'>
@@ -37,14 +38,14 @@ export function UserPage() {
                         <Button colorScheme="orange"
                                 variant="solid"
                                 textColor='gray.700'
-                                onClick={() => logOut(redirect('/'), redirect('/error'))}>
+                                onClick={() => logOut(() => redirect('/'), () => redirect('/error'))}>
                             Log Out
                         </Button>
 
                         <Button colorScheme="orange"
                                 variant="solid"
                                 textColor='gray.700'
-                                onClick={redirect('/decks')}>
+                                onClick={() => redirect('/decks')}>
                             Manage decks
                         </Button>
                     </Stack>
@@ -53,6 +54,6 @@ export function UserPage() {
 
                 </Stack>
             </Stack>
-        : redirect('/logInError')()
-    )
+        )
+    }
 }

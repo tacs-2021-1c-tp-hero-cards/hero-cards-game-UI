@@ -1,21 +1,18 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { Button, Stack, Box, useToast } from '@chakra-ui/react';
+import { Button, Stack, Box } from '@chakra-ui/react';
 import { FormField, RequiredGenericForm, RequiredPasswordForm } from './Form';
 import { validateUsername, validateFullName, validatePassword, validateRepeatedPassword } from '../commons/InputValidations';
-import { useHistory } from 'react-router-dom';
 import { signUp } from '../commons/SignUp';
 import { SubmitDataErrorToast } from '../commons/SubmitDataErrorToast';
 import { User } from '../commons/User';
+import { RedirectProps, ToastProps, withRedirect, withToast } from '../commons/BehaviorAddOns';
  
+export function SignUpForm() { return( withRedirect({}) (withToast) (SignUpFormContent) )}
 
-export function SignUpForm() {
-  let history = useHistory()
-  const toast = useToast()
-  
-  function redirect(to: string) {
-    return () => history.push(to)
-  }
+type SignUpFormProps = RedirectProps & ToastProps
+
+function SignUpFormContent({ redirect, toast }: SignUpFormProps) {
 
   const initialValues = {
     username: '',
@@ -27,7 +24,7 @@ export function SignUpForm() {
 
   function onSubmit(user: User, actions: any) {
     signUp(user, 
-      redirect('/user'), 
+      () => redirect('/user'), 
       () => toast(SubmitDataErrorToast)
     )
 
