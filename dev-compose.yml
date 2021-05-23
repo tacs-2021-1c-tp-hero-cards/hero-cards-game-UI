@@ -1,0 +1,14 @@
+version: "2.2"
+services:
+    frontend:
+      image: node:14.17-alpine
+      command: sh -c "npm install && npm run dev"
+      ports: 
+        - 3000:3000
+      working_dir: /hero-cards-game-UI
+      volumes: 
+        - ./:/hero-cards-game-UI
+    server:
+      image: fesposta/hero-cards-game-server:latest
+      ports:
+        - 8080:8080
