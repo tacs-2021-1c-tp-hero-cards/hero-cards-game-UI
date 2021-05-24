@@ -16,6 +16,16 @@ export function validateUsername(value: any) {
     return error
 }
 
+export function nonEmpty(value: any) {
+    let error
+
+    if (!value || value === '' || value === []) {
+        error = 'Cannot be empty'
+    } 
+
+    return error
+}
+
 export function validateFullName(value: any) {
     const fullNameRegex = /^[a-zA-Z]+(\s[a-zA-Z]+)*$/
     let error

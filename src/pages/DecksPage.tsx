@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
+import { CreateDeckDrawer } from "../components/CreateDeckDrawer";
 import { Button, Center, StackDivider } from "@chakra-ui/react";
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns";
 
@@ -44,14 +45,7 @@ export function DecksContent({ toast, renderWithTokenValidation }: DecksProps) {
                                     then click the button below
                                 </Center>
                                 
-                                <Button alignSelf='center' colorScheme='green' onClick={() =>   toast({
-                                                                                                title: `Create Deck`,
-                                                                                                status: 'warning',
-                                                                                                isClosable: true,
-                                                                                                description: 'Still in progress'
-                                                                                            })} >
-                                    Create
-                                </Button>
+                                <CreateDeckDrawer  alignSelf='center' />
                             </Stack>
 
                             <Stack>
@@ -62,7 +56,12 @@ export function DecksContent({ toast, renderWithTokenValidation }: DecksProps) {
                                     then click the button below
                                 </Center>
 
-                                <Button disabled alignSelf='center' colorScheme='orange'>
+                                <Button alignSelf='center' colorScheme='orange' onClick={() => toast({
+                                                                                                title: `Modify Deck`,
+                                                                                                status: 'warning',
+                                                                                                isClosable: true,
+                                                                                                description: 'Still in progress'
+                                                                                            })}>
                                     Modify
                                 </Button>
                             </Stack>
@@ -79,7 +78,12 @@ export function DecksContent({ toast, renderWithTokenValidation }: DecksProps) {
                                     </Text>
                                 </Center>
 
-                                <Button disabled alignSelf='center' colorScheme='red'>
+                                <Button alignSelf='center' colorScheme='red' onClick={() => toast({
+                                                                                                title: `Remove Deck`,
+                                                                                                status: 'warning',
+                                                                                                isClosable: true,
+                                                                                                description: 'Still in progress'
+                                                                                            })}>
                                     Remove
                                 </Button>
                             </Stack>

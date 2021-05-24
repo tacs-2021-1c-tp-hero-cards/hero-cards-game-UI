@@ -21,10 +21,10 @@ export type PowerStats = {
 
 type Props = {
     attributes: CardAttributes,
-    checkbox: any
+    addOn?: any
 }
 
-export function Card( {attributes, checkbox}: Props) {
+export function Card( { attributes, addOn }: Props) {
 
     return(
         <Stack  bg='orange.200'
@@ -41,7 +41,7 @@ export function Card( {attributes, checkbox}: Props) {
                     <Text>{attributes.id}</Text>
                 </Box>
                 <Center boxSize='full' fontWeight='bold' >{attributes.name}</Center>
-                {checkbox}
+                {addOn}
             </Stack>
 
             <Box padding='10px'>
