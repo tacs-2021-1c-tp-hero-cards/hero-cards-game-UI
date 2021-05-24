@@ -2,16 +2,18 @@ import React from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
 import { Button, Center, StackDivider } from "@chakra-ui/react";
-import { QueryParamsProps, RedirectProps, withQueryParams, withRedirect } from "../commons/BehaviorAddOns";
+import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns";
 
 
-export function DecksPage() { return( withRedirect({}) (withQueryParams) (DecksContent) )}
+export function DecksPage() { return( withToast({}) (withTokenValidation) (DecksContent) )}
 
-type DecksProps = RedirectProps & QueryParamsProps
+type DecksProps = ToastProps & TokenProps
 
-export function DecksContent({ redirect, queryParams }: DecksProps) {
+export function DecksContent({ toast, renderWithTokenValidation }: DecksProps) {
 
     // TODO: Agregar chequeo de autorización del usuario
+
+    return( renderWithTokenValidation(content) )
 
     function content() {
         return(
@@ -42,7 +44,12 @@ export function DecksContent({ redirect, queryParams }: DecksProps) {
                                     then click the button below
                                 </Center>
                                 
-                                <Button alignSelf='center' colorScheme='green' >
+                                <Button alignSelf='center' colorScheme='green' onClick={() =>   toast({
+                                                                                                title: `Create Deck`,
+                                                                                                status: 'warning',
+                                                                                                isClosable: true,
+                                                                                                description: 'Still in progress'
+                                                                                            })} >
                                     Create
                                 </Button>
                             </Stack>
@@ -83,10 +90,4 @@ export function DecksContent({ redirect, queryParams }: DecksProps) {
             </Box>
         )
     }
-
-    const action = queryParams.get('action')
-
-    return(
-        action ? <></> : content()
-    )
 }

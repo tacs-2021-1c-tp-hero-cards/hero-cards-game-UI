@@ -25,3 +25,9 @@ export function updateTokenExpiry() {
 export function clearToken() {
     removeCookie('token')
 }
+
+export function tokenIsAlive(): boolean {
+    const token = getToken() ?? ''
+
+    return token != ''
+}

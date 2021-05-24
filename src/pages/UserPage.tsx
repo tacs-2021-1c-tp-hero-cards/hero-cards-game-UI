@@ -4,17 +4,15 @@ import { logOut } from '../commons/LogOut'
 import { PageInProgress } from '../components/PageInProgress'
 import { MainHeader } from '../components/MainHeader'
 import { getCookie } from '../commons/Cookies'
-import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
+import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
 
-export function UserPage() { return( withRedirect({}) (UserContent) )}
+export function UserPage() { return( withRedirect({}) (withTokenValidation) (UserContent) )}
 
-type UserProps = RedirectProps
+type UserProps = RedirectProps & TokenProps
 
-function UserContent({ redirect, renderRedirect }: UserProps) {
+function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
 
-    return(
-        getCookie('token') ? content() : renderRedirect('/logInError')
-    )
+    return( renderWithTokenValidation(content) )
 
     function content() {
         return (
