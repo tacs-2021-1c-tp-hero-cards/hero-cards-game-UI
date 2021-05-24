@@ -10,11 +10,28 @@ import { UserPage } from "./pages/UserPage";
 import { NotLoggedInPage } from "./pages/NotLoggedInPage";
 import { DecksPage } from "./pages/DecksPage";
 import { UnexpectedErrorPage } from "./pages/UnexpectedErrorPage";
+import { updateTokenExpiry } from "./commons/Token";
+import { useIdleTimer } from "react-idle-timer";
 
-class App extends Component<{}, {}> {
 
-  render() {
-    return <Box bg={theme.backgroundColor}>
+function App() {
+
+  const handleOnActive = (_: any) => { 
+    console.log('ON ACTIVEEEE')
+    updateTokenExpiry() 
+  }
+  const handleOnAction = (_: any) => { 
+    console.log('ON ACTIONNNNN')
+    updateTokenExpiry() 
+  }
+
+  useIdleTimer({
+    onActive: handleOnActive,
+    onAction: handleOnAction
+  })
+
+  return (
+    <Box bg={theme.backgroundColor}>
       <Router>
         <Switch>
           <Redirect exact={true} from="/" to="/home" />
@@ -30,7 +47,7 @@ class App extends Component<{}, {}> {
         </Switch>
       </Router>
     </Box>
-  }
+  )
 }
 
 export default App

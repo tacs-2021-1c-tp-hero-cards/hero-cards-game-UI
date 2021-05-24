@@ -1,11 +1,14 @@
-import { getCookie, setCookie } from "./Cookies";
+import { getCookie, removeCookie, setCookie, updateCookie } from "./Cookies";
 
+function expiry() {
+    let minute = 1 / (24 * 60)
 
-export function setToken(value: string, expiry?: Date) {
-    let defaultExpiry = new Date()
-    defaultExpiry.setMinutes(defaultExpiry.getMinutes() + 5)
+    return { expires: 5 * minute } // Expires in 5 minutes of inactivity
+}
 
-    setCookie('token', value, { expires: expiry ?? defaultExpiry })
+export function setToken(value: string) {
+
+    setCookie('token', value, expiry())
 
 }
 
@@ -16,9 +19,9 @@ export function getToken() {
 export function updateTokenExpiry() {
     const token = getToken()
     if (token && token != '')
-        setToken(getToken()!)
+        updateCookie('token', token!, expiry())
 }
 
 export function clearToken() {
-    setToken('', new Date())
+    removeCookie('token')
 }
