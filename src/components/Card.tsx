@@ -21,10 +21,11 @@ export type PowerStats = {
 
 type Props = {
     attributes: CardAttributes,
+    onClick?: any,
     addOn?: any
 }
 
-export function Card( { attributes, addOn }: Props) {
+export function Card( { attributes, onClick, addOn }: Props) {
 
     return(
         <Stack  bg='orange.200'
@@ -34,11 +35,12 @@ export function Card( { attributes, addOn }: Props) {
                 borderColor='gray.600'
                 width='200px'
                 spacing='3px'
+                onClick={onClick}
                 divider={<StackDivider />} >
 
             <Stack direction='row' >
-                <Box border='1px' borderColor='gray.500' borderRadius='full' bg='beige' >
-                    <Text>{attributes.id}</Text>
+                <Box border='1px' borderColor='gray.500' borderRadius='full' bg='beige' width='2.2rem' >
+                    <Center>{attributes.id}</Center>
                 </Box>
                 <Center boxSize='full' fontWeight='bold' >{attributes.name}</Center>
                 {addOn}

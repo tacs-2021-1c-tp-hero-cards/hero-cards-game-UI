@@ -3,39 +3,45 @@ import { Box, Button, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { LogInForm } from '../components/LogInForm'
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
+import { tokenIsAlive } from '../commons/Token'
 
 
 export function LogInPage() { return( withRedirect({}) (LogInContent) )}
 
 type LogInProps = RedirectProps
 
-function LogInContent({ redirect }: LogInProps) {
+function LogInContent({ redirect, renderRedirect }: LogInProps) {
 
-  return(
-    <Stack spacing='1px'>
-      
-      <MainHeader />
+  
+  return( tokenIsAlive() ? renderRedirect('/user') : content() )
 
-      <Stack padding='4'
-             backgroundColor='gray.200'
-             borderRadius='7px'
-             spacing='4'
-             divider={<StackDivider borderColor='gray.500' />}>
+  function content() {
+    return(
+      <Stack spacing='1px'>
+        
+        <MainHeader />
 
-        <Text fontSize='xl' fontWeight='bold' color=''>Log into your account</Text>
+        <Stack padding='4'
+              backgroundColor='gray.200'
+              borderRadius='7px'
+              spacing='4'
+              divider={<StackDivider borderColor='gray.500' />}>
 
-        <LogInForm />
+          <Text fontSize='xl' fontWeight='bold' color=''>Log into your account</Text>
 
-        <Box fontSize='sm' paddingLeft='8px'>
-          <Text>¿You don't have an account?</Text>
-          <Text>¡Sign up 
-            <Button fontSize='sm' colorScheme="blue" variant="link" onClick={() => redirect('/signUp')}>
-              here
-            </Button>
-          for free!</Text>
-        </Box>
+          <LogInForm />
 
+          <Box fontSize='sm' paddingLeft='8px'>
+            <Text>¿You don't have an account?</Text>
+            <Text>¡Sign up 
+              <Button fontSize='sm' colorScheme="blue" variant="link" onClick={() => redirect('/signUp')}>
+                here
+              </Button>
+            for free!</Text>
+          </Box>
+
+        </Stack>
       </Stack>
-    </Stack>
-  )
+    )
+  }
 }

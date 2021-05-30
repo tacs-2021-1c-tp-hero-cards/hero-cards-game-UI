@@ -1,4 +1,4 @@
-import React, { RefObject } from "react"
+import React, { useState } from "react"
 import { AddIcon } from "@chakra-ui/icons"
 import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, 
         DrawerHeader, DrawerBody, Stack, Box, FormLabel, Input, InputGroup, DrawerFooter, StackDivider, InputRightElement } from "@chakra-ui/react"
@@ -17,26 +17,82 @@ type Deck = {
 export function CreateDeckDrawer({ alignSelf }: DrawerProps) {
     const initialRef = React.useRef(null)
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const [ availableCards, setAvailableCards ] = React.useState(cards())
+    const [ selectedCards, setSelectedCards ] = useState(cards().filter(card => card.id % 2 === 0))
+    const [ availableCards, setAvailableCards ] = useState(checkCards(cards()))
 
-    let selectedCards = availableCards.slice(0, availableCards.length / 2) //FIXME
+    function setSelected(selected: CardAttributes[]) {
+        setSelectedCards(selected.sort((c1, c2) => c1.id - c2.id))
+    }
+
+    function setAvailable(available: any[]) {
+        setAvailableCards(available)
+    }
+
+    function checkCards(cards: CardAttributes[]) {
+      const checkedCards = cards.slice().map((card) => ({...card, checked: selectedCards.some(c => c.id === card.id)}))
+
+      return checkedCards
+    }
+
+    function openDrawer() {
+      // TODO: setear estado inicial del drawer correctamente
+      onOpen()
+    }
 
     function onSubmit(deck: Deck) {
-        console.log(deck)
+        console.log('deck' + deck)
         //onClose()
     }
 
     function searchCardsByName() {
-        setAvailableCards(cards()) //FIXME
+       // setAvailableCards(cards) //FIXME
     }
 
-    function searchCardById() {
-        setAvailableCards(cards().slice(0,1)) //FIXME
+    function searchCardById(id: number) { 
+      setAvailable(cards) //FIXME
+
+    }
+
+    function updateCard(card: CardAttributes, checked: boolean) {
+      if (checked) {
+        if (!selectedCards.some((c) => card.id === c.id)) {
+          setSelected(selectedCards.concat(card))
+        }
+
+      } else {
+        const cardIndex = selectedCards.findIndex((c) => card.id === c.id)
+        const updatedItems = selectedCards
+                              .slice(0, cardIndex)
+                              .concat(selectedCards.slice(cardIndex + 1, selectedCards.length))
+
+        setSelected(updatedItems)
+      }
+    }
+
+    function updateAllCards(checked: boolean) {
+      if(checked) {
+        let cards = availableCards.filter(card => !selectedCards.some((c) => card.id === c.id))
+        setSelected(selectedCards.concat(cards))
+      } else {
+        let cards = selectedCards.filter(card => !availableCards.some((c) => card.id === c.id))
+        setSelected(cards)
+      }
+    }
+
+    function removeSelectedCard(index: number) {
+      let cards = selectedCards.slice()
+
+      let updatedSelectedCards = selectedCards.slice(0, index).concat(cards.slice(index + 1, cards.length))
+      let updatedAvailableCards = checkCards(availableCards)
+
+      setSelected(updatedSelectedCards)
+      setAvailable(updatedAvailableCards)
+
     }
 
     return (
         <Box alignSelf={alignSelf}>
-            <Button leftIcon={<AddIcon />} colorScheme='green' onClick={onOpen} >
+            <Button leftIcon={<AddIcon />} colorScheme='green' onClick={openDrawer} >
                 Create
             </Button>
             <Drawer isOpen={isOpen} size='xl' placement="right" onClose={onClose} initialFocusRef={initialRef} >
@@ -95,14 +151,17 @@ export function CreateDeckDrawer({ alignSelf }: DrawerProps) {
                                             </InputGroup>
                                         </Stack>
 
-                                        //TODO vindear items seleccionados al form
+                                        //TODO bindear items seleccionados al form
                                         
                                         <FormLabel >Available cards</FormLabel>
-                                        <CardsGrid cards={availableCards} withCheckbox={true} withButton={false} />
+                                        <CardsGrid  cards={availableCards} 
+                                                    withCheckbox={true} 
+                                                    updateCard={(card, checked) => updateCard(card, checked)} 
+                                                    updateAllCards={(checked) => updateAllCards(checked)} />
 
                                         <Box>
                                             <FormLabel >Selected cards</FormLabel>
-                                            <CardsGrid cards={selectedCards} withCheckbox={false} withButton={true} />
+                                            <CardsGrid cards={selectedCards} withButton={true} removeCard={removeSelectedCard} />
                                         </Box>
                                     </Stack>
                                 </Form>
@@ -123,106 +182,25 @@ export function CreateDeckDrawer({ alignSelf }: DrawerProps) {
 }
 
 
-function cards() {
-    return([
-      {
-        "id": 69,
-        "name": "Batman",
-        "powerstats": {
-          "height": 178,
-          "weight": 77,
-          "intelligence": 81,
-          "speed": 29,
-          "power": 63,
-          "combat": 90,
-          "strength": 40
-        },
-        "imageUrl": "https://www.superherodb.com/pictures2/portraits/10/100/10441.jpg"
-      },
-      {
-        "id": 69,
-        "name": "Batman",
-        "powerstats": {
-          "height": 178,
-          "weight": 77,
-          "intelligence": 81,
-          "speed": 29,
-          "power": 63,
-          "combat": 90,
-          "strength": 40
-        },
-        "imageUrl": "https://www.superherodb.com/pictures2/portraits/10/100/10441.jpg"
-      },
-      {
-        "id": 69,
-        "name": "Batman",
-        "powerstats": {
-          "height": 178,
-          "weight": 77,
-          "intelligence": 81,
-          "speed": 29,
-          "power": 63,
-          "combat": 90,
-          "strength": 40
-        },
-        "imageUrl": "https://www.superherodb.com/pictures2/portraits/10/100/10441.jpg"
-      },
-      {
-        "id": 69,
-        "name": "Batman",
-        "powerstats": {
-          "height": 178,
-          "weight": 77,
-          "intelligence": 81,
-          "speed": 29,
-          "power": 63,
-          "combat": 90,
-          "strength": 40
-        },
-        "imageUrl": "https://www.superherodb.com/pictures2/portraits/10/100/10441.jpg"
-      },
-      {
-        "id": 69,
-        "name": "Batman",
-        "powerstats": {
-          "height": 178,
-          "weight": 77,
-          "intelligence": 81,
-          "speed": 29,
-          "power": 63,
-          "combat": 90,
-          "strength": 40
-        },
-        "imageUrl": "https://www.superherodb.com/pictures2/portraits/10/100/10441.jpg"
-      },
-      {
-        "id": 69,
-        "name": "Batman",
-        "powerstats": {
-          "height": 178,
-          "weight": 77,
-          "intelligence": 81,
-          "speed": 29,
-          "power": 63,
-          "combat": 90,
-          "strength": 40
-        },
-        "imageUrl": "https://www.superherodb.com/pictures2/portraits/10/100/10441.jpg"
-      },
-      {
-        "id": 69,
-        "name": "Batman",
-        "powerstats": {
-          "height": 178,
-          "weight": 77,
-          "intelligence": 81,
-          "speed": 29,
-          "power": 63,
-          "combat": 90,
-          "strength": 40
-        },
-        "imageUrl": "https://www.superherodb.com/pictures2/portraits/10/100/10441.jpg"
-      }
-    ])
-  }
+function cards(): CardAttributes[] {
+  let cs = Array(12).fill(0)
+
+  return(cs.map((_, i) => createCard(i)))
+}
   
+function createCard(id: number): CardAttributes {
+  return {
+    "id": id,
+    "name": "Batman" + id,
+    "powerstats": {
+      "height": 178,
+      "weight": 77,
+      "intelligence": 81,
+      "speed": 29,
+      "power": 63,
+      "combat": 90,
+      "strength": 40
+    },
+    "imageUrl": "https://www.superherodb.com/pictures2/portraits/10/100/10441.jpg"
+  }
+}

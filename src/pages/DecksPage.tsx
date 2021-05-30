@@ -6,7 +6,7 @@ import { Button, Center, StackDivider } from "@chakra-ui/react";
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns";
 
 
-export function DecksPage() { return( withToast({}) (withTokenValidation) (DecksContent) )}
+export function DecksPage() { return( withToast({}) (withTokenValidation) (withRedirect) (DecksContent) )}
 
 type DecksProps = ToastProps & TokenProps
 
