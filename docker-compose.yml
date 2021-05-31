@@ -1,10 +1,10 @@
 version: "2.2"
 services:
     frontend:
-        image: fesposta/hero-cards-game-ui
+        image: fesposta/hero-cards-game-ui:1.1
         ports: 
-            - 5000:5000
+            - 3000:5000
     server:
-        image: fesposta/hero-cards-game-server:latest
+        image: fesposta/hero-cards-game-server:1.1
         ports:
             - 8080:8080

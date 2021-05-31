@@ -48,8 +48,8 @@ export function CreateDeckDrawer({ alignSelf }: DrawerProps) {
        // setAvailableCards(cards) //FIXME
     }
 
-    function searchCardById(id: number) { 
-      setAvailable(cards) //FIXME
+    function searchCardById() { 
+      //setAvailable(cards) //FIXME
 
     }
 
