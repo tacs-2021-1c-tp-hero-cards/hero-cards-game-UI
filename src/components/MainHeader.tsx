@@ -1,6 +1,6 @@
-import { Box, Center, Button, Image, Stack, Tooltip } from "@chakra-ui/react";
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Box, Center, Button, Image, Stack, Tooltip } from "@chakra-ui/react";
+import { useHistory } from "react-router-dom";
 import logo from '../logo.png'
 
 

@@ -1,5 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { User } from "./commons/User";
+import { CardAttributes } from "./components/Card";
+import { Deck, NewDeck } from "./components/Deck";
 import config from "./config.json"
 
 
@@ -9,7 +11,7 @@ class BackendConnector {
 
   static connector: AxiosInstance = axios.create({
     baseURL: BackendConnector.baseURL,
-    timeout: 5000,
+    timeout: 60000,
     headers: {
       'Content-Type': 'application/json'
     }
@@ -24,11 +26,9 @@ class BackendConnector {
         password: user.password
       })
       .then(function (response) {
-        console.log(response.data)
         onSuccess(response.data)
       })
       .catch(function (error) {
-        console.log(error)
         onFailure(error)
       })
   }
@@ -41,11 +41,9 @@ class BackendConnector {
         password: user.password
       })
       .then(function (response) {
-        console.log(response.data)
         onSuccess(response.data)
       })
       .catch(function (error) {
-        console.log(error)
         onFailure(error)
       })
   }
@@ -55,11 +53,53 @@ class BackendConnector {
     BackendConnector.connector
       .post('/logOut', { token: token })
       .then(function (response) {
-        console.log(response.data)
         onSuccess(response.data)
       })
       .catch(function (error) {
-        console.log(error)
+        onFailure(error)
+      })
+  }
+
+  getCards(onSuccess: (data: CardAttributes[]) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .get('/cards')
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
+  getCardById(id: string, onSuccess: (data: CardAttributes) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .get(`/cards/${id}`)
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
+  getCardByName(name: string, onSuccess: (data: CardAttributes[]) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .get(`/cards/search/${name}`)
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
+  createDeck(deck: NewDeck, onSuccess: (data: Deck) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .post('/admin/decks', deck)
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
         onFailure(error)
       })
   }

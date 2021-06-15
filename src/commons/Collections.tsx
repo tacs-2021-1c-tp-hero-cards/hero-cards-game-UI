@@ -1,14 +1,4 @@
 
-export const Collect = {
-    from<T>(...values: T[]): Collection<T> {
-        return new Collection(values)
-    },
-
-    all<T>(collection: T[]): Collection<T> {
-        return new Collection(collection)
-    }
-}
-
 export class Collection<T> {
     collection: T[]
     length: number
@@ -16,6 +6,18 @@ export class Collection<T> {
     constructor(collection: T[]) {
         this.collection = collection.slice()
         this.length = collection.length
+    }
+
+    static from<T>(...values: T[]): Collection<T | any> {
+        return new Collection(values)
+    }
+
+    static wrap<T>(collection: T[]): Collection<T | any> {
+        return new Collection(collection)
+    }
+
+    static empty<T>(): Collection<T | any> {
+        return new Collection<T>([])
     }
 
     isEmpty(): boolean {

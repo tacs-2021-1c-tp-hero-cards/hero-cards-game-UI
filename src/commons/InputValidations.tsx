@@ -19,11 +19,15 @@ export function validateUsername(value: any) {
 export function nonEmpty(value: any) {
     let error
 
-    if (!value || value === '' || value === []) {
+    if (!isNonEmpty) {
         error = 'Cannot be empty'
     } 
 
     return error
+}
+
+export function isNonEmpty(value: any) {
+    return value && value != '' && value != []
 }
 
 export function validateFullName(value: any) {

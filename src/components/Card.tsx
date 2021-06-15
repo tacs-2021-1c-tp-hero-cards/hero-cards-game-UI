@@ -33,7 +33,7 @@ export function Card( { attributes, onClick, addOn }: Props) {
                 borderRadius='5px' 
                 border='2px' 
                 borderColor='gray.600'
-                width='200px'
+                width='210px'
                 spacing='3px'
                 onClick={onClick}
                 divider={<StackDivider />} >
@@ -42,12 +42,14 @@ export function Card( { attributes, onClick, addOn }: Props) {
                 <Box border='1px' borderColor='gray.500' borderRadius='full' bg='beige' width='2.2rem' >
                     <Center>{attributes.id}</Center>
                 </Box>
-                <Center boxSize='full' fontWeight='bold' >{attributes.name}</Center>
+                <Center boxSize='full' fontWeight='bold' fontSize='sm' isTruncated >{attributes.name}</Center>
                 {addOn}
             </Stack>
 
-            <Box padding='10px'>
-                <Image src={attributes.imageUrl} border='2px' borderColor='gray.400' />
+            <Box padding='5px'>
+                <Center>
+                    <Image src={attributes.imageUrl} border='2px' borderColor='gray.400' objectFit='cover' height='250px' />
+                </Center>
             </Box>
 
             <Stack bg='orange.100' borderRadius='2px' spacing='3px' border='2px' borderColor='orange.300'>

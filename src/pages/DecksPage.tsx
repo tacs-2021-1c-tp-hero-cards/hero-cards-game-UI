@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
-import { CreateDeckDrawer } from "../components/CreateDeckDrawer";
+import { CreateDeck } from "../components/CreateDeck";
 import { Button, Center, StackDivider } from "@chakra-ui/react";
-import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns";
+import { ToastProps, TokenProps, withToast, withTokenValidation } from "../commons/BehaviorAddOns";
 
 
-export function DecksPage() { return( withToast({}) (withTokenValidation) (withRedirect) (DecksContent) )}
+export function DecksPage() { return( withToast({}) (withTokenValidation) (DecksContent) )}
 
 type DecksProps = ToastProps & TokenProps
 
@@ -45,7 +45,7 @@ export function DecksContent({ toast, renderWithTokenValidation }: DecksProps) {
                                     then click the button below
                                 </Center>
                                 
-                                <CreateDeckDrawer  alignSelf='center' />
+                                <CreateDeck  alignSelf='center' />
                             </Stack>
 
                             <Stack>

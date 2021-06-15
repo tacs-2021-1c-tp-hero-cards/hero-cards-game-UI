@@ -12,7 +12,7 @@ export function UnexpectedErrorPage() {
 
             <Box bg='red.600' borderRadius='7px'>
                 <Center padding='4' fontSize='xl' fontWeight='bold'>
-                    We're sorry! It seems we had a problem loading your page. Please, try again later.
+                    We're sorry! It seems we had a problem with your request. Please, try again later.
                 </Center>
             </Box>
 
