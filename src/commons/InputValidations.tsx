@@ -19,7 +19,7 @@ export function validateUsername(value: any) {
 export function nonEmpty(value: any) {
     let error
 
-    if (!isNonEmpty) {
+    if (!isNonEmpty(value)) {
         error = 'Cannot be empty'
     } 
 

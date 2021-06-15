@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { AddIcon, CloseIcon } from "@chakra-ui/icons"
 import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, 
         DrawerHeader, DrawerBody, Stack, Box, FormLabel, Input, InputGroup, DrawerFooter, 
-        StackDivider, InputRightElement, Checkbox, SimpleGrid, IconButton, Text, CircularProgress } from "@chakra-ui/react"
+        StackDivider, InputRightElement, Checkbox, SimpleGrid, IconButton, Text, CircularProgress, Center } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { FormField, UnrequiredGenericForm } from "./Form"
 import { isNonEmpty, nonEmpty } from "../commons/InputValidations"
@@ -11,16 +11,17 @@ import { NewDeck } from "./Deck"
 import { Collection } from "../commons/Collections"
 import { ServerConnector } from "../BackendConnector"
 import { SubmitableInput } from "./SubmitableInput"
-import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from "../commons/BehaviorAddOns"
+import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns"
+import { SubmitDataErrorToast } from "../commons/SubmitDataErrorToast"
 
 type InnerProps = { alignSelf: string }
-type DrawerProps = RedirectProps & TokenProps & InnerProps
+type DrawerProps = RedirectProps & TokenProps & ToastProps & InnerProps
 
 type CheckedCardAttributes = CardAttributes & { checked: boolean }
 
-export function CreateDeck(props: InnerProps) { return( withRedirect(props) (withTokenValidation) (CreateDeckContent) )}
+export function CreateDeck(props: InnerProps) { return( withRedirect(props) (withTokenValidation) (withToast) (CreateDeckContent) )}
 
-function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect }: DrawerProps) {
+function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toast }: DrawerProps) {
     const initialRef = React.useRef(null)
     
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -81,11 +82,16 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect }: D
         
         ServerConnector.createDeck(
             deck,
-            (data) => { console.log(data) /* TODO: mostrar el nuevo mazo */},
-            (error) => { console.log(error) }
+            (data) => { 
+                /* TODO: mostrar el nuevo mazo */
+                console.log(data)
+                closeDrawer()
+            },
+            (error) => { 
+                console.log(error) 
+                toast(SubmitDataErrorToast)
+            }
         )
-
-        onClose()
     }
 
     function searchCardsByName(name: string) {
@@ -222,7 +228,9 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect }: D
                                                 { 
                                                     isLoading ? 
                                                     
-                                                    <CircularProgress isIndeterminate color="green.300" /> : 
+                                                    <Center>
+                                                        <CircularProgress isIndeterminate color="green.300" />  
+                                                    </Center> :
                                                     
                                                     availableCards.isEmpty() ? 
     
