@@ -1,5 +1,4 @@
-import { FormControl, FormLabel, Input, FormErrorMessage, Button, InputGroup, InputRightElement, Stack, Tooltip } from "@chakra-ui/react"
-import { Field, Form, Formik } from "formik"
+import { FormControl, FormLabel, Input, FormErrorMessage, Button, InputGroup, InputRightElement, Stack, Tooltip, Text } from "@chakra-ui/react"
 import React from "react"
 import { useState } from "react"
 
@@ -9,9 +8,11 @@ type InputProps = {
     buttonLabel: string,
     label?: string,
     isValid: (value: string) => boolean, 
-    onClick: (value: string) => void
+    onClick: (value: string) => void,
+    isLoading?: boolean
 }
-export function SubmitableInput({ id, placeHolder, buttonLabel, label, isValid, onClick }: InputProps) {
+
+export function SubmitableInput({ id, placeHolder, buttonLabel, label, isValid, onClick, isLoading }: InputProps) {
   const [input, setInput] = useState('')
   const [isInvalid, setIsInvalid] = useState(false)
 
@@ -30,12 +31,13 @@ export function SubmitableInput({ id, placeHolder, buttonLabel, label, isValid, 
 
   return (
     <Stack>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel><Text>{label}</Text></FormLabel>
 
       <InputGroup>
         <Tooltip bg='crimson' arrow='crimson' hasArrow label='Cannot be empty!' placement='bottom' isOpen={isInvalid}>
           <Input
               type="text"
+              backgroundColor='gray.200'
               id={id}
               fontStyle='italic'
               placeholder={placeHolder}
@@ -44,7 +46,13 @@ export function SubmitableInput({ id, placeHolder, buttonLabel, label, isValid, 
         </Tooltip>
 
         <InputRightElement width='5rem'>
-            <Button size='md' height='2.35rem' onClick={handleClick}>
+            <Button size='md'
+                    width='15rem'
+                    height='2.35rem' 
+                    onClick={handleClick} 
+                    colorScheme='linkedin' 
+                    isLoading={isLoading}>
+                      
                 {buttonLabel}
             </Button>
         </InputRightElement>
@@ -52,37 +60,3 @@ export function SubmitableInput({ id, placeHolder, buttonLabel, label, isValid, 
     </Stack>
   )
 }
-
-
-  /*
-  <Formik
-        initialValues={{ value: "" }}
-        onSubmit={(value: any, actions) => {
-            console.log('about to submit')
-            console.log(value)
-            //onClick(value)
-
-            actions.setSubmitting(false)
-        }}
-      >
-        {(props) => (
-          <Form>
-                <Field name={id} validate={inputValidation}>
-                    {({ field, form }: any) => (
-                        <FormControl isInvalid={form.errors.name && form.touched.name}>
-                        {label? <FormLabel htmlFor={id}>{label}</FormLabel> : <></>}
-                            <Input {...field} id={id} placeholder={placeHolder} />
-                                <Button size='md' 
-                                        height='2.35rem'
-                                        colorScheme="teal"
-                                        type="submit" >
-                                    {buttonLabel}
-                                </Button>
-                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-                        </FormControl>
-                    )}
-                </Field>
-          </Form>
-        )}
-      </Formik>
-  */

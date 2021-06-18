@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { User } from "./commons/User";
 import { CardAttributes } from "./components/Card";
-import { Deck, NewDeck } from "./components/Deck";
+import { DeckData, NewDeck } from "./components/Deck";
 import config from "./config.json"
 
 
@@ -93,9 +93,28 @@ class BackendConnector {
       })
   }
 
-  createDeck(deck: NewDeck, onSuccess: (data: Deck) => void, onFailure: (error: any) => void) {
+  createDeck(deck: NewDeck, onSuccess: (data: DeckData) => void, onFailure: (error: any) => void) {
     BackendConnector.connector
       .post('/admin/decks', deck)
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
+  getDeckById(id: string, onSuccess: (data: DeckData[]) => void, onFailure: (error: any) => void) {
+    this.getDeck(`deck-id=${id}`, onSuccess, onFailure)
+  }
+
+  getDeckByName(name: string, onSuccess: (data: DeckData[]) => void, onFailure: (error: any) => void) {
+    this.getDeck(`deck-name=${name}`, onSuccess, onFailure)
+  }
+
+  private getDeck(deckParam: string, onSuccess: (data: DeckData[]) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .get(`/decks/search?${deckParam}`)
       .then(function (response) {
         onSuccess(response.data)
       })

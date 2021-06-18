@@ -21,7 +21,7 @@ export type PowerStats = {
 
 type Props = {
     attributes: CardAttributes,
-    onClick?: any,
+    onClick?: () => void,
     addOn?: any
 }
 

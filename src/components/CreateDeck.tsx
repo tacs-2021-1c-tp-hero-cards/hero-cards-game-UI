@@ -12,7 +12,7 @@ import { Collection } from "../commons/Collections"
 import { ServerConnector } from "../BackendConnector"
 import { SubmitableInput } from "./SubmitableInput"
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns"
-import { SubmitDataErrorToast } from "../commons/SubmitDataErrorToast"
+import { customToast, SubmitDataErrorToast } from "../commons/Toast"
 
 type InnerProps = { alignSelf: string }
 type DrawerProps = RedirectProps & TokenProps & ToastProps & InnerProps
@@ -27,10 +27,13 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     const [ isLoading, setIsLoading ] = useState(true)
+    const [ createLoading, setCreateLoading ] = useState(false)
+    const [ searchByNameLoading, setSearchByNameLoading ] = useState(false)
+    const [ searchByIdLoading, setSearchByIdLoading ] = useState(false)
     
     const [ selectedCards, setSelectedCards ] = useState(Collection.empty<CardAttributes>())
     const [ availableCards, setAvailableCards ] = useState(Collection.empty<CheckedCardAttributes>())
-    
+
     let allChecked = availableCards.all(card => card.checked)
     let isIndeterminate = availableCards.any(card => card.checked) && !allChecked
 
@@ -75,36 +78,43 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
     }
 
     function onSubmit({ deckName }: any) {
-        const deck: NewDeck = {
-            deckName: deckName,
-            cardIds: selectedCards.map(c => c.id).collection
-        }
-        
-        ServerConnector.createDeck(
-            deck,
-            (data) => { 
-                /* TODO: mostrar el nuevo mazo */
-                console.log(data)
-                closeDrawer()
-            },
-            (error) => { 
-                console.log(error) 
-                toast(SubmitDataErrorToast)
+        if (selectedCards.isEmpty()) {
+            toast(customToast('Empty deck', 'warning', 'Deck cannot be empty, you must select some cards'))
+        } else {
+            const deck: NewDeck = {
+                deckName: deckName,
+                cardIds: selectedCards.map(c => c.id).collection
             }
-        )
+            setCreateLoading(true)
+            
+            ServerConnector.createDeck(
+                deck,
+                (data) => { 
+                    setCreateLoading(false)
+                    closeDrawer()
+                    redirect(`/decks/${data.id}`)
+                },
+                (error) => { 
+                    setCreateLoading(false)
+                    toast(SubmitDataErrorToast)
+                }
+            )
+        }
     }
 
     function searchCardsByName(name: string) {
+        setSearchByNameLoading(true)
         setIsLoading(true)
 
         ServerConnector.getCardByName(
             name,
             (cards) => {
+                setSearchByNameLoading(false)
                 setIsLoading(false)
                 setAvailable(checkCards(Collection.wrap(cards)))
             },
             (error) => {
-                console.log(error)
+                setSearchByNameLoading(false)
                 setIsLoading(false)
                 setAvailable(Collection.empty())
             }
@@ -112,16 +122,18 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
     }
 
     function searchCardById(id: string) {
+        setSearchByIdLoading(true)
         setIsLoading(true)
 
         ServerConnector.getCardById(
             id,
             (card) => {
+                setSearchByIdLoading(false)
                 setIsLoading(false)
                 setAvailable(checkCards(Collection.from(card)))
             },
             (error) => {
-                console.log(error)
+                setSearchByIdLoading(false)
                 setIsLoading(false)
                 setAvailable(Collection.empty())
             }
@@ -208,7 +220,8 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
                                                                     buttonLabel='Search'
                                                                     label='Search cards by name' 
                                                                     isValid={isNonEmpty}
-                                                                    onClick={searchCardsByName} />
+                                                                    onClick={searchCardsByName}
+                                                                    isLoading={searchByNameLoading} />
     
     
                                                 <SubmitableInput    id='searchCardsById' 
@@ -216,7 +229,8 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
                                                                     buttonLabel='Search'
                                                                     label='Search card by id' 
                                                                     isValid={isNonEmpty}
-                                                                    onClick={searchCardById} />
+                                                                    onClick={searchCardById}
+                                                                    isLoading={searchByIdLoading} />
                                                 
                                             </Stack>
     
@@ -296,7 +310,7 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
                             <Button ref={initialRef} variant="outline" mr={3} onClick={onClose}>
                                 Cancel
                             </Button>
-                            <Button colorScheme="blue" type='submit' form='createDeck'>Create</Button>
+                            <Button colorScheme="blue" type='submit' form='createDeck'  isLoading={createLoading} loadingText="Creating">Create</Button>
                         </DrawerFooter>
                     </DrawerContent>
                 </Drawer>
