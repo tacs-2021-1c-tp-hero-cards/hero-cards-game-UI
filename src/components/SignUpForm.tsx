@@ -7,6 +7,7 @@ import { signUp } from '../commons/SignUp';
 import { SubmitDataErrorToast } from '../commons/Toast';
 import { User } from '../commons/User';
 import { RedirectProps, ToastProps, withRedirect, withToast } from '../commons/BehaviorAddOns';
+import { NewUserIcon } from './icons';
  
 export function SignUpForm() { return( withRedirect({}) (withToast) (SignUpFormContent) )}
 
@@ -86,6 +87,7 @@ function SignUpFormContent({ redirect, toast }: SignUpFormProps) {
 
             <Box paddingTop='7px'>
               <Button colorScheme='teal'
+                      leftIcon={<NewUserIcon />}
                       type='submit'
                       isLoading={props.isSubmitting}>
                 Sing Up

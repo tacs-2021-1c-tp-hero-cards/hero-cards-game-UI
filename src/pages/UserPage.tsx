@@ -1,10 +1,10 @@
 import React from 'react'
-import { Box, Button, Center, Stack, StackDivider } from "@chakra-ui/react"
+import { Box, Button, Center, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { logOut } from '../commons/LogOut'
-import { PageInProgress } from '../components/PageInProgress'
 import { MainHeader } from '../components/MainHeader'
 import { getCookie } from '../commons/Cookies'
 import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
+import { LogOutIcon, ManageIcon, PlayIcon, SearchIcon } from '../components/icons'
 
 export function UserPage() { return( withRedirect({}) (withTokenValidation) (UserContent) )}
 
@@ -34,6 +34,7 @@ function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
                         divider={<StackDivider borderColor='gray.500' />}>
 
                         <Button colorScheme="orange"
+                                leftIcon={<LogOutIcon />}
                                 variant="solid"
                                 textColor='gray.700'
                                 onClick={() => logOut(() => redirect('/'), () => redirect('/error'))}>
@@ -41,14 +42,61 @@ function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
                         </Button>
 
                         <Button colorScheme="orange"
+                                leftIcon={<ManageIcon />}
                                 variant="solid"
                                 textColor='gray.700'
                                 onClick={() => redirect('/decks')}>
                             Manage decks
                         </Button>
+
+                        <Button colorScheme="cyan"
+                                leftIcon={<SearchIcon />}
+                                variant="solid"
+                                textColor='gray.700'
+                                onClick={() => redirect('/decks')}>
+                            Search cards
+                        </Button>
+
+                        <Button colorScheme="green"
+                                leftIcon={<PlayIcon />}
+                                variant="solid"
+                                textColor='gray.700'
+                                onClick={() => {}}>
+                            Start a match
+                        </Button>
                     </Stack>
 
-                    <PageInProgress page='User' />
+                    <Stack  bg='gray.300'
+                            borderRadius='7px'
+                            padding='4'
+                            boxSize='full'
+                            spacing='4'
+                            divider={<StackDivider borderColor='gray.500' />}>
+
+                            <Center fontSize='4xl'>Game rules</Center>
+                            
+                            <Stack>
+                                <Text>
+                                    The rules are pretty basic. You can play a match against another player or against an AI.
+                                </Text>
+                                <Text>
+                                    Before starting the match, a deck must be chosen, which will determine the cards that you and your 
+                                    oponent will be using to play the match. After selecting a deck, a coin will tossed to select a
+                                    random player that will have the first turn.
+                                </Text>
+                                <Text>
+                                    The deck's cards will be splitted, giving half of the cards to every player. On each turn, you will 
+                                    be given the first card of your available cards (and so will happen to your oponent) and the player 
+                                    that holds the turn will select an attribute to fight with. The player holding the card with the winning 
+                                    attribute is declared winner of that turn and keeps both cards on a deck of prizes.
+                                </Text>
+                                <Text>
+                                    At the end of the match, the player that has more cards at the prizes' deck is declared winner of the 
+                                    hole match. If both players hold the same amount of cards, then a tie is declared.
+                                </Text>
+                            </Stack>
+                        
+                    </Stack>
 
                 </Stack>
             </Stack>

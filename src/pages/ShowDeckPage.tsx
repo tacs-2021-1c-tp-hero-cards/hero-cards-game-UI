@@ -1,5 +1,6 @@
 import React from 'react'
-import { Alert, AlertIcon, Box, Button, Center, CircularProgress, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, StackDivider, Text, toast, useDisclosure } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Center, CircularProgress, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, 
+    ModalHeader, ModalOverlay, Stack, StackDivider, Text, useDisclosure } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from '../commons/BehaviorAddOns'
 import { MainHeader } from '../components/MainHeader'
@@ -7,8 +8,9 @@ import { ServerConnector } from '../BackendConnector'
 import { DeckData, DeckInsights } from '../components/Deck'
 import { useState } from 'react'
 import { ModifyDeck } from '../components/ModifyDeck'
-import { CloseIcon, WarningIcon } from '@chakra-ui/icons'
+import { WarningIcon } from '@chakra-ui/icons'
 import { SubmitDataErrorToast } from '../commons/Toast'
+import { DeleteIcon, ManageIcon, UserIcon } from '../components/icons'
 
 export function ShowDeckPage() { return( withRedirect({}) (withTokenValidation) (withToast) (ShowDeckContent) )}
 
@@ -64,13 +66,16 @@ export function ShowDeckContent({ renderWithTokenValidation, redirect, toast }: 
                                 divider={<StackDivider borderColor='gray.500' />}>
 
                             <Button colorScheme="orange"
+                                    leftIcon={<UserIcon />}
                                     variant="solid"
                                     textColor='gray.700'
                                     onClick={() => redirect('/user')}>
                                 User page
                             </Button>
 
+
                             <Button colorScheme="orange"
+                                    leftIcon={<ManageIcon />}
                                     variant="solid"
                                     textColor='gray.700'
                                     onClick={() => redirect('/decks')}>
@@ -85,11 +90,12 @@ export function ShowDeckContent({ renderWithTokenValidation, redirect, toast }: 
 
                                     <Stack>
                                         <Button colorScheme="red"
+                                                leftIcon={<DeleteIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
                                                 width='10.5rem'
                                                 onClick={onOpen}>
-                                            <CloseIcon marginRight='9px'/>Delete 
+                                            Delete 
                                         </Button>
 
                                         <Modal isOpen={isOpen} onClose={onClose} >
@@ -99,7 +105,7 @@ export function ShowDeckContent({ renderWithTokenValidation, redirect, toast }: 
                                                 <ModalCloseButton size='lg'/>
                                                 <ModalBody>
                                                     <Stack>
-                                                    <Text fontSize='xl'><WarningIcon color='crimson'/> ¡Warning!</Text>
+                                                        <Text fontSize='xl'><WarningIcon color='crimson'/> ¡Warning!</Text>
 
                                                         <Text>¿Are you sure you wan't to delete this deck?</Text>
                                                         <Text>This action can't be undone...</Text>

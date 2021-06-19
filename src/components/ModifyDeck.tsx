@@ -1,8 +1,8 @@
 import React, { useState } from "react"
-import { CloseIcon, EditIcon } from "@chakra-ui/icons"
+import { CloseIcon } from "@chakra-ui/icons"
 import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, 
         DrawerHeader, DrawerBody, Stack, Box, FormLabel, DrawerFooter, 
-        StackDivider, Checkbox, SimpleGrid, IconButton, Text, CircularProgress, Center } from "@chakra-ui/react"
+        StackDivider, Checkbox, SimpleGrid, IconButton, Text, CircularProgress, Center, Icon } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { FormField, UnrequiredGenericForm } from "./Form"
 import { isNonEmpty, nonEmpty } from "../commons/InputValidations"
@@ -13,6 +13,7 @@ import { ServerConnector } from "../BackendConnector"
 import { SubmitableInput } from "./SubmitableInput"
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation, withReload, ReloadProps } from "../commons/BehaviorAddOns"
 import { customToast, SubmitDataErrorToast } from "../commons/Toast"
+import { EditIcon } from "./icons"
 
 type InnerProps = { alignSelf?: string, deck: DeckData, buttonWidth?: string }
 type DrawerProps = RedirectProps & TokenProps & ToastProps & ReloadProps & InnerProps

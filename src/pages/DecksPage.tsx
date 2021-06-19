@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
 import { CreateDeck } from "../components/CreateDeck";
-import { Alert, AlertIcon, Button, Center, CircularProgress, SimpleGrid, StackDivider, Table, Tbody, Td, Tr } from "@chakra-ui/react";
+import { Alert, AlertIcon, Button, Center, CircularProgress, StackDivider, Table, Tbody, Td, Tr } from "@chakra-ui/react";
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns";
 import { DeckData, DeckPreview } from "../components/Deck";
 import { ServerConnector } from "../BackendConnector";
@@ -10,6 +10,7 @@ import { Collection } from "../commons/Collections";
 import { useState } from "react";
 import { SubmitableInput } from "../components/SubmitableInput";
 import { isNonEmpty } from "../commons/InputValidations";
+import { UserIcon } from "../components/icons";
 
 
 export function DecksPage() { return( withToast({}) (withTokenValidation) (withRedirect) (DecksContent) )}
@@ -43,6 +44,7 @@ export function DecksContent({ toast, renderWithTokenValidation, redirect }: Dec
                                 divider={<StackDivider borderColor='gray.500' />}>
 
                             <Button colorScheme="orange"
+                                    leftIcon={<UserIcon />}
                                     variant="solid"
                                     textColor='gray.700'
                                     onClick={() => redirect('/user')}>

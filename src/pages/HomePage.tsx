@@ -2,6 +2,7 @@ import React from 'react'
 import { Stack, Image, Button, StackDivider } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
+import { NewUserIcon, UserIcon } from '../components/icons'
 
 
 export function HomePage() { return( withRedirect({}) (HomeContent) )}
@@ -24,6 +25,7 @@ function HomeContent({ redirect }: HomeProps) {
                divider={<StackDivider borderColor='gray.500' />}>
 
           <Button colorScheme="orange"
+                  leftIcon={<UserIcon />}
                   variant="solid"
                   textColor='gray.700'
                   onClick={() => redirect('/logIn')}>
@@ -31,6 +33,7 @@ function HomeContent({ redirect }: HomeProps) {
           </Button>
           
           <Button colorScheme="orange"
+                  leftIcon={<NewUserIcon />}
                   variant="solid"
                   textColor='gray.700'
                   onClick={() => redirect('/signUp')}>
