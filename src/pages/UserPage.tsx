@@ -53,11 +53,12 @@ function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
                                 leftIcon={<SearchIcon />}
                                 variant="solid"
                                 textColor='gray.700'
-                                onClick={() => redirect('/decks')}>
+                                onClick={() => redirect('/cards')}>
                             Search cards
                         </Button>
 
                         <Button colorScheme="green"
+                                disabled
                                 leftIcon={<PlayIcon />}
                                 variant="solid"
                                 textColor='gray.700'

@@ -9,8 +9,10 @@ import { SignUpPage } from "./pages/SignUpPage";
 import { UserPage } from "./pages/UserPage";
 import { NotLoggedInPage } from "./pages/NotLoggedInPage";
 import { DecksPage } from "./pages/DecksPage";
+import { CardsPage } from "./pages/CardsPage";
 import { UnexpectedErrorPage } from "./pages/UnexpectedErrorPage";
 import { ShowDeckPage } from "./pages/ShowDeckPage"
+import { ShowCardPage } from "./pages/ShowCardPage"
 import { updateTokenExpiry } from "./commons/Token";
 import { useIdleTimer } from "react-idle-timer";
 
@@ -42,7 +44,9 @@ function App() {
           <Route path="/logIn" component={LogInPage} />
           <Route path="/user" component={UserPage} />
           <Route exact path='/decks' component={DecksPage} />
+          <Route exact path='/cards' component={CardsPage} />
           <Route path='/decks/:deckId' component={ShowDeckPage} />
+          <Route path='/cards/:cardId' component={ShowCardPage} />
           <Route path='/logInError' component={NotLoggedInPage} />
           <Route path='/error' component={UnexpectedErrorPage} />
           <Route component={NotFoundPage} />

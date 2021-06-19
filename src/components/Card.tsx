@@ -96,11 +96,21 @@ export function Card( { attributes, onClick, addOn }: Props) {
 
 type CardPreviewProps = {
     card: CardAttributes,
-    height?: string
+    height?: string,
+    width?: string,
+    onClick?: () => void
 }
 
-export function CardPreview({ card, height }: CardPreviewProps) {
+export function CardPreview({ card, height, width, onClick }: CardPreviewProps) {
     return (
-        <Image src={card.imageUrl} border='2px' borderColor='gray.500' objectFit='cover' height={height ?? '150px'} borderRadius='0.5rem'/>
+        <Box onClick={onClick} cursor={onClick ? 'pointer' : ''} width={width}>
+            <Image  src={card.imageUrl} 
+                    border='2px' 
+                    borderColor='gray.500' 
+                    objectFit='cover' 
+                    height={height ?? '150px'} 
+                    width={width}
+                    borderRadius='0.5rem'/>
+        </Box>
     )
 }
