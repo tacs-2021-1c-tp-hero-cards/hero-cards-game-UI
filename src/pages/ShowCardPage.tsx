@@ -1,17 +1,12 @@
 import React from 'react'
-import { Alert, AlertIcon, Box, Button, Center, CircularProgress, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, 
-    ModalHeader, ModalOverlay, Stack, StackDivider, Text, useDisclosure } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Center, CircularProgress, Stack, StackDivider, Text, useDisclosure } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from '../commons/BehaviorAddOns'
 import { MainHeader } from '../components/MainHeader'
 import { ServerConnector } from '../BackendConnector'
-import { DeckData, DeckInsights } from '../components/Deck'
 import { useState } from 'react'
-import { ModifyDeck } from '../components/ModifyDeck'
-import { WarningIcon } from '@chakra-ui/icons'
-import { SubmitDataErrorToast } from '../commons/Toast'
-import { DeleteIcon, ManageIcon, SearchIcon, UserIcon } from '../components/icons'
 import { Card, CardAttributes } from '../components/Card'
+import { SearchIcon, UserIcon } from '../components/icons'
 
 export function ShowCardPage() { return( withRedirect({}) (withTokenValidation) (withToast) (ShowCardContent) )}
 

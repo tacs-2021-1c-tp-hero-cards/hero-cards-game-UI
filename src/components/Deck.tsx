@@ -3,6 +3,7 @@ import { Box, Center, Stack, StackDivider, Text, Image, SimpleGrid } from "@chak
 import { CardAttributes, CardPreview } from "./Card"
 import { Collection } from "../commons/Collections"
 import { capitalizeEveryWord } from "../commons/StringUtils"
+import { RedirectProps, withRedirect } from "../commons/BehaviorAddOns"
 
 
 export type NewDeck = {
@@ -76,7 +77,11 @@ type InsightsProps = {
     deck: DeckData
 }
 
-export function DeckInsights( { deck }: InsightsProps ) {
+type InsightsFullProps = RedirectProps & InsightsProps
+
+export function DeckInsights(props: InsightsProps) { return withRedirect(props) (DeckInsightsContent)}
+
+function DeckInsightsContent( { deck, redirect }: InsightsFullProps ) {
     const cards = Collection.wrap(deck.cards)
 
     const paddingLeft = '0.5rem'
@@ -130,7 +135,7 @@ export function DeckInsights( { deck }: InsightsProps ) {
                 <SimpleGrid columns={[3, 6, 10]} gap='2'>
                     { 
                         cards.map( card => 
-                            <CardPreview card={card} />
+                            <CardPreview card={card} onClick={() => redirect(`/cards/${card.id}`)} />
                         ).collection
                     }
                 </SimpleGrid>
