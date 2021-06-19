@@ -30,7 +30,7 @@ export function Card( { attributes, onClick, addOn }: Props) {
     return(
         <Stack  bg='orange.200'
                 padding='4px'
-                borderRadius='5px' 
+                borderRadius='0.5rem' 
                 border='2px' 
                 borderColor='gray.600'
                 width='210px'
@@ -91,5 +91,16 @@ export function Card( { attributes, onClick, addOn }: Props) {
                 </Stack>
             </Stack>
         </Stack>
+    )
+}
+
+type CardPreviewProps = {
+    card: CardAttributes,
+    height?: string
+}
+
+export function CardPreview({ card, height }: CardPreviewProps) {
+    return (
+        <Image src={card.imageUrl} border='2px' borderColor='gray.500' objectFit='cover' height={height ?? '150px'} borderRadius='0.5rem'/>
     )
 }

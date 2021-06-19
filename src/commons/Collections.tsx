@@ -123,4 +123,12 @@ export class Collection<T> {
         const index = this.collection.findIndex(func)
         return index >= 0 ? index : undefined
     }
+
+    foldLeft<A>(func: (seed: A, elem: T) => A, seed: A): A {
+        if (this.isEmpty()) {
+            return seed
+        } else {
+            return this.tail().foldLeft(func, func(seed, this.head()!))
+        }
+    }
 }

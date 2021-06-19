@@ -2,9 +2,9 @@ import React from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
 import { CreateDeck } from "../components/CreateDeck";
-import { Alert, AlertIcon, Button, Center, CircularProgress, SimpleGrid, StackDivider } from "@chakra-ui/react";
+import { Alert, AlertIcon, Button, Center, CircularProgress, SimpleGrid, StackDivider, Table, Tbody, Td, Tr } from "@chakra-ui/react";
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns";
-import { DeckData, Deck } from "../components/Deck";
+import { DeckData, DeckPreview } from "../components/Deck";
 import { ServerConnector } from "../BackendConnector";
 import { Collection } from "../commons/Collections";
 import { useState } from "react";
@@ -184,7 +184,19 @@ export function DecksContent({ toast, renderWithTokenValidation, redirect }: Dec
                             
                                 <Text>No decks to show</Text> : 
                                 
-                                <SimpleGrid> { decks.map( deck => <Deck key={deck.id} data={deck} /> ).collection} </SimpleGrid>
+                                <Table variant='striped' colorScheme='blue'> 
+                                    <Tbody>
+                                        { 
+                                            decks.map( deck => 
+                                                <Tr>
+                                                    <Td borderRadius='1rem'>
+                                                        <DeckPreview key={deck.id} data={deck} onClick={() => redirect(`/decks/${deck.id}`)} />
+                                                    </Td>
+                                                </Tr>
+                                            ).collection
+                                        } 
+                                    </Tbody>
+                                </Table>
                 }
             </Stack>
         )
