@@ -10,6 +10,12 @@ export type NewDeck = {
     cardIds: number[]
 }
 
+export type UpdatedDeck = {
+    id: number,
+    deckName: string,
+    deckCards: number[]
+}
+
 export type DeckData = {
     id: number,
     name: string,
@@ -56,9 +62,8 @@ export function DeckPreview( { data, onClick }: Props ) {
             <Stack bg='orange.100' borderRadius='0.3rem' spacing='3px' border='2px' borderColor='orange.300'>
 
                 <Stack spacing='1px' paddingRight='5px' paddingLeft='5px' fontSize='xs' >
-                    <Stack direction='row-reverse' >
-                        <Text>{cards.length}</Text>
-                        <Center >Cards</Center>
+                    <Stack direction='row'>
+                        <Center boxSize='full' >Cards {cards.length}</Center>
                     </Stack>
                 </Stack>
             </Stack>

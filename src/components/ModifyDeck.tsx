@@ -1,37 +1,37 @@
 import React, { useState } from "react"
-import { AddIcon, CloseIcon } from "@chakra-ui/icons"
+import { CloseIcon, EditIcon } from "@chakra-ui/icons"
 import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, 
-        DrawerHeader, DrawerBody, Stack, Box, FormLabel, Input, InputGroup, DrawerFooter, 
-        StackDivider, InputRightElement, Checkbox, SimpleGrid, IconButton, Text, CircularProgress, Center } from "@chakra-ui/react"
+        DrawerHeader, DrawerBody, Stack, Box, FormLabel, DrawerFooter, 
+        StackDivider, Checkbox, SimpleGrid, IconButton, Text, CircularProgress, Center } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { FormField, UnrequiredGenericForm } from "./Form"
 import { isNonEmpty, nonEmpty } from "../commons/InputValidations"
 import { Card, CardAttributes } from "./Card"
-import { NewDeck } from "./Deck"
+import { DeckData, NewDeck, UpdatedDeck } from "./Deck"
 import { Collection } from "../commons/Collections"
 import { ServerConnector } from "../BackendConnector"
 import { SubmitableInput } from "./SubmitableInput"
-import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns"
+import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation, withReload, ReloadProps } from "../commons/BehaviorAddOns"
 import { customToast, SubmitDataErrorToast } from "../commons/Toast"
 
-type InnerProps = { alignSelf: string }
-type DrawerProps = RedirectProps & TokenProps & ToastProps & InnerProps
+type InnerProps = { alignSelf?: string, deck: DeckData, buttonWidth?: string }
+type DrawerProps = RedirectProps & TokenProps & ToastProps & ReloadProps & InnerProps
 
 type CheckedCardAttributes = CardAttributes & { checked: boolean }
 
-export function CreateDeck(props: InnerProps) { return( withRedirect(props) (withTokenValidation) (withToast) (CreateDeckContent) )}
+export function ModifyDeck(props: InnerProps) { return( withRedirect(props) (withTokenValidation) (withToast) (withReload) (ModifyDeckContent) )}
 
-function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toast }: DrawerProps) {
+function ModifyDeckContent({ alignSelf, deck, buttonWidth, renderWithTokenValidation, redirect, toast, reload }: DrawerProps) {
     const initialRef = React.useRef(null)
     
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     const [ isLoading, setIsLoading ] = useState(true)
-    const [ createLoading, setCreateLoading ] = useState(false)
+    const [ modifyLoading, setModifyLoading ] = useState(false)
     const [ searchByNameLoading, setSearchByNameLoading ] = useState(false)
     const [ searchByIdLoading, setSearchByIdLoading ] = useState(false)
     
-    const [ selectedCards, setSelectedCards ] = useState(Collection.empty<CardAttributes>())
+    const [ selectedCards, setSelectedCards ] = useState(Collection.wrap(deck.cards))
     const [ availableCards, setAvailableCards ] = useState(Collection.empty<CheckedCardAttributes>())
 
     let allChecked = availableCards.all(card => card.checked)
@@ -81,21 +81,23 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
         if (selectedCards.isEmpty()) {
             toast(customToast('Empty deck', 'warning', 'Deck cannot be empty, you must select some cards'))
         } else {
-            const deck: NewDeck = {
+            const updatedDeck: UpdatedDeck = {
+                id: deck.id,
                 deckName: deckName,
-                cardIds: selectedCards.map(c => c.id).collection
+                deckCards: selectedCards.map(c => c.id).collection
             }
-            setCreateLoading(true)
+            setModifyLoading(true)
             
-            ServerConnector.createDeck(
-                deck,
+            ServerConnector.updateDeck(
+                updatedDeck,
                 (data) => { 
-                    setCreateLoading(false)
+                    setModifyLoading(false)
                     closeDrawer()
                     redirect(`/decks/${data.id}`)
+                    reload()
                 },
                 (error) => { 
-                    setCreateLoading(false)
+                    setModifyLoading(false)
                     toast(SubmitDataErrorToast)
                 }
             )
@@ -186,21 +188,21 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
     function content() {
         return (
             <Box alignSelf={alignSelf}>
-                <Button leftIcon={<AddIcon />} colorScheme='green' onClick={openDrawer} >
-                    Create
+                <Button leftIcon={<EditIcon />} colorScheme='teal' onClick={openDrawer} width={buttonWidth!}>
+                    Modify
                 </Button>
                 <Drawer isOpen={isOpen} size='xl' placement="right" onClose={closeDrawer} initialFocusRef={initialRef} >
                     <DrawerOverlay />
                     <DrawerContent>
                         <DrawerCloseButton />
                         <DrawerHeader borderBottomWidth="1px">
-                            Create a new deck
+                            Modify deck
                         </DrawerHeader>
     
                         <DrawerBody>
-                            <Formik initialValues={{ deckName: '' }} onSubmit={onSubmit}>
+                            <Formik initialValues={{ deckName: deck.name }} onSubmit={onSubmit} >
                                 {(props: any) => 
-                                    <Form id='createDeck'>
+                                    <Form id='modifyDeck'>
                                         <Stack spacing="24px" divider={<StackDivider />}>
                                             <FormField  id="deckName" 
                                                         validation={nonEmpty} 
@@ -234,6 +236,7 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
                                                 
                                             </Stack>
     
+                                            
                                             <Stack>
                                                 <FormLabel>Available cards</FormLabel>
     
@@ -308,7 +311,7 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
                             <Button ref={initialRef} variant="outline" mr={3} onClick={onClose}>
                                 Cancel
                             </Button>
-                            <Button colorScheme="blue" type='submit' form='createDeck'  isLoading={createLoading} loadingText="Creating">Create</Button>
+                            <Button colorScheme="blue" type='submit' form='modifyDeck'  isLoading={modifyLoading} loadingText="Modifying">Modify</Button>
                         </DrawerFooter>
                     </DrawerContent>
                 </Drawer>

@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { User } from "./commons/User";
 import { CardAttributes } from "./components/Card";
-import { DeckData, NewDeck } from "./components/Deck";
+import { DeckData, NewDeck, UpdatedDeck } from "./components/Deck";
 import config from "./config.json"
 
 
@@ -98,6 +98,28 @@ class BackendConnector {
       .post('/admin/decks', deck)
       .then(function (response) {
         onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+  
+  updateDeck(deck: UpdatedDeck, onSuccess: (data: DeckData) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .put(`/admin/decks/${deck.id}`, deck)
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
+  deleteDeck(deckId: number, onSuccess: () => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .delete(`/admin/decks/${deckId}`)
+      .then(function (_) {
+        onSuccess()
       })
       .catch(function (error) {
         onFailure(error)

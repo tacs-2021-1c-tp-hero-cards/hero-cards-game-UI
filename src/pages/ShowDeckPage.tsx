@@ -1,30 +1,50 @@
 import React from 'react'
-import { Alert, AlertIcon, Box, Button, Center, CircularProgress, Stack, StackDivider, Text } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Center, CircularProgress, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, StackDivider, Text, toast, useDisclosure } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
-import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
+import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from '../commons/BehaviorAddOns'
 import { MainHeader } from '../components/MainHeader'
 import { ServerConnector } from '../BackendConnector'
-import { DeckPreview, DeckData, DeckInsights } from '../components/Deck'
+import { DeckData, DeckInsights } from '../components/Deck'
 import { useState } from 'react'
+import { ModifyDeck } from '../components/ModifyDeck'
+import { CloseIcon, WarningIcon } from '@chakra-ui/icons'
+import { SubmitDataErrorToast } from '../commons/Toast'
 
-export function ShowDeckPage() { return( withRedirect({}) (withTokenValidation) (ShowDeckContent) )}
+export function ShowDeckPage() { return( withRedirect({}) (withTokenValidation) (withToast) (ShowDeckContent) )}
 
-type ShowDeckProps = TokenProps & RedirectProps
+type ShowDeckProps = TokenProps & RedirectProps & ToastProps
 
-export function ShowDeckContent({ renderWithTokenValidation, redirect }: ShowDeckProps) {
+export function ShowDeckContent({ renderWithTokenValidation, redirect, toast }: ShowDeckProps) {
     let { deckId }: any = useParams()
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     const [ deck, setDeck ] = useState<DeckData>()
     const [ isLoading, setIsLoading ] = useState(true)
+    let searchingDeck = false
 
-    if (!deck) {
-            ServerConnector.getDeckById(
+    if (!deck && !searchingDeck) {
+        searchingDeck = true
+
+        ServerConnector.getDeckById(
             deckId,
             (decks) => {
+                searchingDeck = false
                 setIsLoading(false)
                 setDeck(decks[0])
             },
-            (error) => setIsLoading(false)
+            (error) => {
+                searchingDeck = false
+                setIsLoading(false)
+            }
+        )
+    }
+
+    function deleteDeck() {
+        ServerConnector.deleteDeck(
+            deckId,
+            () => redirect('/decks'),
+            (_) => toast(SubmitDataErrorToast)
         )
     }
 
@@ -56,6 +76,52 @@ export function ShowDeckContent({ renderWithTokenValidation, redirect }: ShowDec
                                     onClick={() => redirect('/decks')}>
                                 Manage decks
                             </Button>
+
+                            <Box height='4rem'/>
+
+                            { deck ? 
+                                <Stack>
+                                    <ModifyDeck alignSelf='center' deck={deck} buttonWidth='10.5rem'/> 
+
+                                    <Stack>
+                                        <Button colorScheme="red"
+                                                variant="solid"
+                                                textColor='gray.700'
+                                                width='10.5rem'
+                                                onClick={onOpen}>
+                                            <CloseIcon marginRight='9px'/>Delete 
+                                        </Button>
+
+                                        <Modal isOpen={isOpen} onClose={onClose} >
+                                            <ModalOverlay />
+                                            <ModalContent borderRadius='0.5rem'>
+                                                <ModalHeader backgroundColor='red' borderTopRadius='0.5rem'>Delete deck</ModalHeader>
+                                                <ModalCloseButton size='lg'/>
+                                                <ModalBody>
+                                                    <Stack>
+                                                    <Text fontSize='xl'><WarningIcon color='crimson'/> ¡Warning!</Text>
+
+                                                        <Text>¿Are you sure you wan't to delete this deck?</Text>
+                                                        <Text>This action can't be undone...</Text>
+                                                    </Stack>
+                                                </ModalBody>
+
+                                                <ModalFooter>
+                                                    <Button mr={3} onClick={onClose}>
+                                                        Cancel
+                                                    </Button>
+                                                    <Button colorScheme="red" onClick={deleteDeck}>
+                                                        Delete deck
+                                                    </Button>
+                                                </ModalFooter>
+                                            </ModalContent>
+                                        </Modal>
+                                    </Stack>
+                                    
+                                </Stack> : 
+                                <></> 
+                            }
+
                         </Stack>
 
                         <Stack  bg='gray.300'

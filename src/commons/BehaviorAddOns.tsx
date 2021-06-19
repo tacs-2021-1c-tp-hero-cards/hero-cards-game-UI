@@ -6,6 +6,7 @@ import { getToken, tokenIsAlive } from "./Token"
 type RendereableComponent = (_: any) => any
 type ComponentContent = () => any
 
+
 export type RedirectProps = { 
   redirect: (_: string) => void,
   renderRedirect: (_: string) => any
@@ -31,9 +32,6 @@ export function withRedirect(props: any) {
   return (component: RendereableComponent) => component(newProps)
 }
 
-function redirects() {
-  
-}
 
 export type QueryParamsProps = { queryParams: URLSearchParams }
 
@@ -48,6 +46,7 @@ export function withQueryParams(props: any) {
     return (component: RendereableComponent) => component(newProps)
 }
 
+
 export type ToastProps = { toast: any }
 
 export function withToast(props: any) {
@@ -59,6 +58,7 @@ export function withToast(props: any) {
 
     return (component: RendereableComponent) => component(newProps)
 }
+
 
 export type TokenProps = { renderWithTokenValidation: (content: ComponentContent) => any }
 
@@ -72,6 +72,22 @@ export function withTokenValidation(props: any) {
   const newProps = {
     ...props,
     renderWithTokenValidation: renderValidation
+  }
+
+  return (component: RendereableComponent) => component(newProps)
+}
+
+
+export type ReloadProps = {
+  reload: () => void
+}
+
+export function withReload(props: any) {
+  function reload() { window.location.reload() }
+
+  const newProps = {
+    ...props,
+    reload: reload
   }
 
   return (component: RendereableComponent) => component(newProps)
