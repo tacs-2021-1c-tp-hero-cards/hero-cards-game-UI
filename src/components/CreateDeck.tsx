@@ -2,11 +2,11 @@ import React, { useState } from "react"
 import { AddIcon, CloseIcon } from "@chakra-ui/icons"
 import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, 
         DrawerHeader, DrawerBody, Stack, Box, FormLabel, Input, InputGroup, DrawerFooter, 
-        StackDivider, InputRightElement, Checkbox, SimpleGrid, IconButton, Text, CircularProgress, Center } from "@chakra-ui/react"
+        StackDivider, InputRightElement, Checkbox, SimpleGrid, IconButton, Text, CircularProgress, Center, Tooltip } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { FormField, UnrequiredGenericForm } from "./Form"
 import { isNonEmpty, nonEmpty } from "../commons/InputValidations"
-import { Card, CardAttributes } from "./Card"
+import { Card, CardAttributes, isInvalidCard } from "./Card"
 import { NewDeck } from "./Deck"
 import { Collection } from "../commons/Collections"
 import { ServerConnector } from "../BackendConnector"
@@ -59,7 +59,7 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
         ServerConnector.getCards(
             (cards) => {
                 setIsLoading(false)
-                setAvailable(checkCards(Collection.wrap(cards)))
+                setAvailable(checkCards(Collection.wrap(cards).filter(c => !isInvalidCard(c))))
             },
             (error) => {
                 console.log(error)
@@ -261,12 +261,17 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
                                                             <SimpleGrid minChildWidth="200px" spacing="10px">
                                                                 {availableCards.map(
                                                                     (card, index) => 
-                                                                        <Card   key={index}
-                                                                                attributes={card}
-                                                                                addOn={
-                                                                                    <Checkbox   isChecked={availableCards.get(index)!.checked}
-                                                                                                onChange={(e: any) => updateCheckedItems(index, e.target.checked)}/>
-                                                                                    } />
+                                                                        isInvalidCard(card) ?
+                                                                            <Tooltip hasArrow label='Invalid card' bgColor='red.500' placement='auto'>
+                                                                                <Box><Card key={index} attributes={card}/></Box>
+                                                                            </Tooltip> : 
+
+                                                                            <Card   key={index}
+                                                                                    attributes={card}
+                                                                                    addOn={
+                                                                                        <Checkbox   isChecked={availableCards.get(index)!.checked}
+                                                                                                    onChange={(e: any) => updateCheckedItems(index, e.target.checked)}/>
+                                                                                        } /> 
                                                                     ).collection}
                                                             </SimpleGrid>
                                                         </Stack>

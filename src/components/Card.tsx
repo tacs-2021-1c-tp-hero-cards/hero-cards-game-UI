@@ -48,7 +48,12 @@ export function Card( { attributes, onClick, addOn }: Props) {
 
             <Box padding='5px'>
                 <Center>
-                    <Image src={attributes.imageUrl} border='2px' borderColor='gray.400' objectFit='cover' height='250px' />
+                    <Image  src={attributes.imageUrl} 
+                            fallbackSrc='https://i0.wp.com/elfutbolito.mx/wp-content/uploads/2019/04/image-not-found.png?ssl=1' 
+                            border='2px' 
+                            borderColor='gray.400' 
+                            objectFit='cover' 
+                            height='250px' />
                 </Center>
             </Box>
 
@@ -57,34 +62,34 @@ export function Card( { attributes, onClick, addOn }: Props) {
                 <Stack direction='row' divider={<StackDivider borderColor='orange.200' height='70px' alignSelf='center'/>}>
                     <Stack spacing='1px' paddingRight='5px' paddingLeft='5px' fontSize='xs' >
                         <Stack direction='row-reverse' >
-                            <Text>{attributes.powerstats.height}</Text>
+                            <Text>{ isInvalidAttribute(attributes.powerstats.height) ? '???' : attributes.powerstats.height }</Text>
                             <Center boxSize='full' >Height</Center>
                         </Stack>
                         <Stack direction='row-reverse' >
-                            <Text>{attributes.powerstats.weight}</Text>
+                            <Text>{ isInvalidAttribute(attributes.powerstats.weight) ? '???' : attributes.powerstats.weight }</Text>
                             <Center boxSize='full' >Weight</Center>
                         </Stack>
                         <Stack direction='row-reverse' >
-                            <Text>{attributes.powerstats.intelligence}</Text>
+                            <Text>{ isInvalidAttribute(attributes.powerstats.intelligence) ? '???' : attributes.powerstats.intelligence }</Text>
                             <Center boxSize='full' >Intelligence</Center>
                         </Stack>
                         <Stack direction='row-reverse' >
-                            <Text>{attributes.powerstats.speed}</Text>
+                            <Text>{ isInvalidAttribute(attributes.powerstats.speed) ? '???' : attributes.powerstats.speed }</Text>
                             <Center boxSize='full' >Speed</Center>
                         </Stack>
                     </Stack>
                     
                     <Stack spacing='1px' fontSize='xs' paddingRight='5px' >
                         <Stack direction='row-reverse' paddingRight='10px' >
-                            <Text>{attributes.powerstats.power}</Text>
+                            <Text>{ isInvalidAttribute(attributes.powerstats.power) ? '???' : attributes.powerstats.power }</Text>
                             <Center boxSize='full' >Power</Center>
                         </Stack>
                         <Stack direction='row-reverse' paddingRight='10px' >
-                            <Text>{attributes.powerstats.combat}</Text>
+                            <Text>{ isInvalidAttribute(attributes.powerstats.combat) ? '???' : attributes.powerstats.combat }</Text>
                             <Center boxSize='full' >Combat</Center>
                         </Stack>
                         <Stack direction='row-reverse' paddingRight='10px' >
-                            <Text>{attributes.powerstats.strength}</Text>
+                            <Text>{ isInvalidAttribute(attributes.powerstats.strength) ? '???' : attributes.powerstats.strength }</Text>
                             <Center boxSize='full' >Strenght</Center>
                         </Stack>
                     </Stack>
@@ -92,6 +97,22 @@ export function Card( { attributes, onClick, addOn }: Props) {
             </Stack>
         </Stack>
     )
+}
+
+export function isInvalidCard(card: CardAttributes): boolean {
+    const attributes = card.powerstats
+
+    return  isInvalidAttribute(attributes.combat) ||        
+            isInvalidAttribute(attributes.height) ||        
+            isInvalidAttribute(attributes.intelligence) ||        
+            isInvalidAttribute(attributes.power) ||        
+            isInvalidAttribute(attributes.speed) ||        
+            isInvalidAttribute(attributes.strength) ||        
+            isInvalidAttribute(attributes.weight)         
+}
+
+function isInvalidAttribute(attribute: number) {
+    return attribute < 0
 }
 
 type CardPreviewProps = {
