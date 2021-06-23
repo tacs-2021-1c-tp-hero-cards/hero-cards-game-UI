@@ -1,4 +1,4 @@
-import { Box, Center, Stack, StackDivider, Text, Image, Checkbox } from "@chakra-ui/react"
+import { Box, Center, Stack, StackDivider, Text, Image, Checkbox, Tooltip } from "@chakra-ui/react"
 import React from "react"
 
 
@@ -125,13 +125,16 @@ type CardPreviewProps = {
 export function CardPreview({ card, height, width, onClick }: CardPreviewProps) {
     return (
         <Box onClick={onClick} cursor={onClick ? 'pointer' : ''} width={width}>
-            <Image  src={card.imageUrl} 
-                    border='2px' 
-                    borderColor='gray.500' 
-                    objectFit='cover' 
-                    height={height ?? '150px'} 
-                    width={width}
-                    borderRadius='0.5rem'/>
+            <Tooltip hasArrow label={card.name} placement='bottom' color='yellow'>
+                <Image  src={card.imageUrl} 
+                        fallbackSrc='https://i0.wp.com/elfutbolito.mx/wp-content/uploads/2019/04/image-not-found.png?ssl=1' 
+                        border='2px' 
+                        borderColor='gray.500' 
+                        objectFit='cover' 
+                        height={height ?? '150px'} 
+                        width={width}
+                        borderRadius='0.5rem'/>
+            </Tooltip>
         </Box>
     )
 }
