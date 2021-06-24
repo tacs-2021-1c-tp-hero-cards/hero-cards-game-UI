@@ -3,7 +3,7 @@ import { Button, Center, Stack, StackDivider } from "@chakra-ui/react"
 import { logOut } from '../commons/LogOut'
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
-import { AiIcon, LogOutIcon, ManageIcon, PlayIcon, SearchIcon, UserIcon, UsersIcon } from '../components/icons'
+import { AiIcon, LogOutIcon, SearchIcon, UserIcon, UsersIcon } from '../components/icons'
 
 export function StartMatchPage() { return( withRedirect({}) (withTokenValidation) (StartMatchContent) )}
 
@@ -69,11 +69,12 @@ function StartMatchContent({ redirect, renderWithTokenValidation }: UserProps) {
                                     </Center>
 
                                     <Button colorScheme="teal"
+                                            disabled
                                             leftIcon={<AiIcon />}
                                             variant="solid"
                                             width='8rem'
                                             alignSelf='center'
-                                            onClick={() => {}}>
+                                            onClick={() => {/* TODO: do something! */}}>
                                         Let's go!
                                     </Button>
                                 </Stack>
@@ -90,7 +91,7 @@ function StartMatchContent({ redirect, renderWithTokenValidation }: UserProps) {
                                             variant="solid"
                                             width='8rem'
                                             alignSelf='center'
-                                            onClick={() => {}}>
+                                            onClick={() => {/* TODO: do something! */}}>
                                         Let's go!
                                     </Button>
                                 </Stack>

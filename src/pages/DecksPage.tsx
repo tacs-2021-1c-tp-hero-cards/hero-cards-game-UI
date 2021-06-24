@@ -2,29 +2,18 @@ import React from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
 import { CreateDeck } from "../components/CreateDeck";
-import { Alert, AlertIcon, Button, Center, CircularProgress, StackDivider, Table, Tbody, Td, Tr } from "@chakra-ui/react";
-import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns";
-import { DeckData, DeckPreview } from "../components/Deck";
-import { ServerConnector } from "../BackendConnector";
-import { Collection } from "../commons/Collections";
-import { useState } from "react";
-import { SubmitableInput } from "../components/SubmitableInput";
-import { isNonEmpty } from "../commons/InputValidations";
+import { Button, StackDivider } from "@chakra-ui/react";
+import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from "../commons/BehaviorAddOns";
+import { DeckData } from "../components/Deck";
 import { UserIcon } from "../components/icons";
+import { DecksSearchBox } from "../components/DecksSearchBox"
 
 
-export function DecksPage() { return( withToast({}) (withTokenValidation) (withRedirect) (DecksContent) )}
+export function DecksPage() { return( withTokenValidation({}) (withRedirect) (DecksContent) )}
 
-type DecksProps = ToastProps & TokenProps & RedirectProps
+type DecksProps = TokenProps & RedirectProps
 
-export function DecksContent({ toast, renderWithTokenValidation, redirect }: DecksProps) {
-
-    const [ decks, setDecks ] = useState(Collection.empty<DeckData>())
-    const [ isLoading, setIsLoading ] = useState(false)
-    const [ searchByNameIsLoading, setSearchByNameIsLoading ] = useState(false)
-    const [ searchByIdIsLoading, setSearchByIdIsLoading ] = useState(false)
-    const [ searchInitiated, setSearchInitiated ] = useState(false)
-    const [ deckError, setDeckError ] = useState(false)
+export function DecksContent({ renderWithTokenValidation, redirect }: DecksProps) {
 
     // TODO: Agregar chequeo de autorización del usuario
 
@@ -82,125 +71,10 @@ export function DecksContent({ toast, renderWithTokenValidation, redirect }: Dec
                     </Box>
                 </Stack>
 
-                {searchDeckContent()}
+                <DecksSearchBox onDeckClick={ (deck: DeckData) => redirect(`/decks/${deck.id}`) }/>
             
             </Stack>
         )
     }
 
-    function searchDeckContent() {
-        return (
-            <Stack spacing='3.5'>
-                <Text fontWeight='bold' fontSize='xl'>Search existent decks</Text>
-                
-                <Box paddingLeft='3'>
-                    <SubmitableInput    id='searchDecksByName' 
-                                        placeHolder='Please enter deck name' 
-                                        buttonLabel='Search'
-                                        label='Search deck by name' 
-                                        isValid={isNonEmpty}
-                                        onClick={searchDecksByName}
-                                        isLoading={searchByNameIsLoading} />
-                </Box>
-
-                <Box paddingLeft='3'>
-                    <SubmitableInput    id='searchDeckById' 
-                                        placeHolder='Please enter deck id' 
-                                        buttonLabel='Search'
-                                        label='Search deck by id' 
-                                        isValid={isNonEmpty}
-                                        onClick={searchDeckById}
-                                        isLoading={searchByIdIsLoading} />
-                </Box>
-
-                {searchInitiated ?  renderDecks() : <></>}
-            </Stack>
-        )
-    }
-
-    function searchDecksByName(deckName: string) {
-        setSearchByNameIsLoading(true)
-        setIsLoading(true)
-        setSearchInitiated(true)
-
-        ServerConnector.getDeckByName(
-            deckName,
-            (decks) => {
-                setSearchByNameIsLoading(false)
-                setIsLoading(false)
-                setDeckError(false)
-                setDecks(Collection.wrap(decks))
-            },
-            (error) => {
-                setSearchByNameIsLoading(false)
-                setIsLoading(false)
-                setDeckError(true)
-                setDecks(Collection.empty())
-            }
-        )
-    }
-    
-    function searchDeckById(deckId: string) {
-        setSearchByIdIsLoading(true)
-        setIsLoading(true)
-        setSearchInitiated(true)
-
-        ServerConnector.getDeckById(
-            deckId,
-            (decks) => {
-                setSearchByIdIsLoading(false)
-                setIsLoading(false)
-                setDeckError(false)
-                setDecks(Collection.wrap(decks))
-            },
-            (error) => {
-                setSearchByIdIsLoading(false)
-                setIsLoading(false)
-                setDeckError(true)
-                setDecks(Collection.empty())
-            }
-        )
-    }
-
-    function renderDecks() {
-
-        return (
-                                                    
-            <Stack paddingLeft='3'>
-
-                {
-                    isLoading ? 
-                                                    
-                        <Center>
-                            <CircularProgress isIndeterminate color="green.300" />  
-                        </Center> :
-                        
-                        deckError ? 
-
-                        <Alert status="error">
-                            <AlertIcon />
-                            There was an error processing your request
-                        </Alert> :
-                            
-                            decks.isEmpty() ? 
-                            
-                                <Text>No decks to show</Text> : 
-                                
-                                <Table variant='striped' colorScheme='blue'> 
-                                    <Tbody>
-                                        { 
-                                            decks.map( deck => 
-                                                <Tr>
-                                                    <Td borderRadius='1rem'>
-                                                        <DeckPreview key={deck.id} data={deck} onClick={() => redirect(`/decks/${deck.id}`)} />
-                                                    </Td>
-                                                </Tr>
-                                            ).collection
-                                        } 
-                                    </Tbody>
-                                </Table>
-                }
-            </Stack>
-        )
-    }
 }
