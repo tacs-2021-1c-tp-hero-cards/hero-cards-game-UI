@@ -58,11 +58,10 @@ function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
                         </Button>
 
                         <Button colorScheme="green"
-                                disabled
                                 leftIcon={<PlayIcon />}
                                 variant="solid"
                                 textColor='gray.700'
-                                onClick={() => {}}>
+                                onClick={() => redirect('/matches')}>
                             Start a match
                         </Button>
                     </Stack>

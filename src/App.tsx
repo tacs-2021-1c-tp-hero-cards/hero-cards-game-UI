@@ -13,6 +13,7 @@ import { CardsPage } from "./pages/CardsPage";
 import { UnexpectedErrorPage } from "./pages/UnexpectedErrorPage";
 import { ShowDeckPage } from "./pages/ShowDeckPage"
 import { ShowCardPage } from "./pages/ShowCardPage"
+import { StartMatchPage } from "./pages/MatchesPage"
 import { updateTokenExpiry } from "./commons/Token";
 import { useIdleTimer } from "react-idle-timer";
 
@@ -43,6 +44,7 @@ function App() {
           <Redirect from='/signIn' to='/logIn'/>
           <Route path="/logIn" component={LogInPage} />
           <Route path="/user" component={UserPage} />
+          <Route path='/matches' component={StartMatchPage} />
           <Route exact path='/decks' component={DecksPage} />
           <Route exact path='/cards' component={CardsPage} />
           <Route path='/decks/:deckId' component={ShowDeckPage} />
