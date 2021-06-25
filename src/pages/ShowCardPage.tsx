@@ -1,12 +1,11 @@
 import React from 'react'
-import { Alert, AlertIcon, Box, Button, Center, CircularProgress, Stack, StackDivider, Text, useDisclosure } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Center, CircularProgress, Stack, StackDivider } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from '../commons/BehaviorAddOns'
 import { MainHeader } from '../components/MainHeader'
 import { ServerConnector } from '../BackendConnector'
 import { useState } from 'react'
 import { Card, CardAttributes } from '../components/Card'
-import { SearchIcon, UserIcon } from '../components/icons'
 
 export function ShowCardPage() { return( withRedirect({}) (withTokenValidation) (withToast) (ShowCardContent) )}
 
@@ -14,8 +13,6 @@ type ShowCardProps = TokenProps & RedirectProps & ToastProps
 
 export function ShowCardContent({ renderWithTokenValidation, redirect, toast }: ShowCardProps) {
     let { cardId }: any = useParams()
-
-    const { isOpen, onOpen, onClose } = useDisclosure()
 
     const [ card, setCard ] = useState<CardAttributes>()
     const [ isLoading, setIsLoading ] = useState(true)
@@ -38,40 +35,15 @@ export function ShowCardContent({ renderWithTokenValidation, redirect, toast }: 
         )
     }
 
-
     return renderWithTokenValidation(content)
 
     function content() {
         return (
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader />
+                    <MainHeader userPageButton searchCardsButton />
 
                     <Stack direction='row' spacing='1px'>
-                        <Stack  padding='4'
-                                bg='gray.200'
-                                borderRadius='7px'
-                                minW='200px'
-                                divider={<StackDivider borderColor='gray.500' />}>
-
-                            <Button colorScheme="orange"
-                                    leftIcon={<UserIcon />}
-                                    variant="solid"
-                                    textColor='gray.700'
-                                    onClick={() => redirect('/user')}>
-                                User page
-                            </Button>
-
-                            <Button colorScheme="cyan"
-                                    leftIcon={<SearchIcon />}
-                                    variant="solid"
-                                    textColor='gray.700'
-                                    onClick={() => redirect('/cards')}>
-                                Search cards
-                            </Button>
-
-                        </Stack>
-
                         <Stack  bg='gray.300'
                                 borderRadius='7px'
                                 padding='4'

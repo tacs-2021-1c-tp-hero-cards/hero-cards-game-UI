@@ -119,13 +119,14 @@ type CardPreviewProps = {
     card: CardAttributes,
     height?: string,
     width?: string,
-    onClick?: () => void
+    onClick?: () => void,
+    hideTooltip?: boolean
 }
 
-export function CardPreview({ card, height, width, onClick }: CardPreviewProps) {
+export function CardPreview({ card, height, width, onClick, hideTooltip }: CardPreviewProps) {
     return (
         <Box onClick={onClick} cursor={onClick ? 'pointer' : ''} width={width}>
-            <Tooltip hasArrow label={card.name} placement='bottom' color='yellow'>
+            <Tooltip hasArrow label={card.name} placement='bottom' color='yellow' isDisabled={hideTooltip ?? false}>
                 <Image  src={card.imageUrl} 
                         fallbackSrc='https://i0.wp.com/elfutbolito.mx/wp-content/uploads/2019/04/image-not-found.png?ssl=1' 
                         border='2px' 

@@ -2,9 +2,10 @@ import React from "react";
 import { Box, Center, Button, Image, Stack, Tooltip } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 import logo from '../logo.png'
+import { SideBar, SideBarProps } from "./SideBar";
 
 
-export function MainHeader() {
+export function MainHeader(props: SideBarProps) {
     let history = useHistory()
 
     function goHome() {
@@ -12,8 +13,11 @@ export function MainHeader() {
     }
 
     return (
-        <Box backgroundColor='blue.500' borderRadius='7px'>
-            <Center>
+        <Box backgroundColor='blue.500' borderRadius='7px' d="flex" alignItems='center'>
+            
+            <SideBar {...props} />
+
+            <Center boxSize='92%'>
                 <Button height="20"
                         fontStyle='italic'
                         fontWeight='bold'

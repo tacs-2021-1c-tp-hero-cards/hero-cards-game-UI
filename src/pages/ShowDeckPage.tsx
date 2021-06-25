@@ -10,7 +10,7 @@ import { useState } from 'react'
 import { ModifyDeck } from '../components/ModifyDeck'
 import { WarningIcon } from '@chakra-ui/icons'
 import { SubmitDataErrorToast } from '../commons/Toast'
-import { DeleteIcon, ManageIcon, UserIcon } from '../components/icons'
+import { DeleteIcon } from '../components/icons'
 
 export function ShowDeckPage() { return( withRedirect({}) (withTokenValidation) (withToast) (ShowDeckContent) )}
 
@@ -56,7 +56,7 @@ export function ShowDeckContent({ renderWithTokenValidation, redirect, toast }: 
         return (
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader />
+                    <MainHeader userPageButton manageDecksButton />
 
                     <Stack direction='row' spacing='1px'>
                         <Stack  padding='4'
@@ -64,23 +64,6 @@ export function ShowDeckContent({ renderWithTokenValidation, redirect, toast }: 
                                 borderRadius='7px'
                                 minW='200px'
                                 divider={<StackDivider borderColor='gray.500' />}>
-
-                            <Button colorScheme="orange"
-                                    leftIcon={<UserIcon />}
-                                    variant="solid"
-                                    textColor='gray.700'
-                                    onClick={() => redirect('/user')}>
-                                User page
-                            </Button>
-
-
-                            <Button colorScheme="orange"
-                                    leftIcon={<ManageIcon />}
-                                    variant="solid"
-                                    textColor='gray.700'
-                                    onClick={() => redirect('/decks')}>
-                                Manage decks
-                            </Button>
 
                             <Box height='4rem'/>
 

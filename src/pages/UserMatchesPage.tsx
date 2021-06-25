@@ -4,11 +4,11 @@ import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
 import { AiIcon, UsersIcon } from '../components/icons'
 
-export function StartMatchPage() { return( withRedirect({}) (withTokenValidation) (StartMatchContent) )}
+export function UserMatchesPage() { return( withRedirect({}) (withTokenValidation) (UserMatchesContent) )}
 
 type UserProps = RedirectProps & TokenProps
 
-function StartMatchContent({ renderWithTokenValidation }: UserProps) {
+function UserMatchesContent({ redirect, renderWithTokenValidation }: UserProps) {
 
     return( renderWithTokenValidation(content) )
 

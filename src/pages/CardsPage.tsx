@@ -33,68 +33,45 @@ export function CardsContent({ toast, renderWithTokenValidation, redirect }: Car
         return(
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader />
+                    <MainHeader userPageButton />
 
                     <Stack direction='row' spacing='1px'>
-                        <Stack  padding='4'
-                                bg='gray.200'
+                        <Stack  bg='gray.300'
                                 borderRadius='7px'
-                                minW='200px'
+                                padding='4'
+                                boxSize='full'
+                                spacing='4'
                                 divider={<StackDivider borderColor='gray.500' />}>
 
-                            <Button colorScheme="orange"
-                                    leftIcon={<UserIcon />}
-                                    variant="solid"
-                                    textColor='gray.700'
-                                    onClick={() => redirect('/user')}>
-                                User page
-                            </Button>
-                        </Stack>
+                            <Stack spacing='3.5'>
+                                <Text fontWeight='bold' fontSize='xl'>Search existent decks</Text>
+                                
+                                <Box paddingLeft='3'>
+                                    <SubmitableInput    id='searchCardsByName' 
+                                                        placeHolder='Please enter card name' 
+                                                        buttonLabel='Search'
+                                                        label='Search cards by name' 
+                                                        isValid={isNonEmpty}
+                                                        onClick={searchCardsByName}
+                                                        isLoading={searchByNameIsLoading} />
+                                </Box>
 
-                        { mainContent() }
+                                <Box paddingLeft='3'>
+                                    <SubmitableInput    id='searchCardById' 
+                                                        placeHolder='Please enter card id' 
+                                                        buttonLabel='Search'
+                                                        label='Search card by id' 
+                                                        isValid={isNonEmpty}
+                                                        onClick={searchCardById}
+                                                        isLoading={searchByIdIsLoading} />
+                                </Box>
+
+                                {searchInitiated ?  renderCards() : <></>}
+                            </Stack>
+                        </Stack>
                     </Stack>
                 </Stack>
-
             </Box>
-        )
-    }
-
-    function mainContent() {
-        return (
-            <Stack  bg='gray.300'
-                    borderRadius='7px'
-                    padding='4'
-                    boxSize='full'
-                    spacing='4'
-                    divider={<StackDivider borderColor='gray.500' />}>
-
-                <Stack spacing='3.5'>
-                    <Text fontWeight='bold' fontSize='xl'>Search existent decks</Text>
-                    
-                    <Box paddingLeft='3'>
-                        <SubmitableInput    id='searchCardsByName' 
-                                            placeHolder='Please enter card name' 
-                                            buttonLabel='Search'
-                                            label='Search cards by name' 
-                                            isValid={isNonEmpty}
-                                            onClick={searchCardsByName}
-                                            isLoading={searchByNameIsLoading} />
-                    </Box>
-
-                    <Box paddingLeft='3'>
-                        <SubmitableInput    id='searchCardById' 
-                                            placeHolder='Please enter card id' 
-                                            buttonLabel='Search'
-                                            label='Search card by id' 
-                                            isValid={isNonEmpty}
-                                            onClick={searchCardById}
-                                            isLoading={searchByIdIsLoading} />
-                    </Box>
-
-                    {searchInitiated ?  renderCards() : <></>}
-                </Stack>
-            
-            </Stack>
         )
     }
 

@@ -5,6 +5,7 @@ import { MainHeader } from '../components/MainHeader'
 import { getCookie } from '../commons/Cookies'
 import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
 import { LogOutIcon, ManageIcon, PlayIcon, SearchIcon } from '../components/icons'
+import { SideBar } from "../components/SideBar"
 
 export function UserPage() { return( withRedirect({}) (withTokenValidation) (UserContent) )}
 
@@ -18,7 +19,7 @@ function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
         return (
             <Stack spacing='1px'>
                 
-                <MainHeader />
+                <MainHeader logOutButton manageDecksButton searchCardsButton startAMatchButton />
 
                 <Box bg='lightblue' borderRadius='7px'>
                     <Center padding='4' fontSize='xl' fontStyle='italic' fontWeight='bold'>
@@ -27,44 +28,6 @@ function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
                 </Box>
 
                 <Stack direction='row' spacing='1px'>
-                    <Stack padding='4'
-                        bg='gray.200'
-                        borderRadius='7px'
-                        minW='200px'
-                        divider={<StackDivider borderColor='gray.500' />}>
-
-                        <Button colorScheme="orange"
-                                leftIcon={<LogOutIcon />}
-                                variant="solid"
-                                textColor='gray.700'
-                                onClick={() => logOut(() => redirect('/'), () => redirect('/error'))}>
-                            Log Out
-                        </Button>
-
-                        <Button colorScheme="orange"
-                                leftIcon={<ManageIcon />}
-                                variant="solid"
-                                textColor='gray.700'
-                                onClick={() => redirect('/decks')}>
-                            Manage decks
-                        </Button>
-
-                        <Button colorScheme="cyan"
-                                leftIcon={<SearchIcon />}
-                                variant="solid"
-                                textColor='gray.700'
-                                onClick={() => redirect('/cards')}>
-                            Search cards
-                        </Button>
-
-                        <Button colorScheme="green"
-                                leftIcon={<PlayIcon />}
-                                variant="solid"
-                                textColor='gray.700'
-                                onClick={() => redirect('/matches')}>
-                            Start a match
-                        </Button>
-                    </Stack>
 
                     <Stack  bg='gray.300'
                             borderRadius='7px'
@@ -72,8 +35,8 @@ function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
                             boxSize='full'
                             spacing='4'
                             divider={<StackDivider borderColor='gray.500' />}>
-
-                            <Center fontSize='4xl'>Game rules</Center>
+                                
+                            <Center fontSize='4xl' >Game rules</Center>
                             
                             <Stack>
                                 <Text>

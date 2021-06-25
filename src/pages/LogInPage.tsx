@@ -19,7 +19,7 @@ function LogInContent({ redirect, renderRedirect }: LogInProps) {
     return(
       <Stack spacing='1px'>
         
-        <MainHeader />
+        <MainHeader signUpButton />
 
         <Stack padding='4'
               backgroundColor='gray.200'

@@ -54,7 +54,7 @@ export function DeckPreview( { data, onClick }: Props ) {
                 <SimpleGrid columns={[3, 6, 12]} gap='2'>
                     { 
                         cards.take(24).map( card => 
-                            <CardPreview card={card} height='100px' />
+                            <CardPreview card={card} height='100px' hideTooltip />
                         ).collection
                     }
                 </SimpleGrid>
