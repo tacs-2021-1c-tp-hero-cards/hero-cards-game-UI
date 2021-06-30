@@ -104,7 +104,13 @@ export class Collection<T> {
     }
 
     last(): T | undefined {
-        return this.collection[length - 1]
+        return this.collection[this.length - 1]
+    }
+
+    random(): T | undefined {
+        const random = Math.floor(Math.random() * this.length)
+
+        return (this.get(random))
     }
 
     tail(): Collection<T> {
