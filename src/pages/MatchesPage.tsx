@@ -1,8 +1,8 @@
 import React from 'react'
-import { Alert, AlertIcon, Button, Center, CircularProgress, Stack, StackDivider, Table, Tbody, Td, Tr, Text } from "@chakra-ui/react"
+import { Alert, AlertIcon, Button, Center, CircularProgress, Stack, StackDivider, Table, Tbody, Td, Tr, Text, Image } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
-import { AiIcon, UsersIcon } from '../components/icons'
+import { AiIcon, PlayIcon, UsersIcon } from '../components/icons'
 import { useState } from 'react'
 import { Player, PlayerPreview } from '../components/Player'
 import { Collection } from '../commons/Collections'
@@ -10,6 +10,10 @@ import { DeckData } from '../components/Deck'
 import { SubmitableInput } from '../components/SubmitableInput'
 import { isNonEmpty } from '../commons/InputValidations'
 import { AlertPopUp } from '../components/AlertPopUp'
+import { DecksSearchBox } from '../components/DecksSearchBox'
+import { CloseIcon } from '@chakra-ui/icons'
+import { sleep } from '../commons/Sleep'
+import { getCookie } from '../commons/Cookies'
 
 export function StartMatchPage() { return( withRedirect({}) (withTokenValidation) (StartMatchContent) )}
 
@@ -23,8 +27,10 @@ function StartMatchContent({ renderWithTokenValidation }: UserProps) {
     const [ searchPlayerError, setSearchPlayerError ] = useState<boolean>(false)
     const [ maybeOponent, setMaybeOponent ] = useState<Player>()
     const [ deck, setDeck ] = useState<DeckData>()
+    const [ maybeDeck, setMaybeDeck ] = useState<DeckData>()
     const [ accepted, setAccepted ] = useState<boolean>(false)
     const [ starter, setStarter ] = useState<Player>()
+    const [ coinTossed, setCoinTossed ] = useState<boolean>(false)
 
     return( renderWithTokenValidation(content) )
 
@@ -136,7 +142,7 @@ function StartMatchContent({ renderWithTokenValidation }: UserProps) {
                                     onClose={() => setMaybeOponent(undefined)}
                                     header='¿Are you sure?'
                                     body={`You want to start a match against ${maybeOponent?.username}?`}
-                                    onSubmit={() => setOponent(maybeOponent)} /> : 
+                                    onSubmit={() => setOponent(maybeOponent)} /> 
 
                         <Stack spacing='3.5'>
                             {
@@ -157,12 +163,12 @@ function StartMatchContent({ renderWithTokenValidation }: UserProps) {
                                         
                                             <Text>No players to show</Text> : 
                                             
-                                            <Table variant='striped' colorScheme='green'> 
+                                            <Table colorScheme='telegram' > 
                                                 <Tbody>
                                                     { 
                                                         players.map( (player, index) => 
                                                             <Tr>
-                                                                <Td borderRadius='1rem'>
+                                                                <Td>
                                                                     <PlayerPreview key={index} player={player} onClick={setMaybeOponent} />
                                                                 </Td>
                                                             </Tr>
@@ -180,19 +186,132 @@ function StartMatchContent({ renderWithTokenValidation }: UserProps) {
 
     function chooseDeckContent() {
         return (
-            <>choose deck</>
+            <Stack  bg='gray.300'
+                    borderRadius='7px'
+                    padding='4'
+                    boxSize='full'
+                    spacing='4'
+                    divider={<StackDivider borderColor='gray.500' />}>
+
+                    <Center fontSize='4xl'>Choose a deck</Center>
+
+                    <Stack>
+                        <AlertPopUp isOpen={maybeDeck != undefined}
+                                    onClose={() => setMaybeDeck(undefined)}
+                                    header='¿Are you sure?'
+                                    body={`You want to play this match with ${maybeDeck?.name} deck?`}
+                                    onSubmit={() => setDeck(maybeDeck)} />
+
+                        <DecksSearchBox onDeckClick={setMaybeDeck} />
+                    </Stack>
+            </Stack>
         )
+    }
+
+    function cleanFields() {
+        setMaybeDeck(undefined)
+        setDeck(undefined)
+
+        setMaybeOponent(undefined)
+        setOponent(undefined)
+
+        setMatchType(undefined)
     }
 
     function showDetailsContent() {
         return (
-            <>show detail</>
+            <Stack  bg='gray.300'
+                    borderRadius='7px'
+                    padding='4'
+                    boxSize='full'
+                    spacing='4'
+                    divider={<StackDivider borderColor='gray.500' />}>
+
+                    <Center fontSize='4xl'>Check match's details</Center>
+
+                    <Stack spacing='1rem'>
+                        <Text>Your match will be created with this setup ¿Are you ok with this?</Text>
+
+                        <Stack bgColor='teal.300' padding='1rem' borderRadius='0.4rem'>
+                            <Text>Yo have chosen to play against { matchType === 'AI' ? 'an AI' : 'another player' }</Text>
+                        </Stack>
+
+                        <Stack bgColor='blue.300' padding='1rem' borderRadius='0.4rem' direction='row'>
+                            <Text>You will be playing against: </Text>
+                            <Text fontWeight='bold' >{ oponent?.username }</Text>
+                        </Stack>
+                        
+                        <Stack bgColor='cyan.300' padding='1rem' borderRadius='0.4rem' direction='row'>
+                            <Text>The match's deck will be: </Text>
+                            <Text fontWeight='bold' >{ deck?.name }</Text>
+                        </Stack>
+
+                        <Stack spacing='0.5rem'>
+                            <Text>¿Shall we continue?</Text>
+
+                            <Stack direction='row' spacing='1rem'>
+                                <Button colorScheme='red' 
+                                        leftIcon={<CloseIcon />}
+                                        variant="solid"
+                                        width='10rem'
+                                        onClick={cleanFields}>
+                                    No, start over
+                                </Button>
+                                
+                                <Button colorScheme='green' 
+                                        leftIcon={<PlayIcon />}
+                                        variant="solid"
+                                        width='10rem'
+                                        onClick={() => setAccepted(true)}>
+                                    Yes! Let's go
+                                </Button>
+                            </Stack>
+                        </Stack>
+                    </Stack>
+            </Stack>
         )
+    }
+
+    function tossCoin() {
+        setCoinTossed(true)
+
+        sleep(4000).then(() => {
+            setStarter(Collection.from('You', oponent?.username).random()) //TODO: use full users instead of just usernames
+            setCoinTossed(false)
+        })
     }
 
     function tossCoinContent() {
         return (
-            <>toss a coin</>
+            <Stack  bg='gray.300'
+                    borderRadius='7px'
+                    padding='4'
+                    boxSize='full'
+                    spacing='4'
+                    divider={<StackDivider borderColor='gray.500' />}>
+
+                    <Center fontSize='4xl'>Toss a coin</Center>
+
+                    {
+                        starter ? 
+                            <Center><Text fontWeight='bold' paddingRight='4px'>{starter!}</Text> will be the first to play</Center> :
+
+                            coinTossed ? 
+                                <Image  boxSize='20rem' 
+                                        alignSelf='center'
+                                        src='https://media1.giphy.com/media/PLJ3gbNlkSVDL3IZlp/giphy.gif?cid=790b7611cd2f48804f008957858ca46995771577f48bfe24&rid=giphy.gif&ct=s'/> :
+
+                                <Button colorScheme='yellow' 
+                                        width='8rem'
+                                        variant='solid'
+                                        alignSelf='center'
+                                        onClick={tossCoin}>
+                                    Test your luck
+                                </Button>
+
+                    }
+                
+            </Stack>
         )
     }
 }
@@ -207,6 +326,12 @@ function bots(): Collection<Player> {
             },
             {
                 username: 'Lenny'
+            },
+            {
+                username: 'Bart'
+            },
+            {
+                username: 'Lisa'
             },
             {
                 username: 'Homer'

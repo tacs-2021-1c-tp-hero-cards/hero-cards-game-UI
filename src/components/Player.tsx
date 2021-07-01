@@ -18,17 +18,7 @@ export function PlayerPreview({ player, onClick }: Props) {
                 borderRadius='0.4rem'
                 cursor='pointer'
                 onClick={() => onClick(player)}>
-            <Text>{titles.random()}</Text>
-            <Text fontWeight='bold' paddingLeft='2rem' >{player.username}</Text>
+            <Text fontWeight='bold' paddingLeft='1rem' >{player.username}</Text>
         </Stack>
     )
 }
-
-const titles = Collection.from(
-    'The mighty',
-    'The great',
-    'The beast',
-    'The unforgiven',
-    'The relentless',
-    'The restless'
-)
