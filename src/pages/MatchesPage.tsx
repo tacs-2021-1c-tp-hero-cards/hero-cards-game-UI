@@ -253,6 +253,7 @@ function StartMatchContent({ renderWithTokenValidation }: UserProps) {
                     padding='4'
                     boxSize='full'
                     spacing='4'
+                    minHeight='40rem'
                     divider={<StackDivider borderColor='gray.500' />}>
 
                     <Center fontSize='4xl'>Toss a coin</Center>

@@ -22,7 +22,8 @@ function LogInFormContent({ redirect, toast }: LogInFormProps) {
     username: '',
     fullName: '',
     password: '',
-    token: ''
+    token: '',
+    id: -1
   }
 
   function onSubmit(user: User, actions: any) {

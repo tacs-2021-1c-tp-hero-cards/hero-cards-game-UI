@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import { User } from "./components/User";
 import { CardAttributes } from "./components/Card";
 import { DeckData, NewDeck, UpdatedDeck } from "./components/Deck";
+import { Match } from "./components/Match"
 import config from "./config.json"
 
 
@@ -164,6 +165,21 @@ class BackendConnector {
             fullName: u.fullName
           }
         )))
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
+  createMatch(match: Match, onSuccess: (/*match*/) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .post('/users/matches', {
+          userIds: match.users.map(u => u.id).collection,
+          deckId: match.deck.id
+        }
+      )
+      .then(function (response) {
+        onSuccess(/*response.data*/)
       })
       .catch(function (error) {
         onFailure(error)

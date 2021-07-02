@@ -5,7 +5,9 @@ export type User = {
     username: string,
     fullName: string,
     password: string,
-    token: string
+    token: string,
+    id: number,
+    //stats
 }
 
 
