@@ -1,6 +1,6 @@
 import { ServerConnector } from "../BackendConnector";
 import { logIn } from "./LogIn";
-import { User } from "./User";
+import { User } from "../components/User";
 
 
 export function signUp(user: User, onSuccess: () => void, onFailure: () => void) {

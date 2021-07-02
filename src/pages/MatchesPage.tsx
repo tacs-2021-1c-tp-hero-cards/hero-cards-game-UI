@@ -4,7 +4,6 @@ import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
 import { AiIcon, PlayIcon, UsersIcon } from '../components/icons'
 import { useState } from 'react'
-import { Player, PlayerPreview } from '../components/Player'
 import { Collection } from '../commons/Collections'
 import { DeckData } from '../components/Deck'
 import { SubmitableInput } from '../components/SubmitableInput'
@@ -14,6 +13,9 @@ import { DecksSearchBox } from '../components/DecksSearchBox'
 import { CloseIcon } from '@chakra-ui/icons'
 import { sleep } from '../commons/Sleep'
 import { getCookie } from '../commons/Cookies'
+import { ServerConnector } from '../BackendConnector'
+import { UsersSearchBox } from '../components/UserSearchBox'
+import { User, UserPreview } from '../components/User'
 
 export function StartMatchPage() { return( withRedirect({}) (withTokenValidation) (StartMatchContent) )}
 
@@ -21,15 +23,13 @@ type UserProps = RedirectProps & TokenProps
 
 function StartMatchContent({ renderWithTokenValidation }: UserProps) {
     const [ matchType, setMatchType ] = useState<string>()
-    const [ oponent, setOponent ] = useState<Player>()
-    const [ players, setPlayers ] = useState<Collection<Player>>(Collection.empty())
-    const [ searchPlayersIsLoading, setSearchPlayersIsLoading ] = useState<boolean>(false)
-    const [ searchPlayerError, setSearchPlayerError ] = useState<boolean>(false)
-    const [ maybeOponent, setMaybeOponent ] = useState<Player>()
+    const [ oponent, setOponent ] = useState<User>()
+    const [ botPlayers, setBotPlayers ] = useState<Collection<User>>(Collection.empty())
+    const [ maybeOponent, setMaybeOponent ] = useState<User>()
     const [ deck, setDeck ] = useState<DeckData>()
     const [ maybeDeck, setMaybeDeck ] = useState<DeckData>()
     const [ accepted, setAccepted ] = useState<boolean>(false)
-    const [ starter, setStarter ] = useState<Player>()
+    const [ starter, setStarter ] = useState<User>()
     const [ coinTossed, setCoinTossed ] = useState<boolean>(false)
 
     return( renderWithTokenValidation(content) )
@@ -79,7 +79,7 @@ function StartMatchContent({ renderWithTokenValidation }: UserProps) {
                                     width='8rem'
                                     alignSelf='center'
                                     onClick={() => {
-                                            setPlayers(bots())
+                                            setBotPlayers(bots())
                                             setMatchType('AI')
                                         } }>
                                 Let's go!
@@ -108,14 +108,6 @@ function StartMatchContent({ renderWithTokenValidation }: UserProps) {
         )
     }
 
-    function searchPlayers(username: string) {
-        setPlayers(bots())
-    }
-
-    function showPlayerAlert(player: Player) {
-
-    }
-
     function chooseOponentContent() {
         return (
             <Stack  bg='gray.300'
@@ -130,12 +122,20 @@ function StartMatchContent({ renderWithTokenValidation }: UserProps) {
                     <Stack >
                         
                         { matchType === 'normal' ? 
-                            <SubmitableInput    id='searchPlayer' 
-                                                placeHolder='Please enter player username'
-                                                buttonLabel='Search'
-                                                isValid={isNonEmpty}
-                                                onClick={searchPlayers}/> :
-                            <></>
+                            <UsersSearchBox onUserClick={setMaybeOponent} /> :
+                            <Table variant='striped' colorScheme='blue'> 
+                                <Tbody>
+                                    { 
+                                        botPlayers.map( bot => 
+                                            <Tr>
+                                                <Td borderRadius='1rem'>
+                                                    <UserPreview key={bot.token} user={bot} onClick={() => setMaybeOponent(bot)} />
+                                                </Td>
+                                            </Tr>
+                                        ).collection
+                                    } 
+                                </Tbody>
+                            </Table>
                         }
 
                         <AlertPopUp isOpen={maybeOponent != undefined}
@@ -144,42 +144,7 @@ function StartMatchContent({ renderWithTokenValidation }: UserProps) {
                                     body={`You want to start a match against ${maybeOponent?.username}?`}
                                     onSubmit={() => setOponent(maybeOponent)} /> 
 
-                        <Stack spacing='3.5'>
-                            {
-                                searchPlayersIsLoading ? 
-                                                                
-                                    <Center>
-                                        <CircularProgress isIndeterminate color="green.300" />  
-                                    </Center> :
-                                    
-                                    searchPlayerError ? 
-                
-                                    <Alert status="error">
-                                        <AlertIcon />
-                                        There was an error processing your request
-                                    </Alert> :
-                                        
-                                        players.isEmpty() ? 
-                                        
-                                            <Text>No players to show</Text> : 
-                                            
-                                            <Table colorScheme='telegram' > 
-                                                <Tbody>
-                                                    { 
-                                                        players.map( (player, index) => 
-                                                            <Tr>
-                                                                <Td>
-                                                                    <PlayerPreview key={index} player={player} onClick={setMaybeOponent} />
-                                                                </Td>
-                                                            </Tr>
-                                                        ).collection
-                                                    } 
-                                                </Tbody>
-                                            </Table>
-                            }
-                        </Stack>
                     </Stack>
-                
             </Stack>
         )
     }
@@ -318,7 +283,7 @@ function StartMatchContent({ renderWithTokenValidation }: UserProps) {
 
 
 
-function bots(): Collection<Player> {
+function bots(): Collection<User> {
     return (
         Collection.from(
             {

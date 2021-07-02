@@ -5,7 +5,7 @@ import { FormField, RequiredGenericForm, RequiredPasswordForm } from './Form';
 import { validateUsername, validateFullName, validatePassword, validateRepeatedPassword } from '../commons/InputValidations';
 import { signUp } from '../commons/SignUp';
 import { SubmitDataErrorToast } from '../commons/Toast';
-import { User } from '../commons/User';
+import { User } from './User';
 import { RedirectProps, ToastProps, withRedirect, withToast } from '../commons/BehaviorAddOns';
 import { NewUserIcon } from './icons';
  

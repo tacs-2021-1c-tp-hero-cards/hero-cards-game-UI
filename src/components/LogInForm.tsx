@@ -6,7 +6,7 @@ import { validateUsername, validatePassword } from '../commons/InputValidations'
 import { logIn } from '../commons/LogIn';
 import { useHistory } from 'react-router';
 import { SubmitDataErrorToast } from '../commons/Toast';
-import { User } from '../commons/User';
+import { User } from './User';
 import { RedirectProps, ToastProps, withRedirect, withToast } from '../commons/BehaviorAddOns';
 import { FiUser } from 'react-icons/fi';
 import { UserIcon } from './icons';

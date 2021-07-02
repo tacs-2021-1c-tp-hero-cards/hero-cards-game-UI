@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { User } from "./commons/User";
+import { User } from "./components/User";
 import { CardAttributes } from "./components/Card";
 import { DeckData, NewDeck, UpdatedDeck } from "./components/Deck";
 import config from "./config.json"
@@ -139,6 +139,35 @@ class BackendConnector {
       .get(`/decks/search?${deckParam}`)
       .then(function (response) {
         onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
+  getUsersById(id: string, onSuccess: (data: User[]) => void, onFailure: (error: any) => void) {
+    this.getUsers(`user-id=${id}`, onSuccess, onFailure)
+  }
+
+  getUsersByUsername(username: string, onSuccess: (data: User[]) => void, onFailure: (error: any) => void) {
+    this.getUsers(`user-name=${username}`, onSuccess, onFailure)
+  
+  }
+
+  getUsersByFullName(fullName: string, onSuccess: (data: User[]) => void, onFailure: (error: any) => void) {
+    this.getUsers(`full-name=${fullName}`, onSuccess, onFailure)
+  }
+
+  private getUsers(userParam: string, onSuccess: (data: User[]) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .get(`/users/search?${userParam}`)
+      .then(function (response) {
+        onSuccess(response.data.map((u: any) => (
+          {
+            username: u.userName,
+            fullName: u.fullName
+          }
+        )))
       })
       .catch(function (error) {
         onFailure(error)
