@@ -17,7 +17,6 @@ export function UsersSearchBox({ onUserClick }: Props) {
     const [ isLoading, setIsLoading ] = useState(false)
     const [ searchByFullNameIsLoading, setSearchByFullNameIsLoading ] = useState(false)
     const [ searchByUsernameIsLoading, setSearchByUsernameIsLoading ] = useState(false)
-    const [ searchByIdIsLoading, setSearchByIdIsLoading ] = useState(false)
     const [ searchInitiated, setSearchInitiated ] = useState(false)
     const [ userError, setUserError ] = useState(false)
 
@@ -45,41 +44,9 @@ export function UsersSearchBox({ onUserClick }: Props) {
                                     isLoading={searchByFullNameIsLoading} />
             </Box>
 
-            <Box paddingLeft='3'>
-                <SubmitableInput    id='searchUserById' 
-                                    placeHolder='Please enter user id'
-                                    buttonLabel='Search'
-                                    label='Search user by id' 
-                                    isValid={isNonEmpty}
-                                    onClick={searchUsersById}
-                                    isLoading={searchByIdIsLoading} />
-            </Box>
-
             {searchInitiated ?  renderUsers() : <></>}
         </Stack>
     )
-
-    function searchUsersById(id: string) {
-        setSearchByIdIsLoading(true)
-        setIsLoading(true)
-        setSearchInitiated(true)
-
-        ServerConnector
-            .getUsersById(
-                id, 
-                (users) => {
-                    setSearchByIdIsLoading(false)
-                    setIsLoading(false)
-                    setUserError(false)
-                    setUsers(Collection.wrap(users))
-                },
-                (_) => {
-                    setSearchByIdIsLoading(false)
-                    setIsLoading(false)
-                    setUserError(true)
-                }
-            )
-    }
 
     function searchUsersByUsername(username: string) {
         setSearchByUsernameIsLoading(true)

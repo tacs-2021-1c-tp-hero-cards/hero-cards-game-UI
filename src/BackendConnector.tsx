@@ -145,10 +145,6 @@ class BackendConnector {
       })
   }
 
-  getUsersById(id: string, onSuccess: (data: User[]) => void, onFailure: (error: any) => void) {
-    this.getUsers(`user-id=${id}`, onSuccess, onFailure)
-  }
-
   getUsersByUsername(username: string, onSuccess: (data: User[]) => void, onFailure: (error: any) => void) {
     this.getUsers(`user-name=${username}`, onSuccess, onFailure)
   
