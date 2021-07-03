@@ -16,12 +16,15 @@ import { getCookie } from '../commons/Cookies'
 import { ServerConnector } from '../BackendConnector'
 import { UsersSearchBox } from '../components/UserSearchBox'
 import { User, UserPreview } from '../components/User'
+import coin from '../coin.webp'
+import { getToken } from '../commons/Token'
+
 
 export function StartMatchPage() { return( withRedirect({}) (withTokenValidation) (StartMatchContent) )}
 
 type UserProps = RedirectProps & TokenProps
 
-function StartMatchContent({ renderWithTokenValidation }: UserProps) {
+function StartMatchContent({ renderWithTokenValidation, validateToken }: UserProps) {
     const [ matchType, setMatchType ] = useState<string>()
     const [ oponent, setOponent ] = useState<User>()
     const [ botPlayers, setBotPlayers ] = useState<Collection<User>>(Collection.empty())
@@ -246,6 +249,33 @@ function StartMatchContent({ renderWithTokenValidation }: UserProps) {
         })
     }
 
+    function createMatch() {
+        const token = getToken()
+
+        token ?
+            ServerConnector.getUsersByToken(
+                token,
+                (users) => {
+                    ServerConnector.createMatch(
+                        {
+                            users: Collection.wrap(users).add(oponent!),
+                            deck: deck!
+                        },
+                        () => {
+
+                        },
+                        (error) => {
+                            //TODO: create an error toast
+                        }
+                    )
+                },
+                (error) => {
+                    validateToken()
+                }
+                ) :
+            validateToken()
+    }
+
     function tossCoinContent() {
         return (
             <Stack  bg='gray.300'
@@ -260,12 +290,23 @@ function StartMatchContent({ renderWithTokenValidation }: UserProps) {
 
                     {
                         starter ? 
-                            <Center><Text fontWeight='bold' paddingRight='4px'>{starter!}</Text> will be the first to play</Center> :
+                            <Stack direction='row' spacing='4px' alignSelf='center'>
+                                <Text fontWeight='bold'>{starter!}</Text>
+                                <Text>will be the first to play</Text>
+
+                                <Button colorScheme='teal' 
+                                        width='8rem'
+                                        variant='solid'
+                                        alignSelf='center'
+                                        onClick={createMatch}>
+                                    Create match
+                                </Button>
+                            </Stack> :
 
                             coinTossed ? 
                                 <Image  boxSize='20rem' 
                                         alignSelf='center'
-                                        src='https://media1.giphy.com/media/PLJ3gbNlkSVDL3IZlp/giphy.gif?cid=790b7611cd2f48804f008957858ca46995771577f48bfe24&rid=giphy.gif&ct=s'/> :
+                                        src={coin}/> :
 
                                 <Button colorScheme='yellow' 
                                         width='8rem'

@@ -60,18 +60,32 @@ export function withToast(props: any) {
 }
 
 
-export type TokenProps = { renderWithTokenValidation: (content: ComponentContent) => any }
+export type TokenProps = { 
+  renderWithTokenValidation: (content: ComponentContent) => any,
+  validateToken: () => void 
+}
 
 export function withTokenValidation(props: any) {
   let history = useHistory()
 
+  function logInError() {
+    history.push('/logInError')
+  }
+
   function renderValidation(component: ComponentContent) {
-    return tokenIsAlive() ? component() : <>{history.push('/logInError')}</>
+    return tokenIsAlive() ? component() : <>{logInError()}</>
+  }
+
+  function validateToken() {
+    if (tokenIsAlive()) {
+      logInError()
+    }
   }
 
   const newProps = {
     ...props,
-    renderWithTokenValidation: renderValidation
+    renderWithTokenValidation: renderValidation,
+    validateToken: validateToken
   }
 
   return (component: RendereableComponent) => component(newProps)

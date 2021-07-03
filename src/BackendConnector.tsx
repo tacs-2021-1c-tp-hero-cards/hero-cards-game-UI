@@ -155,6 +155,10 @@ class BackendConnector {
     this.getUsers(`full-name=${fullName}`, onSuccess, onFailure)
   }
 
+  getUsersByToken(token: string, onSuccess: (data: User[]) => void, onFailure: (error: any) => void) {
+    this.getUsers(`token=${token}`, onSuccess, onFailure)
+  }
+
   private getUsers(userParam: string, onSuccess: (data: User[]) => void, onFailure: (error: any) => void) {
     BackendConnector.connector
       .get(`/users/search?${userParam}`)
