@@ -19,7 +19,7 @@ type LogInFormProps = RedirectProps & ToastProps
 function LogInFormContent({ redirect, toast }: LogInFormProps) {
 
   const initialValues = {
-    username: '',
+    userName: '',
     fullName: '',
     password: '',
     token: '',
@@ -40,13 +40,13 @@ function LogInFormContent({ redirect, toast }: LogInFormProps) {
       {(props: any) => (
         <Form>
             <Stack>
-                <FormField id='username' 
+                <FormField id='userName' 
                         validation={validateUsername}
                         formField={({ field, form }: any) => 
                             <UnrequiredGenericForm field={field}
-                                       error={form.errors.username}
-                                       touched={form.touched.username}
-                                       id='username'
+                                       error={form.errors.userName}
+                                       touched={form.touched.userName}
+                                       id='userName'
                                        label='Username'
                                        placeholder='Enter username'
                                        />}/>

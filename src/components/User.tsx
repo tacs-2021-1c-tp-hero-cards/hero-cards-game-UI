@@ -2,7 +2,7 @@ import React from "react"
 import { Stack, Text } from "@chakra-ui/react"
 
 export type User = {
-    username: string,
+    userName: string,
     fullName: string,
     password: string,
     token: string,
@@ -23,7 +23,7 @@ export function UserPreview({ user, onClick }: Props) {
                 borderRadius='0.4rem'
                 cursor='pointer'
                 onClick={() => onClick(user)}>
-            <Text fontWeight='bold' paddingLeft='1rem' >{user.username}</Text>
+            <Text fontWeight='bold' paddingLeft='1rem' >{user.userName}</Text>
         </Stack>
     )
 }

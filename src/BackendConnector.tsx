@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import { User } from "./components/User";
 import { CardAttributes } from "./components/Card";
 import { DeckData, NewDeck, UpdatedDeck } from "./components/Deck";
-import { Match } from "./components/Match"
+import { Match, MatchData } from "./components/Match"
 import config from "./config.json"
 
 
@@ -21,11 +21,7 @@ class BackendConnector {
   signUp(user: User, onSuccess: (data: any) => void, onFailure: (error: any) => void) {
 
     BackendConnector.connector
-      .post('/signUp', {
-        userName: user.username,
-        fullName: user.fullName,
-        password: user.password
-      })
+      .post('/signUp', user)
       .then(function (response) {
         onSuccess(response.data)
       })
@@ -37,10 +33,7 @@ class BackendConnector {
   logIn(user: User, onSuccess: (data: any) => void, onFailure: (error: any) => void) {
 
     BackendConnector.connector
-      .post('/logIn', {
-        userName: user.username,
-        password: user.password
-      })
+      .post('/logIn', user)
       .then(function (response) {
         onSuccess(response.data)
       })
@@ -163,19 +156,15 @@ class BackendConnector {
     BackendConnector.connector
       .get(`/users/search?${userParam}`)
       .then(function (response) {
-        onSuccess(response.data.map((u: any) => (
-          {
-            username: u.userName,
-            fullName: u.fullName
-          }
-        )))
+        onSuccess(response.data)
       })
       .catch(function (error) {
         onFailure(error)
       })
   }
 
-  createMatch(match: Match, onSuccess: (/*match*/) => void, onFailure: (error: any) => void) {
+  createMatch(match: Match, onSuccess: (match: MatchData) => void, onFailure: (error: any) => void) {
+    console.log(match)
     BackendConnector.connector
       .post('/users/matches', {
           userIds: match.users.map(u => u.id).collection,
@@ -183,9 +172,11 @@ class BackendConnector {
         }
       )
       .then(function (response) {
-        onSuccess(/*response.data*/)
+        console.log(response.data)
+        onSuccess(response.data)
       })
       .catch(function (error) {
+        console.log(error)
         onFailure(error)
       })
   }

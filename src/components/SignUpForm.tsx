@@ -16,7 +16,7 @@ type SignUpFormProps = RedirectProps & ToastProps
 function SignUpFormContent({ redirect, toast }: SignUpFormProps) {
 
   const initialValues = {
-    username: '',
+    userName: '',
     fullName: '',
     password: '',
     repeatedPassword: '',
@@ -39,13 +39,13 @@ function SignUpFormContent({ redirect, toast }: SignUpFormProps) {
         <Form>
           <Stack>
             <Stack direction='row'>
-              <FormField id='username' 
+              <FormField id='userName' 
                         validation={validateUsername}
                         formField={({ field, form }: any) => 
                           <RequiredGenericForm field={field}
-                                       error={form.errors.username}
-                                       touched={form.touched.username}
-                                       id='username'
+                                       error={form.errors.userName}
+                                       touched={form.touched.userName}
+                                       id='userName'
                                        label='Username'
                                        placeholder='Enter username'
                                        />}/>

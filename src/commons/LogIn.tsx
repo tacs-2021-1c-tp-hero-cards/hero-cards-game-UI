@@ -7,7 +7,7 @@ import { User } from "../components/User"
 export function logIn(user: User, onSuccess: () => void, onFailure: () => void) {
     ServerConnector.logIn(user,
                          (data) => {
-                             setCookie('username', user.username)
+                             setCookie('username', user.userName)
                              setToken(data.token)
                              onSuccess()
                             },

@@ -24,6 +24,13 @@ export type DeckData = {
     usable: boolean
 }
 
+export type DeckHistoricData = {
+    id: number,
+    //version: number,
+    name: string,
+    cards: CardAttributes[]
+}
+
 type Props = {
     data: DeckData,
     onClick?: () => void

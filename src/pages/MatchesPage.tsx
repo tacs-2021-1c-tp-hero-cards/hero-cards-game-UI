@@ -1,7 +1,7 @@
 import React from 'react'
 import { Alert, AlertIcon, Button, Center, CircularProgress, Stack, StackDivider, Table, Tbody, Td, Tr, Text, Image } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
-import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
+import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from '../commons/BehaviorAddOns'
 import { AiIcon, PlayIcon, UsersIcon } from '../components/icons'
 import { useState } from 'react'
 import { Collection } from '../commons/Collections'
@@ -18,13 +18,14 @@ import { UsersSearchBox } from '../components/UserSearchBox'
 import { User, UserPreview } from '../components/User'
 import coin from '../coin.webp'
 import { getToken } from '../commons/Token'
+import { SubmitDataErrorToast } from '../commons/Toast'
 
 
-export function StartMatchPage() { return( withRedirect({}) (withTokenValidation) (StartMatchContent) )}
+export function StartMatchPage() { return( withRedirect({}) (withTokenValidation) (withToast) (StartMatchContent) )}
 
-type UserProps = RedirectProps & TokenProps
+type UserProps = RedirectProps & TokenProps & ToastProps
 
-function StartMatchContent({ renderWithTokenValidation, validateToken }: UserProps) {
+function StartMatchContent({ renderWithTokenValidation, validateToken, toast }: UserProps) {
     const [ matchType, setMatchType ] = useState<string>()
     const [ oponent, setOponent ] = useState<User>()
     const [ botPlayers, setBotPlayers ] = useState<Collection<User>>(Collection.empty())
@@ -144,7 +145,7 @@ function StartMatchContent({ renderWithTokenValidation, validateToken }: UserPro
                         <AlertPopUp isOpen={maybeOponent != undefined}
                                     onClose={() => setMaybeOponent(undefined)}
                                     header='¿Are you sure?'
-                                    body={`You want to start a match against ${maybeOponent?.username}?`}
+                                    body={`You want to start a match against ${maybeOponent?.userName}?`}
                                     onSubmit={() => setOponent(maybeOponent)} /> 
 
                     </Stack>
@@ -206,7 +207,7 @@ function StartMatchContent({ renderWithTokenValidation, validateToken }: UserPro
 
                         <Stack bgColor='blue.300' padding='1rem' borderRadius='0.4rem' direction='row'>
                             <Text>You will be playing against: </Text>
-                            <Text fontWeight='bold' >{ oponent?.username }</Text>
+                            <Text fontWeight='bold' >{ oponent?.userName }</Text>
                         </Stack>
                         
                         <Stack bgColor='cyan.300' padding='1rem' borderRadius='0.4rem' direction='row'>
@@ -242,14 +243,6 @@ function StartMatchContent({ renderWithTokenValidation, validateToken }: UserPro
 
     function tossCoin() {
         setCoinTossed(true)
-
-        sleep(4000).then(() => {
-            setStarter(Collection.from('You', oponent?.username).random()) //TODO: use full users instead of just usernames
-            setCoinTossed(false)
-        })
-    }
-
-    function createMatch() {
         const token = getToken()
 
         token ?
@@ -261,18 +254,22 @@ function StartMatchContent({ renderWithTokenValidation, validateToken }: UserPro
                             users: Collection.wrap(users).add(oponent!),
                             deck: deck!
                         },
-                        () => {
-
+                        (match) => {
+                            console.log(match)
+                            sleep(3000).then(() => {
+                                setStarter(Collection.wrap(match.players).map(p => p.user.userName).head())
+                                setCoinTossed(false)
+                            })
                         },
                         (error) => {
-                            //TODO: create an error toast
+                            toast(SubmitDataErrorToast)
                         }
                     )
                 },
                 (error) => {
                     validateToken()
                 }
-                ) :
+            ) :
             validateToken()
     }
 
@@ -293,14 +290,6 @@ function StartMatchContent({ renderWithTokenValidation, validateToken }: UserPro
                             <Stack direction='row' spacing='4px' alignSelf='center'>
                                 <Text fontWeight='bold'>{starter!}</Text>
                                 <Text>will be the first to play</Text>
-
-                                <Button colorScheme='teal' 
-                                        width='8rem'
-                                        variant='solid'
-                                        alignSelf='center'
-                                        onClick={createMatch}>
-                                    Create match
-                                </Button>
                             </Stack> :
 
                             coinTossed ? 
