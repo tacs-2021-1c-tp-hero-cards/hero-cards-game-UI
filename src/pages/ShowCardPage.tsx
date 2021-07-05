@@ -5,31 +5,56 @@ import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTok
 import { MainHeader } from '../components/MainHeader'
 import { ServerConnector } from '../BackendConnector'
 import { useState } from 'react'
-import { Card, CardAttributes } from '../components/Card'
+import { Card, CardAttributes, CharacterDetails, CharacterInsights } from '../components/Card'
 
 export function ShowCardPage() { return( withRedirect({}) (withTokenValidation) (withToast) (ShowCardContent) )}
 
 type ShowCardProps = TokenProps & RedirectProps & ToastProps
 
 export function ShowCardContent({ renderWithTokenValidation, redirect, toast }: ShowCardProps) {
-    let { cardId }: any = useParams()
+    let { characterId }: any = useParams()
 
+    const [ character, setCharacter ] = useState<CharacterDetails>()
     const [ card, setCard ] = useState<CardAttributes>()
     const [ isLoading, setIsLoading ] = useState(true)
-    let searchingCard = false
+    const [ searchingCharacter, setSearchingCharacter] = useState(false)
 
-    if (!card && !searchingCard) {
-        searchingCard = true
+    if (!character && !searchingCharacter) {
+        setSearchingCharacter(true)
 
-        ServerConnector.getCardById(
-            cardId,
-            (card) => {
-                searchingCard = false
+        ServerConnector.getCharacterDetails(
+            characterId,
+            (characterData) => {
+                console.log(characterData) // TODO: DELETE
+
+                setCharacter(characterData)
+                setSearchingCharacter(false)
                 setIsLoading(false)
-                setCard(card)
+
+                ServerConnector.getCardById(
+                    characterId,
+                    setCard,
+                    (error) => setCard(
+                        {
+                            id: characterId,
+                            name: characterData.name,
+                            powerstats: {
+                                height: -1,
+                                weight: -1,
+                                intelligence: -1, 
+                                speed: -1, 
+                                power: -1, 
+                                combat: -1, 
+                                strength: -1
+                            },
+                            imageUrl: ''
+                        }
+                    )
+                )
+
             },
             (error) => {
-                searchingCard = false
+                setSearchingCharacter(false)
                 setIsLoading(false)
             }
         )
@@ -56,9 +81,9 @@ export function ShowCardContent({ renderWithTokenValidation, redirect, toast }: 
                                     <CircularProgress isIndeterminate color="green.300" />  
                                 </Center> : 
                                 
-                                card ? 
+                                character ? 
                                     // FIXME: Mostrar detalles del personaje en vez de solo la carta
-                                    <Card attributes={card} /> : 
+                                    <CharacterInsights character={character} card={card} /> : 
                                     <Alert status="error">
                                         <AlertIcon />
                                         There was an error processing your request. Maybe the card you are looking for doesn't exists.

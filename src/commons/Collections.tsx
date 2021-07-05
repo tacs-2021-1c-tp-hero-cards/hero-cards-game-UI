@@ -137,4 +137,15 @@ export class Collection<T> {
             return this.tail().foldLeft(func, func(seed, this.head()!))
         }
     }
+
+    makeString(separator?: string, defaultValue?: string): string {
+        return (
+            this.isEmpty() ?
+                defaultValue ?? '' :
+                this.tail().foldLeft(
+                    (seed, elem) => seed + (separator ?? '') + elem,
+                    this.head() + ''
+                )
+        )
+    }
 }

@@ -142,7 +142,7 @@ function DeckInsightsContent( { deck, redirect }: InsightsFullProps ) {
                 <SimpleGrid columns={[3, 6, 10]} gap='2'>
                     { 
                         cards.map( card => 
-                            <CardPreview card={card} onClick={() => redirect(`/cards/${card.id}`)} />
+                            <CardPreview card={card} onClick={() => redirect(`/characters/${card.id}`)} />
                         ).collection
                     }
                 </SimpleGrid>

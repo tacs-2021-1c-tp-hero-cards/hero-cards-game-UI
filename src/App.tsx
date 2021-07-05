@@ -21,11 +21,9 @@ import { useIdleTimer } from "react-idle-timer";
 function App() {
 
   const handleOnActive = (_: any) => { 
-    console.log('ON ACTIVEEEE')
     updateTokenExpiry() 
   }
   const handleOnAction = (_: any) => { 
-    console.log('ON ACTIONNNNN')
     updateTokenExpiry() 
   }
 
@@ -48,7 +46,7 @@ function App() {
           <Route exact path='/decks' component={DecksPage} />
           <Route exact path='/cards' component={CardsPage} />
           <Route path='/decks/:deckId' component={ShowDeckPage} />
-          <Route path='/cards/:cardId' component={ShowCardPage} />
+          <Route path='/characters/:characterId' component={ShowCardPage} />
           <Route path='/logInError' component={NotLoggedInPage} />
           <Route path='/error' component={UnexpectedErrorPage} />
           <Route component={NotFoundPage} />

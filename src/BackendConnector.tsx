@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { User } from "./components/User";
-import { CardAttributes } from "./components/Card";
+import { CardAttributes, CharacterDetails } from "./components/Card";
 import { DeckData, NewDeck, UpdatedDeck } from "./components/Deck";
 import { Match, MatchData } from "./components/Match"
 import config from "./config.json"
@@ -79,6 +79,17 @@ class BackendConnector {
   getCardByName(name: string, onSuccess: (data: CardAttributes[]) => void, onFailure: (error: any) => void) {
     BackendConnector.connector
       .get(`/cards/search/${name}`)
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
+  getCharacterDetails(id: string, onSuccess: (character: CharacterDetails) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .get(`/character/${id}`)
       .then(function (response) {
         onSuccess(response.data)
       })

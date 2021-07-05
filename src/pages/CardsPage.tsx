@@ -150,7 +150,7 @@ export function CardsContent({ toast, renderWithTokenValidation, redirect }: Car
                                                                         card={card} 
                                                                         height='20rem' 
                                                                         width='12rem' 
-                                                                        onClick={() => redirect(`/cards/${card.id}`)} />
+                                                                        onClick={() => redirect(`/characters/${card.id}`)} />
                                             ).collection
                                         } 
                                     </SimpleGrid>
