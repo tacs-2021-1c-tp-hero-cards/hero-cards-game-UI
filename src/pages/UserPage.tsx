@@ -2,33 +2,20 @@ import React from 'react'
 import { Box, Center, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { getCookie } from '../commons/Cookies'
-import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
+import { RedirectProps, TokenProps, UserSupportProps, withRedirect, withTokenValidation, withUserSupport } from '../commons/BehaviorAddOns'
 import { useState } from 'react'
 import { ServerConnector } from '../BackendConnector'
 import { getToken } from '../commons/Token'
 import { Collection } from '../commons/Collections'
 import { User } from '../components/User'
 
-export function UserPage() { return( withRedirect({}) (withTokenValidation) (UserContent) )}
+export function UserPage() { return( withRedirect({}) (withTokenValidation) (withUserSupport) (UserContent) )}
 
-type UserProps = RedirectProps & TokenProps
+type UserProps = RedirectProps & TokenProps & UserSupportProps
 
-function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
-    const [ user, setUser ] = useState<User>()
-    const [ searchingUser, setSearchingUser ] = useState(false)
-
-    if (!user && !searchingUser) {
-        setSearchingUser(true)
-
-        ServerConnector.getUsersByToken(
-            getToken()!,
-            (users) => {
-                setUser(Collection.wrap(users).head())
-                setSearchingUser(false)
-            },
-            (_) => setSearchingUser(false)
-        )
-    }
+function UserContent({ redirect, renderWithTokenValidation, user, getUser }: UserProps) {
+    
+    getUser()
 
     return( renderWithTokenValidation(content) )
 

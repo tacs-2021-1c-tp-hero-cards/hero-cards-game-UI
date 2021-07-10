@@ -1,6 +1,9 @@
 import { useToast } from "@chakra-ui/toast"
-import React from "react"
+import React, { useState } from "react"
 import { useHistory, useLocation } from "react-router-dom"
+import { ServerConnector } from "../BackendConnector"
+import { User } from "../components/User"
+import { Collection } from "./Collections"
 import { getToken, tokenIsAlive } from "./Token"
 
 type RendereableComponent = (_: any) => any
@@ -102,6 +105,39 @@ export function withReload(props: any) {
   const newProps = {
     ...props,
     reload: reload
+  }
+
+  return (component: RendereableComponent) => component(newProps)
+}
+
+export type UserSupportProps = {
+  user: User,
+  getUser: () => void
+}
+
+export function withUserSupport(props: any) {
+  const [ user, setUser ] = useState<User>()
+  const [ searchingUser, setSearchingUser ] = useState(false)
+
+  function getUser() {
+    if (!user && !searchingUser) {
+      setSearchingUser(true)
+
+      ServerConnector.getUsersByToken(
+          getToken()!,
+          (users) => {
+              setUser(Collection.wrap(users).head())
+              setSearchingUser(false)
+          },
+          (_) => setSearchingUser(false)
+      )
+    }
+  }
+
+  let newProps = {
+    ...props,
+    user: user,
+    getUser: getUser
   }
 
   return (component: RendereableComponent) => component(newProps)
