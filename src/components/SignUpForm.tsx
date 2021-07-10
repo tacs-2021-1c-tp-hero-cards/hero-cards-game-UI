@@ -1,6 +1,6 @@
 import React from 'react';
-import { Formik, Form } from 'formik';
-import { Button, Stack, Box } from '@chakra-ui/react';
+import { Formik, Form, Field } from 'formik';
+import { Button, Stack, Box, Checkbox, Text } from '@chakra-ui/react';
 import { FormField, RequiredGenericForm, RequiredPasswordForm } from './Form';
 import { validateUsername, validateFullName, validatePassword, validateRepeatedPassword } from '../commons/InputValidations';
 import { signUp } from '../commons/SignUp';
@@ -21,7 +21,8 @@ function SignUpFormContent({ redirect, toast }: SignUpFormProps) {
     password: '',
     repeatedPassword: '',
     token: '',
-    id: -1
+    id: -1,
+    isAdmin: false
   }
 
   function onSubmit(user: User, actions: any) {
@@ -61,6 +62,12 @@ function SignUpFormContent({ redirect, toast }: SignUpFormProps) {
                                        placeholder='Enter full name'
                                        />}/>
             </Stack>
+
+            <Stack direction='row' spacing='3px' alignItems='center'>
+              <Field type='checkbox' name='isAdmin' />
+              <Text>Is admin</Text>
+            </Stack>
+            
 
             <Stack direction='row'>
               <FormField id='password' 
