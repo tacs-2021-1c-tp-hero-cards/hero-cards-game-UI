@@ -7,6 +7,8 @@ export type User = {
     password: string,
     token: string,
     id: number,
+    userType: string,
+    admin: boolean
     //stats
 }
 

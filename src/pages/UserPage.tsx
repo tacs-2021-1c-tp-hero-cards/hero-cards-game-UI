@@ -1,17 +1,34 @@
 import React from 'react'
-import { Box, Button, Center, Stack, StackDivider, Text } from "@chakra-ui/react"
-import { logOut } from '../commons/LogOut'
+import { Box, Center, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { getCookie } from '../commons/Cookies'
 import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
-import { LogOutIcon, ManageIcon, PlayIcon, SearchIcon } from '../components/icons'
-import { SideBar } from "../components/SideBar"
+import { useState } from 'react'
+import { ServerConnector } from '../BackendConnector'
+import { getToken } from '../commons/Token'
+import { Collection } from '../commons/Collections'
+import { User } from '../components/User'
 
 export function UserPage() { return( withRedirect({}) (withTokenValidation) (UserContent) )}
 
 type UserProps = RedirectProps & TokenProps
 
 function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
+    const [ user, setUser ] = useState<User>()
+    const [ searchingUser, setSearchingUser ] = useState(false)
+
+    if (!user && !searchingUser) {
+        setSearchingUser(true)
+
+        ServerConnector.getUsersByToken(
+            getToken()!,
+            (users) => {
+                setUser(Collection.wrap(users).head())
+                setSearchingUser(false)
+            },
+            (_) => setSearchingUser(false)
+        )
+    }
 
     return( renderWithTokenValidation(content) )
 
@@ -19,7 +36,12 @@ function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
         return (
             <Stack spacing='1px'>
                 
-                <MainHeader logOutButton manageDecksButton searchCardsButton startAMatchButton />
+                {
+                    user && user.admin ?
+                        <MainHeader logOutButton manageDecksButton searchCardsButton startAMatchButton /> :
+                        <MainHeader logOutButton searchCardsButton startAMatchButton /> 
+                        
+                }
 
                 <Box bg='lightblue' borderRadius='7px'>
                     <Center padding='4' fontSize='xl' fontStyle='italic' fontWeight='bold'>

@@ -165,7 +165,7 @@ class BackendConnector {
 
   private getUsers(userParam: string, onSuccess: (data: User[]) => void, onFailure: (error: any) => void) {
     BackendConnector.connector
-      .get(`/users/search?${userParam}`)
+      .get(`/users/human?${userParam}`)
       .then(function (response) {
         onSuccess(response.data)
       })
