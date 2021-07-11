@@ -1,21 +1,16 @@
 import React from 'react'
 import { Box, Center, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
-import { getCookie } from '../commons/Cookies'
-import { RedirectProps, TokenProps, UserSupportProps, withRedirect, withTokenValidation, withUserSupport } from '../commons/BehaviorAddOns'
-import { useState } from 'react'
-import { ServerConnector } from '../BackendConnector'
-import { getToken } from '../commons/Token'
-import { Collection } from '../commons/Collections'
-import { User } from '../components/User'
+import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
+import store from '../store/Store'
 
-export function UserPage() { return( withRedirect({}) (withTokenValidation) (withUserSupport) (UserContent) )}
+export function UserPage() { return( withRedirect({}) (withTokenValidation) (UserContent) )}
 
-type UserProps = RedirectProps & TokenProps & UserSupportProps
+type UserProps = RedirectProps & TokenProps
 
-function UserContent({ redirect, renderWithTokenValidation, user, getUser }: UserProps) {
+function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
     
-    getUser()
+    const user = store.getState().user
 
     return( renderWithTokenValidation(content) )
 
@@ -32,7 +27,7 @@ function UserContent({ redirect, renderWithTokenValidation, user, getUser }: Use
 
                 <Box bg='lightblue' borderRadius='7px'>
                     <Center padding='4' fontSize='xl' fontStyle='italic' fontWeight='bold'>
-                        Welcome {getCookie('username')}!
+                        Welcome {store.getState().user.username}!
                     </Center>
                 </Box>
 

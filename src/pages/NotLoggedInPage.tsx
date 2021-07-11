@@ -12,7 +12,7 @@ function NotLoggedInContent({ redirect }: NotLoggedInProps) {
 
     return (
         <Stack spacing='1px'>
-            <MainHeader />
+            <MainHeader logInButton signUpButton />
 
             <Box bg='orange.400' borderRadius='7px'>
                 <Center padding='4' fontSize='xl' fontWeight='bold'>

@@ -1,12 +1,15 @@
 import { ServerConnector } from "../BackendConnector"
-import { getCookie, setCookie } from "./Cookies"
-import { clearToken } from "./Token"
+import store from "../store/Store"
+import { clearToken, getToken } from "./Token"
 
 
 export function logOut(onSuccess: () => void, onFailure: () => void) {
-    const token = getCookie('token')
+    const token = getToken() ?? store.getState().user.token
     clearToken()
-    ServerConnector.logOut(token!,
-                           (data) => onSuccess(),
+    ServerConnector.logOut(token,
+                           (data) => {
+                               store.dispatch({ type: 'user/deleteUser' })
+                               onSuccess()
+                            },
                            (error) => onFailure())
 }

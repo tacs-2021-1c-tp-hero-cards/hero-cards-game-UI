@@ -3,7 +3,10 @@ import React, { useState } from "react"
 import { useHistory, useLocation } from "react-router-dom"
 import { ServerConnector } from "../BackendConnector"
 import { User } from "../components/User"
+import { NotLoggedInPage } from "../pages/NotLoggedInPage"
+import store from "../store/Store"
 import { Collection } from "./Collections"
+import { logOut } from "./LogOut"
 import { getToken, tokenIsAlive } from "./Token"
 
 type RendereableComponent = (_: any) => any
@@ -65,30 +68,31 @@ export function withToast(props: any) {
 
 export type TokenProps = { 
   renderWithTokenValidation: (content: ComponentContent) => any,
-  validateToken: () => void 
+  // validateToken: () => void 
 }
 
 export function withTokenValidation(props: any) {
-  let history = useHistory()
 
   function logInError() {
-    history.push('/logInError')
+    logOut(() => {}, () => {})
+    
+    return <NotLoggedInPage />
   }
 
   function renderValidation(component: ComponentContent) {
-    return tokenIsAlive() ? component() : <>{logInError()}</>
+    return tokenIsAlive() ? component() : logInError()
   }
 
-  function validateToken() {
-    if (tokenIsAlive()) {
-      logInError()
-    }
-  }
+  // function validateToken() {
+  //   if (tokenIsAlive()) {
+  //     logInError()
+  //   }
+  // }
 
   const newProps = {
     ...props,
     renderWithTokenValidation: renderValidation,
-    validateToken: validateToken
+    // validateToken: validateToken
   }
 
   return (component: RendereableComponent) => component(newProps)
@@ -110,35 +114,3 @@ export function withReload(props: any) {
   return (component: RendereableComponent) => component(newProps)
 }
 
-export type UserSupportProps = {
-  user: User,
-  getUser: () => void
-}
-
-export function withUserSupport(props: any) {
-  const [ user, setUser ] = useState<User>()
-  const [ searchingUser, setSearchingUser ] = useState(false)
-
-  function getUser() {
-    if (!user && !searchingUser) {
-      setSearchingUser(true)
-
-      ServerConnector.getUsersByToken(
-          getToken()!,
-          (users) => {
-              setUser(Collection.wrap(users).head())
-              setSearchingUser(false)
-          },
-          (_) => setSearchingUser(false)
-      )
-    }
-  }
-
-  let newProps = {
-    ...props,
-    user: user,
-    getUser: getUser
-  }
-
-  return (component: RendereableComponent) => component(newProps)
-}

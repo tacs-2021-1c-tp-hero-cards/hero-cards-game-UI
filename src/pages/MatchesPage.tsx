@@ -1,35 +1,35 @@
 import React from 'react'
-import { Alert, AlertIcon, Button, Center, CircularProgress, Stack, StackDivider, Table, Tbody, Td, Tr, Text, Image } from "@chakra-ui/react"
+import { Button, Center, Stack, StackDivider, Table, Tbody, Td, Tr, Text, Image } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from '../commons/BehaviorAddOns'
 import { AiIcon, PlayIcon, UsersIcon } from '../components/icons'
 import { useState } from 'react'
 import { Collection } from '../commons/Collections'
 import { DeckData } from '../components/Deck'
-import { SubmitableInput } from '../components/SubmitableInput'
-import { isNonEmpty } from '../commons/InputValidations'
 import { AlertPopUp } from '../components/AlertPopUp'
 import { DecksSearchBox } from '../components/DecksSearchBox'
 import { CloseIcon } from '@chakra-ui/icons'
 import { sleep } from '../commons/Sleep'
-import { getCookie } from '../commons/Cookies'
 import { ServerConnector } from '../BackendConnector'
 import { UsersSearchBox } from '../components/UserSearchBox'
 import { User, UserPreview } from '../components/User'
+import { AI } from '../components/AI'
 import coin from '../coin.webp'
-import { getToken } from '../commons/Token'
 import { SubmitDataErrorToast } from '../commons/Toast'
+import store from '../store/Store'
 
 
 export function StartMatchPage() { return( withRedirect({}) (withTokenValidation) (withToast) (StartMatchContent) )}
 
 type UserProps = RedirectProps & TokenProps & ToastProps
 
-function StartMatchContent({ renderWithTokenValidation, validateToken, toast }: UserProps) {
+function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
     const [ matchType, setMatchType ] = useState<string>()
-    const [ oponent, setOponent ] = useState<User>()
-    const [ botPlayers, setBotPlayers ] = useState<Collection<User>>(Collection.empty())
-    const [ maybeOponent, setMaybeOponent ] = useState<User>()
+    const [ oponent, setOponent ] = useState<User | AI>()
+    const [ players, setPlayers ] = useState<Collection<User>>(Collection.empty())
+    const [ AiOponent, setAiOponent ] = useState<AI>()
+    const [ AIs, setAIs ] = useState<Collection<AI>>(Collection.empty())
+    const [ maybeOponent, setMaybeOponent ] = useState<User | AI>()
     const [ deck, setDeck ] = useState<DeckData>()
     const [ maybeDeck, setMaybeDeck ] = useState<DeckData>()
     const [ accepted, setAccepted ] = useState<boolean>(false)
@@ -82,10 +82,7 @@ function StartMatchContent({ renderWithTokenValidation, validateToken, toast }: 
                                     variant="solid"
                                     width='8rem'
                                     alignSelf='center'
-                                    onClick={() => {
-                                            setBotPlayers(bots())
-                                            setMatchType('AI')
-                                        } }>
+                                    onClick={() => setMatchType('AI')}>
                                 Let's go!
                             </Button>
                         </Stack>
@@ -102,7 +99,7 @@ function StartMatchContent({ renderWithTokenValidation, validateToken, toast }: 
                                     variant="solid"
                                     width='8rem'
                                     alignSelf='center'
-                                    onClick={() => setMatchType('normal') }>
+                                    onClick={() => setMatchType('NORMAL') }>
                                 Let's go!
                             </Button>
                         </Stack>
@@ -125,22 +122,7 @@ function StartMatchContent({ renderWithTokenValidation, validateToken, toast }: 
                     
                     <Stack >
                         
-                        { matchType === 'normal' ? 
-                            <UsersSearchBox onUserClick={setMaybeOponent} /> :
-                            <Table variant='striped' colorScheme='blue'> 
-                                <Tbody>
-                                    { 
-                                        botPlayers.map( bot => 
-                                            <Tr>
-                                                <Td borderRadius='1rem'>
-                                                    <UserPreview key={bot.token} user={bot} onClick={() => setMaybeOponent(bot)} />
-                                                </Td>
-                                            </Tr>
-                                        ).collection
-                                    } 
-                                </Tbody>
-                            </Table>
-                        }
+                        <UsersSearchBox userType={matchType!} onUserClick={setMaybeOponent} /> 
 
                         <AlertPopUp isOpen={maybeOponent != undefined}
                                     onClose={() => setMaybeOponent(undefined)}
@@ -243,34 +225,23 @@ function StartMatchContent({ renderWithTokenValidation, validateToken, toast }: 
 
     function tossCoin() {
         setCoinTossed(true)
-        const token = getToken()
 
-        token ?
-            ServerConnector.getUsersByToken(
-                token,
-                (users) => {
-                    ServerConnector.createMatch(
-                        {
-                            users: Collection.wrap(users).add(oponent!),
-                            deck: deck!
-                        },
-                        (match) => {
-                            console.log(match)
-                            sleep(3000).then(() => {
-                                setStarter(Collection.wrap(match.players).map(p => p.user.userName).head())
-                                setCoinTossed(false)
-                            })
-                        },
-                        (error) => {
-                            toast(SubmitDataErrorToast)
-                        }
-                    )
-                },
-                (error) => {
-                    validateToken()
-                }
-            ) :
-            validateToken()
+        ServerConnector.createMatch(
+            {
+                users: matchType === 'AI' ? Collection.from(store.getState().user) : Collection.from(store.getState().user, oponent!),
+                AIs: matchType === 'AI' ? Collection.from(oponent!) : Collection.empty(),
+                deck: deck!
+            },
+            (match) => {
+                sleep(3000).then(() => {
+                    setStarter(Collection.wrap(match.players).map(p => p.user.userName).head())
+                    setCoinTossed(false)
+                })
+            },
+            (_) => {
+                toast(SubmitDataErrorToast)
+            }
+        )
     }
 
     function tossCoinContent() {
@@ -312,26 +283,3 @@ function StartMatchContent({ renderWithTokenValidation, validateToken, toast }: 
     }
 }
 
-
-
-function bots(): Collection<User> {
-    return (
-        Collection.from(
-            {
-                username: 'Carl'
-            },
-            {
-                username: 'Lenny'
-            },
-            {
-                username: 'Bart'
-            },
-            {
-                username: 'Lisa'
-            },
-            {
-                username: 'Homer'
-            }
-        )
-    )
-}

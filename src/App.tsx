@@ -16,6 +16,7 @@ import { ShowCardPage } from "./pages/ShowCardPage"
 import { StartMatchPage } from "./pages/MatchesPage"
 import { updateTokenExpiry } from "./commons/Token";
 import { useIdleTimer } from "react-idle-timer";
+import store from "./store/Store"
 
 
 function App() {
@@ -30,6 +31,10 @@ function App() {
   useIdleTimer({
     onActive: handleOnActive,
     onAction: handleOnAction
+  })
+
+  store.subscribe(() => {
+      console.log(store.getState())
   })
 
   return (
@@ -47,8 +52,6 @@ function App() {
           <Route exact path='/cards' component={CardsPage} />
           <Route path='/decks/:deckId' component={ShowDeckPage} />
           <Route path='/characters/:characterId' component={ShowCardPage} />
-          <Route path='/logInError' component={NotLoggedInPage} />
-          <Route path='/error' component={UnexpectedErrorPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </Router>

@@ -4,6 +4,7 @@ import { CardAttributes, CharacterDetails } from "./components/Card";
 import { DeckData, NewDeck, UpdatedDeck } from "./components/Deck";
 import { Match, MatchData } from "./components/Match"
 import config from "./config.json"
+import { AI } from "./components/AI";
 
 
 class BackendConnector {
@@ -174,20 +175,42 @@ class BackendConnector {
       })
   }
 
+  getAIsByName(username: string, onSuccess: (data: AI[]) => void, onFailure: (error: any) => void) {
+    this.getAIs(onSuccess, onFailure, `user-name=${username}`)
+  
+  }
+
+  getAIsById(id: string, onSuccess: (data: AI[]) => void, onFailure: (error: any) => void) {
+    this.getAIs(onSuccess, onFailure, `user-id=${id}`)
+  }
+
+  getAIsByDificulty(difficulty: string, onSuccess: (data: AI[]) => void, onFailure: (error: any) => void) {
+    this.getAIs(onSuccess, onFailure, `difficulty=${difficulty}`)
+  }
+
+  getAIs(onSuccess: (data: AI[]) => void, onFailure: (error: any) => void, AIParam?: string) {
+    BackendConnector.connector
+      .get(`/users/ia${AIParam ? '?' + AIParam : ''}`)
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
   createMatch(match: Match, onSuccess: (match: MatchData) => void, onFailure: (error: any) => void) {
-    console.log(match)
     BackendConnector.connector
       .post('/users/matches', {
-          userIds: match.users.map(u => u.id).collection,
+          humanUserIds: match.users.map(u => u.id).collection,
+          iaUserIds: match.AIs.map(ai => ai.id).collection,
           deckId: match.deck.id
         }
       )
       .then(function (response) {
-        console.log(response.data)
         onSuccess(response.data)
       })
       .catch(function (error) {
-        console.log(error)
         onFailure(error)
       })
   }

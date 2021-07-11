@@ -91,7 +91,7 @@ function SideBarContent({
                                                 leftIcon={<LogOutIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
-                                                onClick={() => logOut(() => redirect('/'), () => redirect('/error'))}>
+                                                onClick={() => logOut(() => redirect('/'), () => redirect('/'))}>
                                             Log Out
                                         </Button> : 
                                         <></>

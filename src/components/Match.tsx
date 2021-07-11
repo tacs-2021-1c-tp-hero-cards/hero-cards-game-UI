@@ -5,7 +5,8 @@ import { Player } from "./Player"
 import { HistoricDuel } from "./Duel"
 
 export type Match = {
-    users: Collection<User>
+    users: Collection<User>,
+    AIs: Collection<User>,
     deck: DeckData
 }
 
