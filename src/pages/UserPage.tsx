@@ -20,7 +20,7 @@ function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
                 
                 {
                     user && user.admin ?
-                        <MainHeader logOutButton manageDecksButton searchCardsButton startAMatchButton /> :
+                        <MainHeader logOutButton manageDecksButton manageBotsButton searchCardsButton startAMatchButton /> :
                         <MainHeader logOutButton searchCardsButton startAMatchButton /> 
                         
                 }

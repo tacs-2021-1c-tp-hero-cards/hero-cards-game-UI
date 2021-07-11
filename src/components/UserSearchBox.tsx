@@ -92,7 +92,7 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
                 </Box>
     
                 <Box paddingLeft='3'>
-                    <FormLabel>'Search bots by difficulty'</FormLabel>
+                    <FormLabel>Search bots by difficulty</FormLabel>
                     <RadioGroup onChange={setDifficulty} value={difficulty}>
                         <Stack direction="row">
                             <Radio value="easy">Easy</Radio>
@@ -101,7 +101,7 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
                             <Radio value="crazy">Crazy</Radio>
 
                             <Button size='md'
-                                    width='15rem'
+                                    width='7rem'
                                     height='2.35rem' 
                                     colorScheme='linkedin'
                                     onClick={searchBotsByDifficulty} 
@@ -226,10 +226,11 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
                     setSearchBotsWithLimitIsLoading(false)
                     setIsLoading(false)
                     setUserError(false)
-                    const shuffled = Collection.wrap(AIs).random()
-                    setBots(isNonEmpty(limit) && (+limit >= 0) ? shuffled.take(limit) : shuffled)
+                    
+                    const shuffled = Collection.wrap(AIs).shuffle()
+                    setBots(isNonEmpty(limit) && (+limit >= 0) ? shuffled.take(+limit) : shuffled)
                 },
-                (_) => {
+                (error) => {
                     setSearchBotsWithLimitIsLoading(false)
                     setIsLoading(false)
                     setUserError(true)
@@ -259,13 +260,13 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
                             
                             users.isEmpty() ? 
                             
-                                <Text>No users to show</Text> : 
+                                <Text>No {lookingForAIs ? 'bots' : 'users'} to show</Text> : 
                                 
                                 <Table variant='striped' colorScheme='blue'> 
                                     <Tbody>
                                         { 
                                             users.map( user => 
-                                                <Tr>
+                                                <Tr key={user.id}>
                                                     <Td borderRadius='1rem'>
                                                         {user}
                                                     </Td>

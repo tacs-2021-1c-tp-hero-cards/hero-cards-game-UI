@@ -120,7 +120,7 @@ export function DecksSearchBox({ onDeckClick }: Props) {
                                     <Tbody>
                                         { 
                                             decks.map( deck => 
-                                                <Tr>
+                                                <Tr key={deck.id}>
                                                     <Td borderRadius='1rem'>
                                                         <DeckPreview key={deck.id} data={deck} onClick={() => onDeckClick(deck)} />
                                                     </Td>

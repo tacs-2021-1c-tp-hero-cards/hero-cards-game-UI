@@ -4,7 +4,7 @@ import { CardAttributes, CharacterDetails } from "./components/Card";
 import { DeckData, NewDeck, UpdatedDeck } from "./components/Deck";
 import { Match, MatchData } from "./components/Match"
 import config from "./config.json"
-import { AI } from "./components/AI";
+import { AI, AiData } from "./components/AI";
 
 
 class BackendConnector {
@@ -185,7 +185,7 @@ class BackendConnector {
   }
 
   getAIsByDificulty(difficulty: string, onSuccess: (data: AI[]) => void, onFailure: (error: any) => void) {
-    this.getAIs(onSuccess, onFailure, `difficulty=${difficulty}`)
+    this.getAIs(onSuccess, onFailure, `difficulty=${normalizeDifficulty(difficulty)}`)
   }
 
   getAIs(onSuccess: (data: AI[]) => void, onFailure: (error: any) => void, AIParam?: string) {
@@ -199,14 +199,29 @@ class BackendConnector {
       })
   }
 
-  createMatch(match: Match, onSuccess: (match: MatchData) => void, onFailure: (error: any) => void) {
+  createAI(AI: AiData, onSuccess: (id: number) => void, onFailure: (error: any) => void) {
     BackendConnector.connector
-      .post('/users/matches', {
-          humanUserIds: match.users.map(u => u.id).collection,
-          iaUserIds: match.AIs.map(ai => ai.id).collection,
-          deckId: match.deck.id
-        }
-      )
+      .post('/admin/users/ia', {
+        userName: AI.name,
+        difficulty: normalizeDifficulty(AI.difficulty)
+      })
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
+  createMatch(match: Match, onSuccess: (match: MatchData) => void, onFailure: (error: any) => void) {
+    const body = {
+      humanUserIds: match.users.map(u => u.id).collection,
+      iaUserIds: match.AIs.map(ai => ai.id).collection,
+      deckId: match.deck.id
+    }
+
+    BackendConnector.connector
+      .post('/users/matches', body)
       .then(function (response) {
         onSuccess(response.data)
       })
@@ -217,3 +232,23 @@ class BackendConnector {
 }
 
 export const ServerConnector = new BackendConnector()
+
+export function normalizeDifficulty(difficulty: string) {
+    switch(difficulty) {
+        case 'easy': return 'EASY'
+        case 'medium': return 'HALF'
+        case 'hard': return 'HARD'
+        case 'crazy': return 'RANDOM'
+        default : throw new Error("Unknown difficulty")
+    }
+}
+
+export function denormalizeDifficulty(difficulty: string) {
+    switch(difficulty) {
+        case 'EASY': return 'easy'
+        case 'HALF': return 'medium'
+        case 'HARD': return 'hard'
+        case 'RANDOM': return 'crazy'
+        default : throw new Error("Unknown difficulty")
+    }
+}

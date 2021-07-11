@@ -14,13 +14,7 @@ type FormProps = {
     label: string,
     placeholder: string
 }
-type CheckboxFormProps = FormProps & {
-    checkbox: (props: FormProps) => any
-}
 
-export function CustomCheckboxForm(props: CheckboxFormProps) {
-    return <UnrequiredFormInput props={props} input={props.checkbox} />
-}
 
 export function UnrequiredGenericForm(props: FormProps) {
     return <UnrequiredFormInput props={props} input={GenericFormInput} />

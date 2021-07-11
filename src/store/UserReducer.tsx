@@ -10,7 +10,7 @@ export default function userReducer(state = initialState, action: any) {
             return {
                 ...state,
                 username: user.userName,
-                userId: user.id,
+                id: user.id,
                 admin: user.admin,
                 token: user.token
             }

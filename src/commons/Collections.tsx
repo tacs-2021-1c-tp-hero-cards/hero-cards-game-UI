@@ -113,6 +113,19 @@ export class Collection<T> {
         return (this.get(random))
     }
 
+    shuffle(): Collection<T> {
+        const aux = this.slice().collection
+
+        for (var i = this.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = aux[i];
+            aux[i] = aux[j];
+            aux[j] = temp;
+        }
+
+        return Collection.wrap(aux)
+    }
+
     tail(): Collection<T> {
         return this.drop(1)
     }

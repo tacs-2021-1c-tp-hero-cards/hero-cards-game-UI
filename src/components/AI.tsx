@@ -1,5 +1,6 @@
 import React from "react"
 import { Stack, Text } from "@chakra-ui/react"
+import { denormalizeDifficulty } from "../BackendConnector"
 
 export type AI = {
     id: string,
@@ -9,6 +10,10 @@ export type AI = {
     userType: string
 }
 
+export type AiData = {
+    name: string,
+    difficulty: string
+}
 
 type Props = {
     AI: AI,
@@ -23,7 +28,7 @@ export function AiPreview({ AI, onClick }: Props) {
                 cursor='pointer'
                 onClick={() => onClick(AI)}>
             <Text fontWeight='bold' paddingLeft='1rem' >{AI.userName}</Text>
-            <Text fontWeight='bold' paddingLeft='1rem' >Difficulty: {AI.difficulty}</Text>
+            <Text fontWeight='bold' paddingLeft='1rem' >Difficulty: {denormalizeDifficulty(AI.difficulty)}</Text>
         </Stack>
     )
 }

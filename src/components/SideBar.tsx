@@ -2,7 +2,7 @@ import React from "react";
 import { Stack, Button, useDisclosure, Box, Drawer, DrawerOverlay, DrawerContent, Image, DrawerBody, DrawerHeader, Text, Center } from "@chakra-ui/react";
 import { RedirectProps, withRedirect } from "../commons/BehaviorAddOns";
 import { logOut } from "../commons/LogOut";
-import { LogOutIcon, ManageIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon } from "./icons";
+import { LogOutIcon, ManageIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon, AiIcon } from "./icons";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import logo from '../logo.png'
 
@@ -15,6 +15,7 @@ export type SideBarProps = {
     logOutButton?: boolean,
     userPageButton?: boolean,
     manageDecksButton?: boolean,
+    manageBotsButton?: boolean,
     searchCardsButton?: boolean,
     startAMatchButton?: boolean
 }
@@ -28,6 +29,7 @@ function SideBarContent({
                             logOutButton, 
                             userPageButton, 
                             manageDecksButton, 
+                            manageBotsButton, 
                             searchCardsButton, 
                             startAMatchButton 
                         }: Props) {
@@ -117,6 +119,18 @@ function SideBarContent({
                                                 textColor='gray.700'
                                                 onClick={() => redirect('/decks')}>
                                             Manage decks
+                                        </Button> : 
+                                        <></>
+                                }
+
+                                {
+                                    (manageBotsButton ?? false) ? 
+                                        <Button colorScheme="yellow"
+                                                leftIcon={<AiIcon />}
+                                                variant="solid"
+                                                textColor='gray.700'
+                                                onClick={() => redirect('/bots')}>
+                                            Manage bots
                                         </Button> : 
                                         <></>
                                 }

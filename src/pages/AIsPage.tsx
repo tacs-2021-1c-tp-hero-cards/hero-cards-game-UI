@@ -1,26 +1,25 @@
 import React from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
-import { CreateDeck } from "../components/CreateDeck";
+import { CreateBot } from "../components/CreateBot";
 import { StackDivider } from "@chakra-ui/react";
 import { AdminSupportProps, RedirectProps, TokenProps, withAdminValidation, withRedirect, withTokenValidation } from "../commons/BehaviorAddOns";
-import { DeckData } from "../components/Deck";
-import { DecksSearchBox } from "../components/DecksSearchBox"
+import { UsersSearchBox } from "../components/UserSearchBox";
 
 
-export function DecksPage() { return( withTokenValidation({}) (withRedirect) (withAdminValidation) (DecksContent) )}
+export function BotsPage() { return( withTokenValidation({}) (withRedirect) (withAdminValidation) (BotsContent) )}
 
 type DecksProps = TokenProps & RedirectProps & AdminSupportProps
 
-export function DecksContent({ renderWithTokenValidation, redirect, renderWithAdminValidation }: DecksProps) {
+function BotsContent({ renderWithTokenValidation, redirect, renderWithAdminValidation }: DecksProps) {
 
-    return( renderWithTokenValidation(() => renderWithAdminValidation(content)) )
+    return( renderWithTokenValidation(() => renderWithAdminValidation(content)))
 
     function content() {
         return(
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader logOutButton userPageButton searchCardsButton manageBotsButton />
+                    <MainHeader logOutButton userPageButton searchCardsButton manageDecksButton />
 
                     <Stack direction='row' spacing='1px'>
 
@@ -32,7 +31,7 @@ export function DecksContent({ renderWithTokenValidation, redirect, renderWithAd
                                 divider={<StackDivider borderColor='gray.500' />}>
 
                             <Stack spacing='3.5'>
-                                <Text fontWeight='bold' fontSize='xl'>Create deck</Text>
+                                <Text fontWeight='bold' fontSize='xl'>Create bot</Text>
 
                                 <Text fontSize='md' paddingLeft='3'>
                                     If you want to create a new deck, by selecting the cards it will contain,
@@ -40,11 +39,11 @@ export function DecksContent({ renderWithTokenValidation, redirect, renderWithAd
                                 </Text>
                                 
                                 <Box paddingLeft='3'>
-                                    <CreateDeck  alignSelf='left' />
+                                    <CreateBot  alignSelf='left' />
                                 </Box>
                             </Stack>
 
-                            <DecksSearchBox onDeckClick={ (deck: DeckData) => redirect(`/decks/${deck.id}`) }/>
+                            <UsersSearchBox userType='AI' onUserClick={() => {}}/>
                         
                         </Stack>
                     </Stack>

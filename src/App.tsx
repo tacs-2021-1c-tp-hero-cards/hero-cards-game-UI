@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-import React, { Component } from 'react'
+import React from 'react'
 import { HomePage } from './pages/HomePage'
 import { LogInPage } from './pages/LogInPage'
 import { NotFoundPage } from "./pages/NotFoundPage";
@@ -7,16 +7,14 @@ import { Box } from "@chakra-ui/layout";
 import theme from "./theme";
 import { SignUpPage } from "./pages/SignUpPage";
 import { UserPage } from "./pages/UserPage";
-import { NotLoggedInPage } from "./pages/NotLoggedInPage";
 import { DecksPage } from "./pages/DecksPage";
 import { CardsPage } from "./pages/CardsPage";
-import { UnexpectedErrorPage } from "./pages/UnexpectedErrorPage";
+import { BotsPage } from "./pages/AIsPage";
 import { ShowDeckPage } from "./pages/ShowDeckPage"
 import { ShowCardPage } from "./pages/ShowCardPage"
 import { StartMatchPage } from "./pages/MatchesPage"
 import { updateTokenExpiry } from "./commons/Token";
 import { useIdleTimer } from "react-idle-timer";
-import store from "./store/Store"
 
 
 function App() {
@@ -33,10 +31,6 @@ function App() {
     onAction: handleOnAction
   })
 
-  store.subscribe(() => {
-      console.log(store.getState())
-  })
-
   return (
     <Box bg={theme.backgroundColor}>
       <Router>
@@ -50,6 +44,7 @@ function App() {
           <Route path='/matches' component={StartMatchPage} />
           <Route exact path='/decks' component={DecksPage} />
           <Route exact path='/cards' component={CardsPage} />
+          <Route exact path='/bots' component={BotsPage} />
           <Route path='/decks/:deckId' component={ShowDeckPage} />
           <Route path='/characters/:characterId' component={ShowCardPage} />
           <Route component={NotFoundPage} />
