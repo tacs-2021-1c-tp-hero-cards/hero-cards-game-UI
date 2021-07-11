@@ -3,6 +3,7 @@ import React, { useState } from "react"
 import { useHistory, useLocation } from "react-router-dom"
 import { ServerConnector } from "../BackendConnector"
 import { User } from "../components/User"
+import { NotFoundPage } from "../pages/NotFoundPage"
 import { NotLoggedInPage } from "../pages/NotLoggedInPage"
 import store from "../store/Store"
 import { Collection } from "./Collections"
@@ -114,3 +115,21 @@ export function withReload(props: any) {
   return (component: RendereableComponent) => component(newProps)
 }
 
+
+export type AdminSupportProps = {
+  renderWithAdminValidation: (content: ComponentContent) => any
+}
+
+export function withAdminValidation(props: any) {
+
+  function renderValidation(component: ComponentContent) {
+    return store.getState().user.admin ? component() : <NotFoundPage />
+  }
+
+  const newProps = {
+    ...props,
+    renderWithAdminValidation: renderValidation
+  }
+
+  return (component: RendereableComponent) => component(newProps)
+}

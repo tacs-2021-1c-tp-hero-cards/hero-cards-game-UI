@@ -3,26 +3,26 @@ import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
 import { CreateDeck } from "../components/CreateDeck";
 import { StackDivider } from "@chakra-ui/react";
-import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from "../commons/BehaviorAddOns";
+import { AdminSupportProps, RedirectProps, TokenProps, withAdminValidation, withRedirect, withTokenValidation } from "../commons/BehaviorAddOns";
 import { DeckData } from "../components/Deck";
 import { DecksSearchBox } from "../components/DecksSearchBox"
 
 
-export function DecksPage() { return( withTokenValidation({}) (withRedirect) (DecksContent) )}
+export function DecksPage() { return( withTokenValidation({}) (withRedirect) (withAdminValidation) (DecksContent) )}
 
-type DecksProps = TokenProps & RedirectProps
+type DecksProps = TokenProps & RedirectProps & AdminSupportProps
 
-export function DecksContent({ renderWithTokenValidation, redirect }: DecksProps) {
+export function DecksContent({ renderWithTokenValidation, redirect, renderWithAdminValidation }: DecksProps) {
 
     // TODO: Agregar chequeo de autorización del usuario
 
-    return( renderWithTokenValidation(content) )
+    return( renderWithTokenValidation(renderWithAdminValidation(content)) )
 
     function content() {
         return(
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader userPageButton />
+                    <MainHeader logOutButton userPageButton searchCardsButton />
 
                     <Stack direction='row' spacing='1px'>
 
