@@ -14,9 +14,7 @@ type DecksProps = TokenProps & RedirectProps & AdminSupportProps
 
 export function DecksContent({ renderWithTokenValidation, redirect, renderWithAdminValidation }: DecksProps) {
 
-    // TODO: Agregar chequeo de autorización del usuario
-
-    return( renderWithTokenValidation(renderWithAdminValidation(content)) )
+    return( renderWithTokenValidation(() => renderWithAdminValidation(content)) )
 
     function content() {
         return(

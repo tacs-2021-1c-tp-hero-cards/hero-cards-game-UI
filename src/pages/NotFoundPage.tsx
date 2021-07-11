@@ -1,13 +1,20 @@
 import React from 'react'
 import { Box, Center, Image, Stack } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
+import { tokenIsAlive } from '../commons/Token'
 
 
 export function NotFoundPage() {
 
+    const isLoggedIn = tokenIsAlive()
+
     return(
         <Stack spacing='1px'>
-            <MainHeader />
+            {
+                isLoggedIn ? 
+                    <MainHeader logOutButton userPageButton searchCardsButton /> : 
+                    <MainHeader logInButton signUpButton />
+            }
 
             <Box bg='yellow.400' borderRadius='7px'>
                 <Center padding='4' fontSize='xl' fontWeight='bold'>
