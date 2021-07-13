@@ -1,4 +1,5 @@
 import { Collection } from "../commons/Collections"
+import store from "./Store"
 
 const initialState = {
     client: undefined,
@@ -18,9 +19,19 @@ export default function socketReducer(state = initialState, action: any) {
             }
         }
         case 'socket/pushNotification' : {
+            const previousNotifications: Collection<any> = Collection.consume(state.notifications)
+            console.log(previousNotifications)
             return {
                 ...state,
-                notifications: Collection.from(action.payload) //TODO: consider multiple notifications
+                notifications: previousNotifications.add(action.payload) 
+            }
+        }
+        case 'socket/removeNotification' : {
+            const previousNotifications: Collection<any> = Collection.consume(state.notifications)
+            console.log(previousNotifications)
+            return {
+                ...state,
+                notifications: previousNotifications.remove(action.payload) 
             }
         }
         case 'socket/setConfirmation' : {
@@ -46,6 +57,9 @@ export default function socketReducer(state = initialState, action: any) {
                 ...state,
                 duelUpdates: Collection.from(action.payload) //TODO: consider multiple duel updates
             }
+        }
+        case 'socket/clear' : {
+            return initialState
         }
         default :
             return state

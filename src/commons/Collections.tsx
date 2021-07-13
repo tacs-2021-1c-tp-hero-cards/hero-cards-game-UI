@@ -20,6 +20,10 @@ export class Collection<T> {
         return new Collection<T>([])
     }
 
+    static consume<T>(collection: Collection<T>): Collection<T> {
+        return collection
+    }
+
     isEmpty(): boolean {
         return this.collection.length === 0
     }

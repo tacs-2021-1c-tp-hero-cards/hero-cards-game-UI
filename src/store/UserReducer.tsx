@@ -17,8 +17,8 @@ export default function userReducer(state = initialState, action: any) {
                 token: user.token
             }
         }
-        case 'user/deleteUser' : {
-            return {}
+        case 'user/clear' : {
+            return initialState
         }
         default :
             return state

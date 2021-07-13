@@ -40,12 +40,7 @@ export function disconnect() {
 
     if (stompClient) {
         stompClient.disconnect();
-        store.dispatch({
-            type: 'socket/updateClient',
-            payload: {
-                client: undefined
-            }
-        })
+        store.dispatch({ type: 'socket/clear' })
     }
 }
 

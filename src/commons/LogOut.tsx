@@ -8,7 +8,7 @@ export function logOut(onSuccess: () => void, onFailure: () => void) {
     ServerConnector
         .logOut(
             () => {
-                store.dispatch({ type: 'user/deleteUser' })
+                store.dispatch({ type: 'user/clear' })
                 clearToken()
 
                 // Web socket disconnection
