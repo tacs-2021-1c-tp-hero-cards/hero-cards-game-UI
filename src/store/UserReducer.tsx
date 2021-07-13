@@ -1,6 +1,8 @@
 const initialState = {
     username: undefined,
-    userId: undefined
+    id: undefined,
+    admin: undefined,
+    token: undefined
 }
 
 export default function userReducer(state = initialState, action: any) {

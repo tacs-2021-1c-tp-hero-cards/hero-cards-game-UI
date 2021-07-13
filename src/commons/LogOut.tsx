@@ -1,6 +1,7 @@
 import { ServerConnector } from "../BackendConnector"
 import store from "../store/Store"
-import { clearToken, getToken } from "./Token"
+import { disconnect } from "../websocket/client"
+import { clearToken } from "./Token"
 
 
 export function logOut(onSuccess: () => void, onFailure: () => void) {
@@ -9,10 +10,18 @@ export function logOut(onSuccess: () => void, onFailure: () => void) {
             () => {
                 store.dispatch({ type: 'user/deleteUser' })
                 clearToken()
+
+                // Web socket disconnection
+                disconnect()
+
                 onSuccess()
                 },
             (_) => {
                 clearToken()
+
+                // Web socket disconnection
+                disconnect()
+
                 onFailure()
                 }
             )
