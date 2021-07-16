@@ -30,7 +30,7 @@ export function DecksSearchBox({ onDeckClick }: Props) {
                                     buttonLabel='Search'
                                     label='Search deck by name' 
                                     isValid={isNonEmpty}
-                                    onClick={searchDecksByName}
+                                    onSubmit={searchDecksByName}
                                     isLoading={searchByNameIsLoading} />
             </Box>
 
@@ -40,7 +40,7 @@ export function DecksSearchBox({ onDeckClick }: Props) {
                                     buttonLabel='Search'
                                     label='Search deck by id' 
                                     isValid={isNonEmpty}
-                                    onClick={searchDeckById}
+                                    onSubmit={searchDeckById}
                                     isLoading={searchByIdIsLoading} />
             </Box>
 

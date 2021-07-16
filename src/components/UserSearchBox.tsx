@@ -57,7 +57,7 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
                                         buttonLabel='Search'
                                         label='Search user by username' 
                                         isValid={isNonEmpty}
-                                        onClick={searchUsersByUsername}
+                                        onSubmit={searchUsersByUsername}
                                         isLoading={searchByUsernameIsLoading} />
                 </Box>
     
@@ -67,7 +67,7 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
                                         buttonLabel='Search'
                                         label='Search user by full name' 
                                         isValid={isNonEmpty}
-                                        onClick={searchUsersByFullName}
+                                        onSubmit={searchUsersByFullName}
                                         isLoading={searchByFullNameIsLoading} />
                 </Box>
     
@@ -87,7 +87,7 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
                                         buttonLabel='Search'
                                         label='Search bots by name' 
                                         isValid={isNonEmpty}
-                                        onClick={searchBotsByName}
+                                        onSubmit={searchBotsByName}
                                         isLoading={searchByUsernameIsLoading} />
                 </Box>
     
@@ -118,7 +118,7 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
                                         buttonLabel='Search'
                                         label='Search some random bots'
                                         isValid={() => true}
-                                        onClick={searchBotsWithLimit}
+                                        onSubmit={searchBotsWithLimit}
                                         isLoading={searchBotsWithLimitIsLoading} />
                 </Box>
     

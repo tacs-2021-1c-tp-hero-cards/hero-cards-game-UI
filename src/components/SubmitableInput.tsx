@@ -8,11 +8,11 @@ type InputProps = {
     buttonLabel: string,
     label?: string,
     isValid: (value: string) => boolean, 
-    onClick: (value: string) => void,
+    onSubmit: (value: string) => void,
     isLoading?: boolean
 }
 
-export function SubmitableInput({ id, placeHolder, buttonLabel, label, isValid, onClick, isLoading }: InputProps) {
+export function SubmitableInput({ id, placeHolder, buttonLabel, label, isValid, onSubmit, isLoading }: InputProps) {
   const [input, setInput] = useState('')
   const [isInvalid, setIsInvalid] = useState(false)
 
@@ -21,13 +21,21 @@ export function SubmitableInput({ id, placeHolder, buttonLabel, label, isValid, 
     setInput(value)
   }
 
-  function handleClick() {
+  function handleSubmit() {
     if (!isValid(input)) {
       setIsInvalid(true)
     } else {
-      onClick(input)
+      onSubmit(input)
     }
   }
+
+  function handleKeyDown(e: any) {
+    const trimmedText = e.target.value.trim()
+    // If the user pressed the Enter key:
+    if (e.key === 'Enter' && trimmedText) {
+      handleSubmit()
+    }
+  } 
 
   return (
     <Stack>
@@ -42,14 +50,15 @@ export function SubmitableInput({ id, placeHolder, buttonLabel, label, isValid, 
               fontStyle='italic'
               placeholder={placeHolder}
               onChange={(e) => handleChange(e.target.value)}
-              isInvalid={isInvalid} />
+              isInvalid={isInvalid} 
+              onKeyDown={handleKeyDown} />
         </Tooltip>
 
         <InputRightElement width='5rem'>
             <Button size='md'
                     width='15rem'
                     height='2.35rem' 
-                    onClick={handleClick} 
+                    onClick={handleSubmit} 
                     colorScheme='linkedin' 
                     isLoading={isLoading}>
                       

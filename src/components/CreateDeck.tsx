@@ -220,7 +220,7 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
                                                                     buttonLabel='Search'
                                                                     label='Search cards by name' 
                                                                     isValid={isNonEmpty}
-                                                                    onClick={searchCardsByName}
+                                                                    onSubmit={searchCardsByName}
                                                                     isLoading={searchByNameLoading} />
     
     
@@ -229,7 +229,7 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
                                                                     buttonLabel='Search'
                                                                     label='Search card by id' 
                                                                     isValid={isNonEmpty}
-                                                                    onClick={searchCardById}
+                                                                    onSubmit={searchCardById}
                                                                     isLoading={searchByIdLoading} />
                                                 
                                             </Stack>
