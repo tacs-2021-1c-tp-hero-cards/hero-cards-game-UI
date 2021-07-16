@@ -1,14 +1,22 @@
 import React from "react"
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Stack, Text } from "@chakra-ui/react"
 import store from "../store/Store"
+import { RedirectProps, ToastProps, withRedirect, withToast } from "../commons/BehaviorAddOns"
+import { ServerConnector } from "../BackendConnector"
+import { customToast } from "../commons/Toast"
 
 type NotificationProps = {
     matchId: number,
     username: string,
-    index: number
+    index: number,
+    preRedirect?: () => void
 }
 
-export function NotificationPreview({ matchId, username, index }: NotificationProps) {
+export function NotificationPreview(props: NotificationProps) { return withRedirect(props) (withToast) (NotificationPreviewContent) }
+
+type NotificationPreviewProps = NotificationProps & RedirectProps & ToastProps
+
+function NotificationPreviewContent({ matchId, username, index, preRedirect, redirect, toast }: NotificationPreviewProps) {
     const [isOpen, setIsOpen] = React.useState(false)
     const onClose = () => setIsOpen(false)
     const rejectRef = React.useRef<HTMLButtonElement>(null)
@@ -16,12 +24,19 @@ export function NotificationPreview({ matchId, username, index }: NotificationPr
     function accept() {
         store.dispatch({ type: 'socket/removeNotification', payload: index })
         // confirm match on server and redirect to match
+        /*ServerConnector.confirmMatch(
+            matchId, 
+            () => redirect(`/matches/${matchId}`), 
+            () => toast(customToast('Error', 'error', 'There seems to be a problem with the match')) 
+        )*/
+        toast(customToast('Accepted', 'success', 'The match has been accepted'))
         onClose()
     }
 
     function reject() {
         store.dispatch({ type: 'socket/removeNotification', payload: index })
         //reject match on server
+        toast(customToast('Rejected', 'warning', 'The match has been rejected'))
         onClose()
     }
 

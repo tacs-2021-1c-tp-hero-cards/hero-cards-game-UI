@@ -9,6 +9,7 @@ export default function userReducer(state = initialState, action: any) {
     switch(action.type) {
         case 'user/updateUser' : {
             let user = action.payload
+            
             return {
                 ...state,
                 username: user.userName,

@@ -4,13 +4,13 @@ import { User } from "./User"
 import { Player } from "./Player"
 import { HistoricDuel } from "./Duel"
 
-export type Match = {
-    users: Collection<User>,
-    AIs: Collection<User>,
-    deck: DeckData
+export type MatchCreation = {
+    userId: number,
+    userType: string,
+    deckId: number
 }
 
-export type MatchData = {
+export type Match = {
     id: number,
     players: Player[],
     deck: DeckHistoricData,

@@ -19,7 +19,7 @@ function BotsContent({ renderWithTokenValidation, redirect, renderWithAdminValid
         return(
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader logOutButton userPageButton searchCardsButton manageDecksButton />
+                    <MainHeader searchCardsButton manageDecksButton />
 
                     <Stack direction='row' spacing='1px'>
 
@@ -43,7 +43,7 @@ function BotsContent({ renderWithTokenValidation, redirect, renderWithAdminValid
                                 </Box>
                             </Stack>
 
-                            <UsersSearchBox userType='AI' onUserClick={() => {}}/>
+                            <UsersSearchBox userType='AI' onUserClick={() => { /* TODO: DO SOMETHING!*/}}/>
                         
                         </Stack>
                     </Stack>

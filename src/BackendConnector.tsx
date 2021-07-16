@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { User } from "./components/User";
 import { CardAttributes, CharacterDetails } from "./components/Card";
 import { DeckData, NewDeck, UpdatedDeck } from "./components/Deck";
-import { Match, MatchData } from "./components/Match"
+import { Match, MatchCreation } from "./components/Match"
 import config from "./config.json"
 import { AI, AiData } from "./components/AI";
 import { getToken } from "./commons/Token";
@@ -227,15 +227,9 @@ class BackendConnector {
       })
   }
 
-  createMatch(match: Match, onSuccess: (match: MatchData) => void, onFailure: (error: any) => void) {
-    const body = {
-      humanUserIds: match.users.map(u => u.id).collection,
-      iaUserIds: match.AIs.map(ai => ai.id).collection,
-      deckId: match.deck.id
-    }
-
+  createMatch(match: MatchCreation, onSuccess: (match: Match) => void, onFailure: (error: any) => void) {
     BackendConnector.connector
-      .post('/users/matches', body, this.headers())
+      .post('/matches', match, this.headers())
       .then(function (response) {
         onSuccess(response.data)
       })

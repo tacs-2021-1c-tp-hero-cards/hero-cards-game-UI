@@ -1,7 +1,7 @@
 import React from "react";
 import { Icon } from "@chakra-ui/react";
 import { BiBot } from "react-icons/bi"
-import { FiEdit, FiMoon, FiSearch, FiTool, FiTrash2, FiUser, FiUserPlus, FiUsers, FiZap } from "react-icons/fi"
+import { FiEdit, FiMoon, FiSearch, FiTool, FiTrash2, FiUser, FiUserPlus, FiUsers, FiZap, FiRepeat } from "react-icons/fi"
 
 export const NewUserIcon = () => <Icon as={FiUserPlus} />
 
@@ -22,3 +22,5 @@ export const DeleteIcon = () => <Icon as={FiTrash2} />
 export const EditIcon = () => <Icon as={FiEdit} />
 
 export const AiIcon = () => <Icon as={BiBot} />
+
+export const RetryIcon = () => <Icon as={FiRepeat} />

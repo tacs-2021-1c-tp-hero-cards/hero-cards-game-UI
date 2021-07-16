@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Center, Stack, StackDivider, Table, Tbody, Td, Tr, Text, Image } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from '../commons/BehaviorAddOns'
-import { AiIcon, PlayIcon, UsersIcon } from '../components/icons'
+import { AiIcon, PlayIcon, RetryIcon, UsersIcon } from '../components/icons'
 import { useState } from 'react'
 import { Collection } from '../commons/Collections'
 import { DeckData } from '../components/Deck'
@@ -26,15 +26,13 @@ type UserProps = RedirectProps & TokenProps & ToastProps
 function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
     const [ matchType, setMatchType ] = useState<string>()
     const [ oponent, setOponent ] = useState<User | AI>()
-    const [ players, setPlayers ] = useState<Collection<User>>(Collection.empty())
-    const [ AiOponent, setAiOponent ] = useState<AI>()
-    const [ AIs, setAIs ] = useState<Collection<AI>>(Collection.empty())
     const [ maybeOponent, setMaybeOponent ] = useState<User | AI>()
     const [ deck, setDeck ] = useState<DeckData>()
     const [ maybeDeck, setMaybeDeck ] = useState<DeckData>()
     const [ accepted, setAccepted ] = useState<boolean>(false)
     const [ starter, setStarter ] = useState<User>()
     const [ coinTossed, setCoinTossed ] = useState<boolean>(false)
+    const [ error, setError ] = useState<boolean>(false)
 
     return( renderWithTokenValidation(content) )
 
@@ -42,7 +40,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
         return (
             <Stack spacing='1px'>
                 
-                <MainHeader logOutButton userPageButton searchCardsButton />
+                <MainHeader searchCardsButton />
 
                 <Stack direction='row' spacing='1px'>
                 
@@ -82,7 +80,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                                     variant="solid"
                                     width='8rem'
                                     alignSelf='center'
-                                    onClick={() => setMatchType('AI')}>
+                                    onClick={() => setMatchType('IA')}>
                                 Let's go!
                             </Button>
                         </Stack>
@@ -167,6 +165,8 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
         setOponent(undefined)
 
         setMatchType(undefined)
+
+        setError(false)
     }
 
     function showDetailsContent() {
@@ -184,7 +184,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                         <Text>Your match will be created with this setup ¿Are you ok with this?</Text>
 
                         <Stack bgColor='teal.300' padding='1rem' borderRadius='0.4rem'>
-                            <Text>Yo have chosen to play against { matchType === 'AI' ? 'an AI' : 'another player' }</Text>
+                            <Text>Yo have chosen to play against { matchType === 'IA' ? 'an AI' : 'another player' }</Text>
                         </Stack>
 
                         <Stack bgColor='blue.300' padding='1rem' borderRadius='0.4rem' direction='row'>
@@ -228,9 +228,9 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
 
         ServerConnector.createMatch(
             {
-                users: matchType === 'AI' ? Collection.from(store.getState().user) : Collection.from(store.getState().user, oponent!),
-                AIs: matchType === 'AI' ? Collection.from(oponent!) : Collection.empty(),
-                deck: deck!
+                userId: +oponent?.id! ,
+                userType: matchType!, 
+                deckId: deck?.id!
             },
             (match) => {
                 sleep(3000).then(() => {
@@ -240,6 +240,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
             },
             (_) => {
                 toast(SubmitDataErrorToast)
+                setError(true)
             }
         )
     }
@@ -257,27 +258,40 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                     <Center fontSize='4xl'>Toss a coin</Center>
 
                     {
-                        starter ? 
-                            <Stack direction='row' spacing='4px' alignSelf='center'>
-                                <Text fontWeight='bold'>{starter!}</Text>
-                                <Text>will be the first to play</Text>
-                            </Stack> :
-
-                            coinTossed ? 
-                                <Image  boxSize='20rem' 
-                                        alignSelf='center'
-                                        src={coin}/> :
-
-                                <Button colorScheme='yellow' 
+                        error ?
+                            <Stack spacing='1rem' alignSelf='center'>
+                                <Text>There seems to be a problem creating your match</Text>
+                                <Text>Please, try again</Text>
+                                
+                                <Button colorScheme='orange' 
+                                        leftIcon={<RetryIcon />}
                                         width='8rem'
                                         variant='solid'
                                         alignSelf='center'
-                                        onClick={tossCoin}>
-                                    Test your luck
+                                        onClick={cleanFields}>
+                                    Start over
                                 </Button>
+                            </Stack> :
 
+                            starter ? 
+                                <Stack direction='row' spacing='4px' alignSelf='center'>
+                                    <Text fontWeight='bold'>{starter!}</Text>
+                                    <Text>will be the first to play</Text>
+                                </Stack> :
+
+                                coinTossed ? 
+                                    <Image  boxSize='20rem' 
+                                            alignSelf='center'
+                                            src={coin}/> :
+
+                                    <Button colorScheme='yellow' 
+                                            width='8rem'
+                                            variant='solid'
+                                            alignSelf='center'
+                                            onClick={tossCoin}>
+                                        Test your luck
+                                    </Button>
                     }
-                
             </Stack>
         )
     }

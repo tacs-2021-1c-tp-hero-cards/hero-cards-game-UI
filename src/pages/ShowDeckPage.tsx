@@ -56,7 +56,7 @@ export function ShowDeckContent({ renderWithTokenValidation, redirect, toast }: 
         return (
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader userPageButton manageDecksButton />
+                    <MainHeader manageDecksButton />
 
                     <Stack direction='row' spacing='1px'>
                         <Stack  padding='4'

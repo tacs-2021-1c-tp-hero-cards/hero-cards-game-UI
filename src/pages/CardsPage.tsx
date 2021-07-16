@@ -33,7 +33,7 @@ export function CardsContent({ toast, renderWithTokenValidation, redirect }: Car
         return(
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader userPageButton />
+                    <MainHeader />
 
                     <Stack direction='row' spacing='1px'>
                         <Stack  bg='gray.300'

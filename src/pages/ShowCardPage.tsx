@@ -66,7 +66,7 @@ export function ShowCardContent({ renderWithTokenValidation, redirect, toast }: 
         return (
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader userPageButton searchCardsButton />
+                    <MainHeader searchCardsButton />
 
                     <Stack direction='row' spacing='1px'>
                         <Stack  bg='gray.300'
