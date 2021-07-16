@@ -241,6 +241,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
             (_) => {
                 toast(SubmitDataErrorToast)
                 setError(true)
+                setCoinTossed(false)
             }
         )
     }
