@@ -6,13 +6,13 @@ import store from "../store/Store";
 export function connect() {
     const token = getToken();
 
-    let socket = new WebSocket(`ws://localhost:8080/user`);
+    let socket = new WebSocket('ws://localhost:8080/user');
 
     const stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function (frame: any) {
 
-        console.log('Connected: ' + frame)
+        console.log(`Connected: ${frame}`)
 
         // Notifications
         stompClient.subscribe(`/topic/user/${token}/notifications`, handleNotification)

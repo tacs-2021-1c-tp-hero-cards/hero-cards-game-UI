@@ -97,7 +97,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                                     variant="solid"
                                     width='8rem'
                                     alignSelf='center'
-                                    onClick={() => setMatchType('NORMAL') }>
+                                    onClick={() => setMatchType('HUMAN') }>
                                 Let's go!
                             </Button>
                         </Stack>

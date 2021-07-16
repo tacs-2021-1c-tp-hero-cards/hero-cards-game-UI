@@ -42,7 +42,8 @@ function SideBarContent({
 
     const [ notifications, setNotifications ] = useState<Collection<any>>(Collection.empty())
 
-    const unsubscribe = store.subscribe(() => setNotifications(Collection.consume(store.getState().socket.notifications)))
+    const unsubscribe = store.subscribe(() => setNotifications(Collection.wrap(store.getState().socket.notifications)))
+    unsubscribe() // TODO: remove when redux works fine
 
     const isLoggedIn = tokenIsAlive()
 

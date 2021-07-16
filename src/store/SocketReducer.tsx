@@ -3,11 +3,11 @@ import store from "./Store"
 
 const initialState = {
     client: undefined,
-    notifications: Collection.empty(),
-    confirmations: Collection.empty(),
-    rejections: Collection.empty(),
-    abortions: Collection.empty(),
-    duelUpdates: Collection.empty()
+    notifications: [],
+    confirmations: [],
+    rejections: [],
+    abortions: [],
+    duelUpdates: []
 }
 
 export default function socketReducer(state = initialState, action: any) {
@@ -19,43 +19,43 @@ export default function socketReducer(state = initialState, action: any) {
             }
         }
         case 'socket/pushNotification' : {
-            const previousNotifications: Collection<any> = Collection.consume(state.notifications)
+            const previousNotifications = Collection.wrap(state.notifications)
             console.log(previousNotifications)
             return {
                 ...state,
-                notifications: previousNotifications.add(action.payload) 
+                notifications: previousNotifications.add(action.payload).collection
             }
         }
         case 'socket/removeNotification' : {
-            const previousNotifications: Collection<any> = Collection.consume(state.notifications)
+            const previousNotifications = Collection.wrap(state.notifications)
             console.log(previousNotifications)
             return {
                 ...state,
-                notifications: previousNotifications.remove(action.payload) 
+                notifications: previousNotifications.remove(action.payload).collection 
             }
         }
         case 'socket/setConfirmation' : {
             return {
                 ...state,
-                confrimations: Collection.from(action.payload) //TODO: consider multiple confirmations
+                confrimations: action.payload //TODO: consider multiple confirmations
             }
         }
         case 'socket/setRejection' : {
             return {
                 ...state,
-                rejections: Collection.from(action.payload) //TODO: consider multiple rejections
+                rejections: action.payload //TODO: consider multiple rejections
             }
         }
         case 'socket/setAbortion' : {
             return {
                 ...state,
-                abortions: Collection.from(action.payload) //TODO: consider multiple abortions
+                abortions: action.payload //TODO: consider multiple abortions
             }
         }
         case 'socket/setDuelUpdate' : {
             return {
                 ...state,
-                duelUpdates: Collection.from(action.payload) //TODO: consider multiple duel updates
+                duelUpdates: action.payload //TODO: consider multiple duel updates
             }
         }
         case 'socket/clear' : {
