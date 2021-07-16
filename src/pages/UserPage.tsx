@@ -2,7 +2,8 @@ import React from 'react'
 import { Box, Center, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
-import store from '../store/Store'
+import { State } from '../store/State'
+import { useSelector } from 'react-redux'
 
 export function UserPage() { return( withRedirect({}) (withTokenValidation) (UserContent) )}
 
@@ -10,7 +11,11 @@ type UserProps = RedirectProps & TokenProps
 
 function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
     
-    const user = store.getState().user
+    function getUser(state: State) {
+        return state.user
+    }
+
+    const user = useSelector(getUser)
 
     return( renderWithTokenValidation(content) )
 
@@ -27,7 +32,7 @@ function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
 
                 <Box bg='lightblue' borderRadius='7px'>
                     <Center padding='4' fontSize='xl' fontStyle='italic' fontWeight='bold'>
-                        Welcome {store.getState().user.username}!
+                        Welcome {user.username}!
                     </Center>
                 </Box>
 

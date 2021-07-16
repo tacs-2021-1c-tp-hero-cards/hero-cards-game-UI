@@ -1,14 +1,14 @@
 import React, { useState } from "react"
 import { AddIcon, CloseIcon } from "@chakra-ui/icons"
-import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, 
-        DrawerHeader, DrawerBody, Stack, Box, FormLabel, Input, InputGroup, DrawerFooter, 
-        StackDivider, InputRightElement, Checkbox, SimpleGrid, IconButton, Text, CircularProgress, Center, Tooltip } from "@chakra-ui/react"
+import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Stack, Box, 
+        FormLabel, DrawerFooter, StackDivider, Checkbox, SimpleGrid, IconButton, Text, CircularProgress, 
+        Center, Tooltip } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { FormField, UnrequiredGenericForm } from "./Form"
 import { isNonEmpty, nonEmpty } from "../commons/InputValidations"
 import { Card, CardAttributes, isInvalidCard } from "./Card"
 import { NewDeck } from "./Deck"
-import { Collection } from "../commons/Collections"
+import Collection from "../commons/Collections"
 import { ServerConnector } from "../BackendConnector"
 import { SubmitableInput } from "./SubmitableInput"
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns"

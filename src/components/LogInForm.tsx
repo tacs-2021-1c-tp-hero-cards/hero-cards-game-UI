@@ -1,14 +1,12 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { Button, Stack, Box, useToast, Icon } from '@chakra-ui/react';
+import { Button, Stack, Box } from '@chakra-ui/react';
 import { FormField, UnrequiredGenericForm, UnrequiredPasswordForm } from './Form';
 import { validateUsername, validatePassword } from '../commons/InputValidations';
 import { logIn } from '../commons/LogIn';
-import { useHistory } from 'react-router';
 import { SubmitDataErrorToast } from '../commons/Toast';
 import { User } from './User';
 import { RedirectProps, ToastProps, withRedirect, withToast } from '../commons/BehaviorAddOns';
-import { FiUser } from 'react-icons/fi';
 import { UserIcon } from './icons';
  
 
@@ -18,12 +16,14 @@ type LogInFormProps = RedirectProps & ToastProps
 
 function LogInFormContent({ redirect, toast }: LogInFormProps) {
 
-  const initialValues = {
+  const initialValues: User = {
     userName: '',
     fullName: '',
     password: '',
     token: '',
-    id: -1
+    id: -1,
+    userType: '',
+    admin: false
   }
 
   function onSubmit(user: User, actions: any) {

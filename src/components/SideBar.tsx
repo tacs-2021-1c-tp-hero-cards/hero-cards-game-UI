@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { Stack, Button, useDisclosure, Box, Drawer, DrawerOverlay, DrawerContent, Image, DrawerBody, DrawerHeader, Text, Center, 
         StackDivider } from "@chakra-ui/react"
 import { RedirectProps, withRedirect } from "../commons/BehaviorAddOns"
@@ -6,10 +6,10 @@ import { logOut } from "../commons/LogOut"
 import { LogOutIcon, ManageIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon, AiIcon } from "./icons";
 import { HamburgerIcon } from "@chakra-ui/icons"
 import logo from '../logo.png'
-import store from "../store/Store"
-import { Collection } from "../commons/Collections"
-import { NotificationPreview } from "./Notification"
+import { Notification, NotificationPreview } from "./Notification"
 import { tokenIsAlive } from "../commons/Token";
+import { useSelector, shallowEqual } from 'react-redux'
+import { State } from "../store/State";
 
 
 export function SideBar(props: SideBarProps) { return (withRedirect(props) (SideBarContent))}
@@ -40,10 +40,14 @@ function SideBarContent({
     const { isOpen, onOpen, onClose } = useDisclosure()
     const firstField = React.useRef<HTMLButtonElement>(null)
 
-    const [ notifications, setNotifications ] = useState<Collection<any>>(Collection.empty())
+    function getNotifications(state: State) {
+        return (state.socket.notifications.map((n: Notification, index: number) => 
+                    <NotificationPreview matchId={n.matchId} username={n.username} index={index} />
+                )
+        )
+    }
 
-    const unsubscribe = store.subscribe(() => setNotifications(Collection.wrap(store.getState().socket.notifications)))
-    unsubscribe() // TODO: remove when redux works fine
+    const notifications = useSelector(getNotifications, shallowEqual)
 
     const isLoggedIn = tokenIsAlive()
 
@@ -63,10 +67,7 @@ function SideBarContent({
                     <DrawerHeader bgColor='gray.300' borderBottomWidth="1px" height='20'>
                         <Stack>
                             <Stack  direction='row' 
-                                    onClick={() => {
-                                        unsubscribe() 
-                                        redirect('/')
-                                    }} 
+                                    onClick={() => redirect('/')} 
                                     cursor='pointer' 
                                     width='7.5rem' >
                                 <Image boxSize='3.5rem' src={logo} />
@@ -86,10 +87,7 @@ function SideBarContent({
                                                 leftIcon={<UserIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
-                                                onClick={() => {
-                                                    unsubscribe() 
-                                                    redirect('/user')
-                                                }}>
+                                                onClick={() => redirect('/user')}>
                                             My hub
                                         </Button> :
                                         <></>
@@ -102,15 +100,7 @@ function SideBarContent({
                                                 variant="solid"
                                                 textColor='gray.700'
                                                 onClick={() => 
-                                                    logOut(
-                                                        () => {
-                                                            unsubscribe() 
-                                                            redirect('/')
-                                                        }, 
-                                                        () => {
-                                                            unsubscribe() 
-                                                            redirect('/')
-                                                        })}>
+                                                    logOut(() => redirect('/'), () => redirect('/'))}>
                                             Log Out
                                         </Button> : 
                                         <></>
@@ -122,10 +112,7 @@ function SideBarContent({
                                                 leftIcon={<UserIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
-                                                onClick={() => {
-                                                    unsubscribe() 
-                                                    redirect('/logIn')
-                                                }}>
+                                                onClick={() => redirect('/logIn')}>
                                             Log In
                                         </Button> : 
                                         <></>
@@ -137,10 +124,7 @@ function SideBarContent({
                                                 leftIcon={<NewUserIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
-                                                onClick={() => {
-                                                    unsubscribe() 
-                                                    redirect('/signUp')
-                                                }}>
+                                                onClick={() => redirect('/signUp')}>
                                             Sign Up
                                         </Button> : 
                                         <></>
@@ -152,10 +136,7 @@ function SideBarContent({
                                                 leftIcon={<ManageIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
-                                                onClick={() => {
-                                                    unsubscribe() 
-                                                    redirect('/decks')
-                                                }}>
+                                                onClick={() => redirect('/decks')}>
                                             Manage decks
                                         </Button> : 
                                         <></>
@@ -167,10 +148,7 @@ function SideBarContent({
                                                 leftIcon={<AiIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
-                                                onClick={() => {
-                                                    unsubscribe() 
-                                                    redirect('/bots')
-                                                }}>
+                                                onClick={() => redirect('/bots')}>
                                             Manage bots
                                         </Button> : 
                                         <></>
@@ -182,10 +160,7 @@ function SideBarContent({
                                                 leftIcon={<SearchIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
-                                                onClick={() => {
-                                                    unsubscribe() 
-                                                    redirect('/cards')
-                                                }}>
+                                                onClick={() => redirect('/cards')}>
                                             Search cards
                                         </Button> :
                                         <></>
@@ -197,10 +172,7 @@ function SideBarContent({
                                                 leftIcon={<PlayIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
-                                                onClick={() => {
-                                                    unsubscribe() 
-                                                    redirect('/matches')
-                                                }}>
+                                                onClick={() => redirect('/matches')}>
                                             Start a match
                                         </Button> : 
                                         <></>
@@ -211,11 +183,7 @@ function SideBarContent({
                                         <Stack>
                                             <Text>Notifications:</Text>
                                             <Stack divider={<StackDivider borderColor='gray' />} spacing='0.5rem'>
-                                                {
-                                                    notifications.map((n, index) => 
-                                                            <NotificationPreview matchId={n.matchId} username={n.user.username} index={index} preRedirect={unsubscribe}/>
-                                                        ).collection
-                                                }
+                                                {notifications.collection}
                                             </Stack>
                                         </Stack> :
                                         <></>

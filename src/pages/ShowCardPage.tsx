@@ -5,7 +5,7 @@ import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTok
 import { MainHeader } from '../components/MainHeader'
 import { ServerConnector } from '../BackendConnector'
 import { useState } from 'react'
-import { Card, CardAttributes, CharacterDetails, CharacterInsights } from '../components/Card'
+import { CardAttributes, CharacterDetails, CharacterInsights } from '../components/Card'
 
 export function ShowCardPage() { return( withRedirect({}) (withTokenValidation) (withToast) (ShowCardContent) )}
 

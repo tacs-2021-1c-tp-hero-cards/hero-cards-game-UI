@@ -20,7 +20,7 @@ export function DecksContent({ renderWithTokenValidation, redirect, renderWithAd
         return(
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader logOutButton searchCardsButton manageBotsButton />
+                    <MainHeader searchCardsButton manageBotsButton />
 
                     <Stack direction='row' spacing='1px'>
 

@@ -1,9 +1,9 @@
 import { IMessage, Stomp } from "@stomp/stompjs";
 import { getToken } from "../commons/Token";
-import store from "../store/Store";
-
+import { useDispatch, useSelector } from "react-redux"
 
 export function connect() {
+    const dispatch = useDispatch()
     const token = getToken();
 
     let socket = new WebSocket('ws://localhost:8080/user');
@@ -30,7 +30,7 @@ export function connect() {
         stompClient.subscribe(`/topic/user/${token}/nextDuel`, handleDuelUpdate) 
         
         // Update client
-        store.dispatch({
+        dispatch({
             type: 'socket/updateClient',
             payload: {
                 client: stompClient
@@ -40,11 +40,12 @@ export function connect() {
 }
 
 export function disconnect() {
-    let stompClient = store.getState().socket.client
+    const dispatch = useDispatch()
+    let stompClient = useSelector((state: any) => state.socket.client)
 
     if (stompClient) {
         stompClient.disconnect();
-        store.dispatch({ type: 'socket/clear' })
+        dispatch({ type: 'socket/clear' })
     }
 
     console.log('Disconnected')
@@ -52,50 +53,60 @@ export function disconnect() {
 
 
 function handleNotification(notification: IMessage) {
+    const dispatch = useDispatch()
+
     console.log("new notification")
     console.log(notification.body)
 
-    store.dispatch({
+    dispatch({
         type: 'socket/pushNotification',
         payload: JSON.parse(notification.body).content
     })
 }
 
 function handleConfirmation(confirmation: IMessage) {
+    const dispatch = useDispatch()
+    
     console.log("match confirmed")
     console.log(confirmation.body)
 
-    store.dispatch({
+    dispatch({
         type: 'socket/setConfirmations',
         payload: JSON.parse(confirmation.body).content
     })
 }
 
 function handleRejection(rejection: IMessage) {
+    const dispatch = useDispatch()
+    
     console.log("match rejected")
     console.log(rejection.body)
     
-    store.dispatch({
+    dispatch({
         type: 'socket/setRejections',
         payload: JSON.parse(rejection.body).content
     })
 }
 
 function handleAbortion(abortion: IMessage) {
+    const dispatch = useDispatch()
+    
     console.log("match aborted")
     console.log(abortion.body)
     
-    store.dispatch({
+    dispatch({
         type: 'socket/setAbortions',
         payload: JSON.parse(abortion.body).content
     })
 }
 
 function handleDuelUpdate(duelUpdate: IMessage) {
+    const dispatch = useDispatch()
+    
     console.log("duel updated")
     console.log(duelUpdate.body)
     
-    store.dispatch({
+    dispatch({
         type: 'socket/setDuelUpdate',
         payload: JSON.parse(duelUpdate.body).content
     })

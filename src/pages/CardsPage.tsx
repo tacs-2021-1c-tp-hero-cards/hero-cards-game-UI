@@ -1,16 +1,14 @@
 import React from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
-import { CreateDeck } from "../components/CreateDeck";
-import { Alert, AlertIcon, Button, Center, CircularProgress, SimpleGrid, StackDivider, Table, Tbody, Td, Tr } from "@chakra-ui/react";
+import { Alert, AlertIcon, Center, CircularProgress, SimpleGrid, StackDivider } from "@chakra-ui/react";
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns";
-import { DeckData, DeckPreview } from "../components/Deck";
+import { DeckData } from "../components/Deck";
 import { ServerConnector } from "../BackendConnector";
-import { Collection } from "../commons/Collections";
+import Collection from "../commons/Collections";
 import { useState } from "react";
 import { SubmitableInput } from "../components/SubmitableInput";
 import { isNonEmpty } from "../commons/InputValidations";
-import { UserIcon } from "../components/icons";
 import { CardPreview } from "../components/Card";
 
 

@@ -1,22 +1,21 @@
 import React from "react"
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Stack, Text } from "@chakra-ui/react"
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, 
+        Stack, Text } from "@chakra-ui/react"
 import store from "../store/Store"
 import { RedirectProps, ToastProps, withRedirect, withToast } from "../commons/BehaviorAddOns"
-import { ServerConnector } from "../BackendConnector"
 import { customToast } from "../commons/Toast"
 
-type NotificationProps = {
+export type Notification = {
     matchId: number,
     username: string,
     index: number,
-    preRedirect?: () => void
 }
 
-export function NotificationPreview(props: NotificationProps) { return withRedirect(props) (withToast) (NotificationPreviewContent) }
+export function NotificationPreview(props: Notification) { return withRedirect(props) (withToast) (NotificationPreviewContent) }
 
-type NotificationPreviewProps = NotificationProps & RedirectProps & ToastProps
+type NotificationPreviewProps = Notification & RedirectProps & ToastProps
 
-function NotificationPreviewContent({ matchId, username, index, preRedirect, redirect, toast }: NotificationPreviewProps) {
+function NotificationPreviewContent({ matchId, username, index, redirect, toast }: NotificationPreviewProps) {
     const [isOpen, setIsOpen] = React.useState(false)
     const onClose = () => setIsOpen(false)
     const rejectRef = React.useRef<HTMLButtonElement>(null)

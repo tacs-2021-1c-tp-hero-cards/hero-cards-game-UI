@@ -2,7 +2,7 @@ import { ServerConnector } from "../BackendConnector"
 import { setToken } from "./Token"
 import { User } from "../components/User"
 import store from "../store/Store"
-import { Collection } from "./Collections"
+import Collection from "./Collections"
 import { connect } from "../websocket/client"
 
 

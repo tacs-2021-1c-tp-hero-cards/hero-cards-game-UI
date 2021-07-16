@@ -1,4 +1,4 @@
-import { Collection } from "../commons/Collections"
+import Collection from "../commons/Collections"
 import { capitalize, split } from "lodash"
 
 export function capitalizeEveryWord(string: string): string {

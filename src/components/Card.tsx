@@ -1,6 +1,6 @@
-import { Box, Center, Stack, StackDivider, Text, Image, Checkbox, Tooltip } from "@chakra-ui/react"
+import { Box, Center, Stack, StackDivider, Text, Image, Tooltip } from "@chakra-ui/react"
 import React from "react"
-import { Collection } from "../commons/Collections"
+import Collection from "../commons/Collections"
 
 
 export type CardAttributes = {

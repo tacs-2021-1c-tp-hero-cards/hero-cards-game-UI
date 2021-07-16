@@ -1,8 +1,9 @@
-import { createStore, Store } from "redux"
+import { AnyAction, createStore, Store } from "redux"
 import rootReducer from "./Reducer"
 import storage from "redux-persist/lib/storage"
 import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1"
 import { persistReducer } from 'redux-persist'
+import { State } from "./State"
 
 
 export const config = {
@@ -11,7 +12,7 @@ export const config = {
     stateReconciler: autoMergeLevel1
 }
 
-const persisted = persistReducer(config, rootReducer)
+const persisted = persistReducer<State, AnyAction>(config, rootReducer)
 
 const store: Store = createStore(persisted)
 

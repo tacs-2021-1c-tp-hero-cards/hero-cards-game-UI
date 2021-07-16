@@ -1,5 +1,5 @@
 
-export class Collection<T> {
+export default class Collection<T> {
     collection: T[]
     length: number
 

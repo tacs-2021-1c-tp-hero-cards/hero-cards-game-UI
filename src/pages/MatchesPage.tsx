@@ -1,10 +1,10 @@
 import React from 'react'
-import { Button, Center, Stack, StackDivider, Table, Tbody, Td, Tr, Text, Image } from "@chakra-ui/react"
+import { Button, Center, Stack, StackDivider, Text, Image } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from '../commons/BehaviorAddOns'
 import { AiIcon, PlayIcon, RetryIcon, UsersIcon } from '../components/icons'
 import { useState } from 'react'
-import { Collection } from '../commons/Collections'
+import Collection from '../commons/Collections'
 import { DeckData } from '../components/Deck'
 import { AlertPopUp } from '../components/AlertPopUp'
 import { DecksSearchBox } from '../components/DecksSearchBox'
@@ -12,11 +12,10 @@ import { CloseIcon } from '@chakra-ui/icons'
 import { sleep } from '../commons/Sleep'
 import { ServerConnector } from '../BackendConnector'
 import { UsersSearchBox } from '../components/UserSearchBox'
-import { User, UserPreview } from '../components/User'
+import { User } from '../components/User'
 import { AI } from '../components/AI'
 import coin from '../coin.webp'
 import { SubmitDataErrorToast } from '../commons/Toast'
-import store from '../store/Store'
 
 
 export function StartMatchPage() { return( withRedirect({}) (withTokenValidation) (withToast) (StartMatchContent) )}

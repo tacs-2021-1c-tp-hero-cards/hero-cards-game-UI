@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { Button, Stack, Box, Checkbox, Text } from '@chakra-ui/react';
+import { Button, Stack, Box, Text } from '@chakra-ui/react';
 import { FormField, RequiredGenericForm, RequiredPasswordForm } from './Form';
 import { validateUsername, validateFullName, validatePassword, validateRepeatedPassword } from '../commons/InputValidations';
 import { signUp } from '../commons/SignUp';
@@ -15,14 +15,15 @@ type SignUpFormProps = RedirectProps & ToastProps
 
 function SignUpFormContent({ redirect, toast }: SignUpFormProps) {
 
-  const initialValues = {
+  const initialValues: User & { repeatedPassword: string } = {
     userName: '',
     fullName: '',
     password: '',
     repeatedPassword: '',
     token: '',
     id: -1,
-    isAdmin: false
+    admin: false,
+    userType: 'HUMAN'
   }
 
   function onSubmit(user: User, actions: any) {

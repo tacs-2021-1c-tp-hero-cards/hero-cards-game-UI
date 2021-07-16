@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Alert, AlertIcon, Box, Center, CircularProgress, Stack, Table, Tbody, Td, Tr, Text } from "@chakra-ui/react";
 import { SubmitableInput } from "./SubmitableInput"
 import { isNonEmpty } from "../commons/InputValidations"
-import { Collection } from "../commons/Collections"
+import Collection from "../commons/Collections"
 import { DeckData, DeckPreview } from "./Deck"
 import { ServerConnector } from "../BackendConnector"
 

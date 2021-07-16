@@ -1,16 +1,16 @@
-import { Collection } from "../commons/Collections"
-import store from "./Store"
+import Collection from "../commons/Collections"
+import { SocketData } from "./State"
 
-const initialState = {
+const initialState: SocketData = {
     client: undefined,
-    notifications: [],
-    confirmations: [],
-    rejections: [],
-    abortions: [],
-    duelUpdates: []
+    notifications: Collection.empty(),
+    confirmations: Collection.empty(),
+    rejections: Collection.empty(),
+    abortions: Collection.empty(),
+    duelUpdates: Collection.empty()
 }
 
-export default function socketReducer(state = initialState, action: any) {
+export default function socketReducer(state = initialState, action: any): SocketData {
     switch(action.type) {
         case 'socket/updateClient' : {
             return {
@@ -19,25 +19,25 @@ export default function socketReducer(state = initialState, action: any) {
             }
         }
         case 'socket/pushNotification' : {
-            const previousNotifications = Collection.wrap(state.notifications)
+            const previousNotifications = state.notifications
             console.log(previousNotifications)
             return {
                 ...state,
-                notifications: previousNotifications.add(action.payload).collection
+                notifications: previousNotifications.add(action.payload)
             }
         }
         case 'socket/removeNotification' : {
-            const previousNotifications = Collection.wrap(state.notifications)
+            const previousNotifications = state.notifications
             console.log(previousNotifications)
             return {
                 ...state,
-                notifications: previousNotifications.remove(action.payload).collection 
+                notifications: previousNotifications.remove(action.payload)
             }
         }
         case 'socket/setConfirmation' : {
             return {
                 ...state,
-                confrimations: action.payload //TODO: consider multiple confirmations
+                confirmations: action.payload //TODO: consider multiple confirmations
             }
         }
         case 'socket/setRejection' : {

@@ -1,14 +1,12 @@
 import { useToast } from "@chakra-ui/toast"
-import React, { useState } from "react"
+import React from "react"
 import { useHistory, useLocation } from "react-router-dom"
-import { ServerConnector } from "../BackendConnector"
 import { User } from "../components/User"
 import { NotFoundPage } from "../pages/NotFoundPage"
 import { NotLoggedInPage } from "../pages/NotLoggedInPage"
 import store from "../store/Store"
-import { Collection } from "./Collections"
 import { logOut } from "./LogOut"
-import { getToken, tokenIsAlive } from "./Token"
+import { tokenIsAlive } from "./Token"
 
 type RendereableComponent = (_: any) => any
 type ComponentContent = () => any

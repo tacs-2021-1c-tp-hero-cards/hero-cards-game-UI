@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Alert, AlertIcon, Box, Center, CircularProgress, Stack, Table, Tbody, Td, Tr, Text, Radio, RadioGroup, FormLabel, Button } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, Center, CircularProgress, Stack, Table, Tbody, Td, Tr, Text, Radio, RadioGroup, FormLabel, 
+        Button } from "@chakra-ui/react";
 import { SubmitableInput } from "./SubmitableInput"
 import { isNonEmpty } from "../commons/InputValidations"
-import { Collection } from "../commons/Collections"
+import Collection from "../commons/Collections"
 import { ServerConnector } from "../BackendConnector"
 import { User, UserPreview } from "./User";
 import { AI, AiPreview } from "./AI";

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Center, Stack, StackDivider, HStack, Button, Icon } from "@chakra-ui/react"
+import { Box, Center, Stack, StackDivider, HStack, Button } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
 import { NewUserIcon, UserIcon } from '../components/icons'

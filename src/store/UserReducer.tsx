@@ -1,11 +1,13 @@
-const initialState = {
+import { UserData } from "./State"
+
+const initialState: UserData = {
     username: undefined,
     id: undefined,
     admin: undefined,
     token: undefined
 }
 
-export default function userReducer(state = initialState, action: any) {
+export default function userReducer(state = initialState, action: any): UserData {
     switch(action.type) {
         case 'user/updateUser' : {
             let user = action.payload

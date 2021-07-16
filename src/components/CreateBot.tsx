@@ -1,16 +1,11 @@
 import React, { useState } from "react"
-import { AddIcon, CloseIcon } from "@chakra-ui/icons"
-import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, 
-        DrawerHeader, DrawerBody, Stack, Box, FormLabel, Input, InputGroup, DrawerFooter, 
-        StackDivider, InputRightElement, Checkbox, SimpleGrid, IconButton, Text, CircularProgress, Center, Tooltip, Radio, RadioGroup, FormControl } from "@chakra-ui/react"
-import { Field, Form, Formik } from "formik"
+import { AddIcon } from "@chakra-ui/icons"
+import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Stack, Box, 
+        FormLabel, DrawerFooter, StackDivider, Radio, RadioGroup } from "@chakra-ui/react"
+import { Form, Formik } from "formik"
 import { FormField, UnrequiredGenericForm } from "./Form"
-import { isNonEmpty, nonEmpty } from "../commons/InputValidations"
-import { Card, CardAttributes, isInvalidCard } from "./Card"
-import { NewDeck } from "./Deck"
-import { Collection } from "../commons/Collections"
+import { nonEmpty } from "../commons/InputValidations"
 import { ServerConnector } from "../BackendConnector"
-import { SubmitableInput } from "./SubmitableInput"
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns"
 import { customToast, SubmitDataErrorToast } from "../commons/Toast"
 import { AiData } from "./AI"

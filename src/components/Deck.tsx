@@ -1,7 +1,7 @@
 import React from "react"
-import { Box, Center, Stack, StackDivider, Text, Image, SimpleGrid } from "@chakra-ui/react"
+import { Box, Center, Stack, StackDivider, Text, SimpleGrid } from "@chakra-ui/react"
 import { CardAttributes, CardPreview } from "./Card"
-import { Collection } from "../commons/Collections"
+import Collection from "../commons/Collections"
 import { capitalizeEveryWord } from "../commons/StringUtils"
 import { RedirectProps, withRedirect } from "../commons/BehaviorAddOns"
 
