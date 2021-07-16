@@ -24,7 +24,7 @@ export function StartMatchPage() { return( withRedirect({}) (withTokenValidation
 type UserProps = RedirectProps & TokenProps & ToastProps
 
 function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
-    const [ matchType, setMatchType ] = useState<string>()
+    const [ oponentType, setOponentType ] = useState<string>()
     const [ oponent, setOponent ] = useState<User | AI>()
     const [ maybeOponent, setMaybeOponent ] = useState<User | AI>()
     const [ deck, setDeck ] = useState<DeckData>()
@@ -48,7 +48,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                     accepted ? tossCoinContent() :
                                 deck ? showDetailsContent() :
                                         oponent ? chooseDeckContent() :
-                                                    matchType ? chooseOponentContent() : chooseMatchTypeContent()
+                                                    oponentType ? chooseOponentContent() : chooseMatchTypeContent()
                 }
 
                 </Stack>
@@ -80,7 +80,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                                     variant="solid"
                                     width='8rem'
                                     alignSelf='center'
-                                    onClick={() => setMatchType('IA')}>
+                                    onClick={() => setOponentType('IA')}>
                                 Let's go!
                             </Button>
                         </Stack>
@@ -97,7 +97,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                                     variant="solid"
                                     width='8rem'
                                     alignSelf='center'
-                                    onClick={() => setMatchType('HUMAN') }>
+                                    onClick={() => setOponentType('HUMAN') }>
                                 Let's go!
                             </Button>
                         </Stack>
@@ -120,7 +120,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                     
                     <Stack >
                         
-                        <UsersSearchBox userType={matchType!} onUserClick={setMaybeOponent} /> 
+                        <UsersSearchBox userType={oponentType!} onUserClick={setMaybeOponent} /> 
 
                         <AlertPopUp isOpen={maybeOponent != undefined}
                                     onClose={() => setMaybeOponent(undefined)}
@@ -164,7 +164,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
         setMaybeOponent(undefined)
         setOponent(undefined)
 
-        setMatchType(undefined)
+        setOponentType(undefined)
 
         setError(false)
     }
@@ -184,7 +184,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                         <Text>Your match will be created with this setup ¿Are you ok with this?</Text>
 
                         <Stack bgColor='teal.300' padding='1rem' borderRadius='0.4rem'>
-                            <Text>Yo have chosen to play against { matchType === 'IA' ? 'an AI' : 'another player' }</Text>
+                            <Text>Yo have chosen to play against { oponentType === 'IA' ? 'an AI' : 'another player' }</Text>
                         </Stack>
 
                         <Stack bgColor='blue.300' padding='1rem' borderRadius='0.4rem' direction='row'>
@@ -229,7 +229,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
         ServerConnector.createMatch(
             {
                 userId: +oponent?.id! ,
-                userType: matchType!, 
+                userType: oponentType!, 
                 deckId: deck?.id!
             },
             (match) => {
