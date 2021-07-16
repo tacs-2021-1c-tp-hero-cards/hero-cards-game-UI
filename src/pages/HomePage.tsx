@@ -13,7 +13,7 @@ export function HomePage() {
       <Stack direction='row' spacing='1px'>
         <Stack spacing='1px'>
 
-          <Image src={'https://pressover.news/wp-content/uploads/2019/04/dc-marvel.jpg'} borderRadius='7px' />
+          <Image src={'https://pressover.news/wp-content/uploads/2019/04/dc-marvel.jpg'} borderRadius='7px' fit='cover' width='120rem'/>
 
         </Stack>
 
