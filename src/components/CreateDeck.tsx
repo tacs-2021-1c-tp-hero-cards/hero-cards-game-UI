@@ -156,7 +156,7 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
 
     function updateAllCards(checked: boolean) {
       if(checked) {
-        let cards = availableCards.filter(card => !selectedCards.any(c => card.id === c.id))
+        let cards = availableCards.filter(card => !selectedCards.any(c => card.id === c.id) && !isInvalidCard(card))
         setSelected(selectedCards.concat(cards))
 
       } else {

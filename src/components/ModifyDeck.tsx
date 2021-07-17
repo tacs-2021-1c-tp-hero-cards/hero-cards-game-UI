@@ -36,7 +36,7 @@ function ModifyDeckContent({ alignSelf, deck, buttonWidth, renderWithTokenValida
     const [ selectedCards, setSelectedCards ] = useState(Collection.wrap(deck.cards))
     const [ availableCards, setAvailableCards ] = useState(Collection.empty<CheckedCardAttributes>())
 
-    let allChecked = availableCards.all(card => card.checked)
+    let allChecked = availableCards.filter(card => !isInvalidCard(card)).all(card => card.checked)
     let isIndeterminate = availableCards.any(card => card.checked) && !allChecked
 
 
@@ -160,7 +160,7 @@ function ModifyDeckContent({ alignSelf, deck, buttonWidth, renderWithTokenValida
 
     function updateAllCards(checked: boolean) {
       if(checked) {
-        let cards = availableCards.filter(card => !selectedCards.any(c => card.id === c.id))
+        let cards = availableCards.filter(card => !selectedCards.any(c => card.id === c.id) && !isInvalidCard(card))
         setSelected(selectedCards.concat(cards))
 
       } else {

@@ -62,7 +62,7 @@ export function DeckPreview( { data, onClick, hideCardsTooltip }: Props ) {
                 <SimpleGrid columns={[3, 6, 12]} gap='2'>
                     { 
                         cards.take(24).map( card => 
-                            <CardPreview card={card} height='100px' hideTooltip={hideCardsTooltip} />
+                            <CardPreview key={card.id} card={card} height='100px' hideTooltip={hideCardsTooltip} />
                         ).collection
                     }
                 </SimpleGrid>
@@ -143,7 +143,7 @@ function DeckInsightsContent( { deck, redirect }: InsightsFullProps ) {
                 <SimpleGrid columns={[3, 6, 10]} gap='2'>
                     { 
                         cards.map( card => 
-                            <CardPreview card={card} onClick={() => redirect(`/characters/${card.id}`)} />
+                            <CardPreview key={card.id} card={card} onClick={() => redirect(`/characters/${card.id}`)} />
                         ).collection
                     }
                 </SimpleGrid>
