@@ -1,4 +1,3 @@
-import Collection from '../commons/Collections'
 import { Notification } from '../components/Notification'
 
 export type State = {

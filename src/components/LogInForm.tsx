@@ -6,15 +6,16 @@ import { validateUsername, validatePassword } from '../commons/InputValidations'
 import { logIn } from '../commons/LogIn';
 import { SubmitDataErrorToast } from '../commons/Toast';
 import { User } from './User';
-import { RedirectProps, StateProps, ToastProps, withRedirect, withState, withToast } from '../commons/BehaviorAddOns';
+import { RedirectProps, ToastProps, withRedirect, withToast } from '../commons/BehaviorAddOns';
 import { UserIcon } from './icons';
+import { updateState } from '../store/hooks';
  
 
-export function LogInForm() { return( withRedirect({}) (withToast) (withState) (LogInFormContent) )}
+export function LogInForm() { return( withRedirect({}) (withToast) (LogInFormContent) )}
 
-type LogInFormProps = RedirectProps & ToastProps & StateProps
+type LogInFormProps = RedirectProps & ToastProps
 
-function LogInFormContent({ redirect, toast, updateState }: LogInFormProps) {
+function LogInFormContent({ redirect, toast }: LogInFormProps) {
 
   const initialValues: User = {
     userName: '',

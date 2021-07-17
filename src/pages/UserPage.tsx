@@ -2,8 +2,8 @@ import React from 'react'
 import { Box, Center, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
-import { State } from '../store/State'
 import { useSelector } from 'react-redux'
+import { RootState } from '../store/Store'
 
 export function UserPage() { return( withRedirect({}) (withTokenValidation) (UserContent) )}
 
@@ -11,7 +11,7 @@ type UserProps = RedirectProps & TokenProps
 
 function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
     
-    function getUser(state: State) {
+    function getUser(state: RootState) {
         return state.user
     }
 

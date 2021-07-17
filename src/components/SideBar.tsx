@@ -1,7 +1,7 @@
 import React from "react"
 import { Stack, Button, useDisclosure, Box, Drawer, DrawerOverlay, DrawerContent, Image, DrawerBody, DrawerHeader, Text, Center, 
         StackDivider } from "@chakra-ui/react"
-import { RedirectProps, StateProps, withRedirect, withState } from "../commons/BehaviorAddOns"
+import { RedirectProps, withRedirect } from "../commons/BehaviorAddOns"
 import { logOut } from "../commons/LogOut"
 import { LogOutIcon, ManageIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon, AiIcon } from "./icons";
 import { HamburgerIcon } from "@chakra-ui/icons"
@@ -9,13 +9,12 @@ import logo from '../logo.png'
 import { Notification, NotificationPreview } from "./Notification"
 import { tokenIsAlive } from "../commons/Token";
 import { shallowEqual } from 'react-redux'
-import { State } from "../store/State";
 import Collection from "../commons/Collections";
-import { updateState, useGetState } from '../store/hooks'
-import store from "../store/Store";
+import { useGetState } from '../store/hooks'
+import { RootState } from "../store/Store";
 
 
-export function SideBar(props: SideBarProps) { return (withRedirect(props) (withState) (SideBarContent))}
+export function SideBar(props: SideBarProps) { return (withRedirect(props) (SideBarContent))}
 
 export type SideBarProps = {
     hideHubButton?: boolean,
@@ -27,11 +26,10 @@ export type SideBarProps = {
     startAMatchButton?: boolean
 }
 
-type Props = RedirectProps & StateProps & SideBarProps
+type Props = RedirectProps & SideBarProps
 
 function SideBarContent({ 
                             redirect,
-                            getState,
                             hideHubButton, 
                             logInButton, 
                             signUpButton, 
@@ -44,7 +42,7 @@ function SideBarContent({
     const { isOpen, onOpen, onClose } = useDisclosure()
     const firstField = React.useRef<HTMLButtonElement>(null)
 
-    function getNotifications(state: State) {
+    function getNotifications(state: RootState) {
         return (state.socket.notifications.map((n: Notification, index: number) => 
                     <NotificationPreview key={index} matchId={n.matchId} username={n.username} index={index} />
                 )
@@ -58,10 +56,6 @@ function SideBarContent({
     return (
         <Box>
             <Button leftIcon={<HamburgerIcon />} variant='ghost' onClick={onOpen}  size='lg' width='1rem' colorScheme={Collection.wrap(notifications).isEmpty() ? 'gray' : 'red'} />
-            <Button leftIcon={<HamburgerIcon />} variant='ghost' onClick={() => updateState({
-        type: 'socket/pushNotification',
-        payload: {matchId: 42, username: 'Lalala', index: 0}
-    })}  size='lg' width='1rem' colorScheme={'yellow'} />
 
             <Drawer isOpen={isOpen}
                     placement="left"

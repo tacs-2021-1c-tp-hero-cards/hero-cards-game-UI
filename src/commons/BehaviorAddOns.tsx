@@ -1,11 +1,9 @@
 import { useToast } from "@chakra-ui/toast"
 import React from "react"
-import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux"
 import { useHistory, useLocation } from "react-router-dom"
-import { AnyAction, Dispatch } from "redux"
 import { NotFoundPage } from "../pages/NotFoundPage"
 import { NotLoggedInPage } from "../pages/NotLoggedInPage"
-import store, { AppDispatch, RootState } from "../store/Store"
+import store from "../store/Store"
 import { logOut } from "./LogOut"
 import { tokenIsAlive } from "./Token"
 
@@ -133,22 +131,3 @@ export function withAdminValidation(props: any) {
   return (component: RendereableComponent) => component(newProps)
 }
 
-
-export type StateProps = {
-  updateState: Dispatch<AnyAction>,
-  getState: TypedUseSelectorHook<RootState>
-}
-
-export function withState(props: any) {
-
-  const updateState = () => useDispatch<AppDispatch>()
-  const getState: TypedUseSelectorHook<RootState> = useSelector
-
-  const newProps = {
-    ...props,
-    updateState: updateState(),
-    getState: getState
-  }
-
-  return (component: RendereableComponent) => component(newProps)
-}

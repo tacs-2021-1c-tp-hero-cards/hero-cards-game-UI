@@ -1,5 +1,6 @@
 import React from "react"
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button } from "@chakra-ui/react"
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, 
+        Button } from "@chakra-ui/react"
 
 type Props = {
     isOpen: boolean,

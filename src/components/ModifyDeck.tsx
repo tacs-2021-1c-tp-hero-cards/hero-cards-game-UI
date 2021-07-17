@@ -11,7 +11,8 @@ import { DeckData, UpdatedDeck } from "./Deck"
 import Collection from "../commons/Collections"
 import { ServerConnector } from "../BackendConnector"
 import { SubmitableInput } from "./SubmitableInput"
-import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation, withReload, ReloadProps } from "../commons/BehaviorAddOns"
+import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation, withReload, 
+        ReloadProps } from "../commons/BehaviorAddOns"
 import { customToast, SubmitDataErrorToast } from "../commons/Toast"
 import { EditIcon } from "./icons"
 
