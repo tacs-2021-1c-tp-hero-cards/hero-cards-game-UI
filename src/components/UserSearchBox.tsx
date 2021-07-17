@@ -11,10 +11,11 @@ import { AI, AiPreview } from "./AI";
 
 type Props = {
     userType: string,
+    fontSize?: string,
     onUserClick: (_: User | AI) => void
 }
 
-export function UsersSearchBox({ userType, onUserClick }: Props) {
+export function UsersSearchBox({ userType, fontSize, onUserClick }: Props) {
 
     const [ users, setUsers ] = useState(Collection.empty<User>())
     const [ isLoading, setIsLoading ] = useState(false)
@@ -26,7 +27,7 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
     const [ userError, setUserError ] = useState(false)
     const [ difficulty, setDifficulty ] = useState('easy')
 
-    const lookingForAIs = userType === 'AI'
+    const lookingForAIs = userType === 'IA'
 
     return (lookingForAIs ? renderBotsSearchbox() : renderUsersSearchbox())
 
@@ -50,13 +51,14 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
     function renderUsersSearchbox() {
         return (
             <Stack spacing='3.5'>
-                <Text fontWeight='bold' fontSize='xl'>Search users</Text>
+                <Text fontWeight='bold' fontSize='2xl'>Search users</Text>
                 
                 <Box paddingLeft='3'>
                     <SubmitableInput    id='searchUserByUsername' 
                                         placeHolder='Please enter username'
                                         buttonLabel='Search'
-                                        label='Search user by username' 
+                                        label='Search user by username'
+                                        fontSize={fontSize} 
                                         isValid={isNonEmpty}
                                         onSubmit={searchUsersByUsername}
                                         isLoading={searchByUsernameIsLoading} />
@@ -67,6 +69,7 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
                                         placeHolder="Please enter user's full name"
                                         buttonLabel='Search'
                                         label='Search user by full name' 
+                                        fontSize={fontSize}
                                         isValid={isNonEmpty}
                                         onSubmit={searchUsersByFullName}
                                         isLoading={searchByFullNameIsLoading} />
@@ -80,31 +83,33 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
     function renderBotsSearchbox() {
         return (
             <Stack spacing='3.5'>
-                <Text fontWeight='bold' fontSize='xl'>Search bots</Text>
+                <Text fontWeight='bold' fontSize='2xl'>Search bots</Text>
                 
                 <Box paddingLeft='3'>
                     <SubmitableInput    id='searchBotsByName' 
                                         placeHolder="Please enter bot's name"
                                         buttonLabel='Search'
                                         label='Search bots by name' 
+                                        fontSize={fontSize}
                                         isValid={isNonEmpty}
                                         onSubmit={searchBotsByName}
                                         isLoading={searchByUsernameIsLoading} />
                 </Box>
     
                 <Box paddingLeft='3'>
-                    <FormLabel>Search bots by difficulty</FormLabel>
+                    <FormLabel><Text fontSize={fontSize ?? 'xl'}>Search bots by difficulty</Text></FormLabel>
                     <RadioGroup onChange={setDifficulty} value={difficulty}>
-                        <Stack direction="row">
-                            <Radio value="easy">Easy</Radio>
-                            <Radio value="medium">Medium</Radio>
-                            <Radio value="hard">Hard</Radio>
-                            <Radio value="crazy">Crazy</Radio>
+                        <Stack direction="row" spacing='1.5rem'>
+                            <Radio value="easy"><Text fontSize={fontSize ?? 'xl'}>Easy</Text></Radio>
+                            <Radio value="medium"><Text fontSize={fontSize ?? 'xl'}>Medium</Text></Radio>
+                            <Radio value="hard"><Text fontSize={fontSize ?? 'xl'}>Hard</Text></Radio>
+                            <Radio value="crazy"><Text fontSize={fontSize ?? 'xl'}>Crazy</Text></Radio>
 
                             <Button size='md'
                                     width='7rem'
                                     height='2.35rem' 
                                     colorScheme='linkedin'
+                                    fontSize={fontSize ?? 'xl'}
                                     onClick={searchBotsByDifficulty} 
                                     isLoading={searchByDifficultyIsLoading}>
                                         Search
@@ -118,6 +123,7 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
                                         placeHolder="Enter a number or leave empty to bring them all"
                                         buttonLabel='Search'
                                         label='Search some random bots'
+                                        fontSize={fontSize}
                                         isValid={() => true}
                                         onSubmit={searchBotsWithLimit}
                                         isLoading={searchBotsWithLimitIsLoading} />
@@ -256,12 +262,12 @@ export function UsersSearchBox({ userType, onUserClick }: Props) {
     
                         <Alert status="error">
                             <AlertIcon />
-                            There was an error processing your request
+                            <Text fontSize={fontSize ?? 'xl'}>There was an error processing your request</Text>
                         </Alert> :
                             
                             users.isEmpty() ? 
                             
-                                <Text>No {lookingForAIs ? 'bots' : 'users'} to show</Text> : 
+                                <Text fontSize={fontSize ?? 'xl'}>No {lookingForAIs ? 'bots' : 'users'} to show</Text> : 
                                 
                                 <Table variant='striped' colorScheme='blue'> 
                                     <Tbody>

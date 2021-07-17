@@ -16,6 +16,7 @@ import { User } from '../components/User'
 import { AI } from '../components/AI'
 import coin from '../coin.webp'
 import { SubmitDataErrorToast } from '../commons/Toast'
+import ReturnButton from '../components/ReturnButton'
 
 
 export function StartMatchPage() { return( withRedirect({}) (withTokenValidation) (withToast) (StartMatchContent) )}
@@ -41,7 +42,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                 
                 <MainHeader searchCardsButton />
 
-                <Stack direction='row' spacing='1px'>
+                <Stack direction='row' spacing='1px' boxSize='full'>
                 
                 {
                     accepted ? tossCoinContent() :
@@ -66,8 +67,8 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
 
                     <Center fontSize='4xl'>Play!</Center>
                     
-                    <Stack direction='row' divider={<StackDivider borderColor='gray.400' />}>
-                        <Stack textAlign='center'>
+                    <Stack direction='row' divider={<StackDivider borderColor='gray.400' />} boxSize='full' fontSize='xl'>
+                        <Stack textAlign='center' alignSelf='center' boxSize='full'>
                             <Center fontSize='2xl'>Against an AI</Center>
 
                             <Center>
@@ -77,14 +78,15 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                             <Button colorScheme="teal"
                                     leftIcon={<AiIcon />}
                                     variant="solid"
-                                    width='8rem'
+                                    width='10rem'
                                     alignSelf='center'
-                                    onClick={() => setOponentType('IA')}>
+                                    onClick={() => setOponentType('IA')} 
+                                    fontSize='xl'>
                                 Let's go!
                             </Button>
                         </Stack>
 
-                        <Stack textAlign='center'>
+                        <Stack textAlign='center' alignSelf='center' boxSize='full'>
                             <Center fontSize='2xl'>Against another player</Center>
 
                             <Center textAlign='center'>
@@ -94,14 +96,14 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                             <Button colorScheme="teal"
                                     leftIcon={<UsersIcon />}
                                     variant="solid"
-                                    width='8rem'
+                                    width='10rem'
                                     alignSelf='center'
-                                    onClick={() => setOponentType('HUMAN') }>
+                                    onClick={() => setOponentType('HUMAN') } 
+                                    fontSize='xl'>
                                 Let's go!
                             </Button>
                         </Stack>
                     </Stack>
-                
             </Stack>
         )
     }
@@ -113,11 +115,12 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                     padding='4'
                     boxSize='full'
                     spacing='4'
-                    divider={<StackDivider borderColor='gray.500' />}>
+                    divider={<StackDivider borderColor='gray.500' />} 
+                                                fontSize='xl'>
 
                     <Center fontSize='4xl'>Choose your oponent</Center>
                     
-                    <Stack >
+                    <Stack>
                         
                         <UsersSearchBox userType={oponentType!} onUserClick={setMaybeOponent} /> 
 
@@ -128,6 +131,9 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                                     onSubmit={() => setOponent(maybeOponent)} /> 
 
                     </Stack>
+                    
+                    <ReturnButton returnLike={() => setOponentType(undefined)} />
+
             </Stack>
         )
     }
@@ -150,8 +156,13 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                                     body={`You want to play this match with ${maybeDeck?.name} deck?`}
                                     onSubmit={() => setDeck(maybeDeck)} />
 
-                        <DecksSearchBox onDeckClick={setMaybeDeck} />
+                        <DecksSearchBox  onDeckClick={setMaybeDeck} fontSize='xl' hideCardsTooltip/>
                     </Stack>
+                    
+                    <ReturnButton returnLike={() => {
+                            setMaybeOponent(undefined)
+                            setOponent(undefined)
+                        }} />
             </Stack>
         )
     }
@@ -159,13 +170,13 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
     function cleanFields() {
         setMaybeDeck(undefined)
         setDeck(undefined)
-
         setMaybeOponent(undefined)
         setOponent(undefined)
-
         setOponentType(undefined)
-
         setError(false)
+        setAccepted(false)
+        setCoinTossed(false)
+        setStarter(undefined)
     }
 
     function showDetailsContent() {
@@ -180,38 +191,45 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                     <Center fontSize='4xl'>Check match's details</Center>
 
                     <Stack spacing='1rem'>
-                        <Text>Your match will be created with this setup ¿Are you ok with this?</Text>
+                        <Text fontSize='2xl'>Your match will be created with this setup ¿Are you ok with this?</Text>
 
                         <Stack bgColor='teal.300' padding='1rem' borderRadius='0.4rem'>
-                            <Text>Yo have chosen to play against { oponentType === 'IA' ? 'an AI' : 'another player' }</Text>
+                            <Text fontSize='xl'>You have chosen to play against { oponentType === 'IA' ? 'an AI' : 'another player' }</Text>
                         </Stack>
 
-                        <Stack bgColor='blue.300' padding='1rem' borderRadius='0.4rem' direction='row'>
+                        <Stack bgColor='blue.300' padding='1rem' borderRadius='0.4rem' direction='row' fontSize='xl'>
                             <Text>You will be playing against: </Text>
                             <Text fontWeight='bold' >{ oponent?.userName }</Text>
                         </Stack>
                         
-                        <Stack bgColor='cyan.300' padding='1rem' borderRadius='0.4rem' direction='row'>
+                        <Stack bgColor='cyan.300' padding='1rem' borderRadius='0.4rem' direction='row' fontSize='xl'>
                             <Text>The match's deck will be: </Text>
                             <Text fontWeight='bold' >{ deck?.name }</Text>
                         </Stack>
 
-                        <Stack spacing='0.5rem'>
-                            <Text>¿Shall we continue?</Text>
+                        <Stack spacing='0.75rem'>
+                            <Text fontSize='2xl'>¿Shall we continue?</Text>
 
                             <Stack direction='row' spacing='1rem'>
                                 <Button colorScheme='red' 
                                         leftIcon={<CloseIcon />}
                                         variant="solid"
-                                        width='10rem'
+                                        width='12rem'
+                                        fontSize='xl'
                                         onClick={cleanFields}>
                                     No, start over
                                 </Button>
+                    
+                                <ReturnButton returnLike={() => {
+                                        setMaybeDeck(undefined)
+                                        setDeck(undefined)
+                                    }} />
                                 
                                 <Button colorScheme='green' 
                                         leftIcon={<PlayIcon />}
                                         variant="solid"
-                                        width='10rem'
+                                        width='12rem'
+                                        fontSize='xl'
                                         onClick={() => setAccepted(true)}>
                                     Yes! Let's go
                                 </Button>
@@ -259,22 +277,23 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
 
                     {
                         error ?
-                            <Stack spacing='1rem' alignSelf='center'>
-                                <Text>There seems to be a problem creating your match</Text>
-                                <Text>Please, try again</Text>
+                            <Stack spacing='1rem' alignSelf='center' fontSize='xl'>
+                                <Text textAlign='center'>There seems to be a problem creating your match</Text>
+                                <Text textAlign='center'>Please, try again</Text>
                                 
                                 <Button colorScheme='orange' 
                                         leftIcon={<RetryIcon />}
-                                        width='8rem'
+                                        width='10rem'
                                         variant='solid'
                                         alignSelf='center'
-                                        onClick={cleanFields}>
+                                        onClick={cleanFields} 
+                                        fontSize='xl'>
                                     Start over
                                 </Button>
                             </Stack> :
 
                             starter ? 
-                                <Stack direction='row' spacing='4px' alignSelf='center'>
+                                <Stack direction='row' spacing='4px' alignSelf='center' fontSize='xl'>
                                     <Text fontWeight='bold'>{starter!}</Text>
                                     <Text>will be the first to play</Text>
                                 </Stack> :
@@ -284,13 +303,17 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                                             alignSelf='center'
                                             src={coin}/> :
 
-                                    <Button colorScheme='yellow' 
-                                            width='8rem'
-                                            variant='solid'
-                                            alignSelf='center'
-                                            onClick={tossCoin}>
-                                        Test your luck
-                                    </Button>
+                                    <Stack spacing='2rem'>
+                                        <Text textAlign='center' fontSize='xl'>The first player to play will be picked randomly</Text>
+                                        <Button colorScheme='yellow' 
+                                                width='10rem'
+                                                variant='solid'
+                                                alignSelf='center'
+                                                onClick={tossCoin} 
+                                                fontSize='xl'>
+                                            Test your luck
+                                        </Button>
+                                    </Stack>
                     }
             </Stack>
         )

@@ -8,10 +8,12 @@ import { ServerConnector } from "../BackendConnector"
 
 
 type Props = {
-    onDeckClick: (_: DeckData) => void
+    fontSize?: string,
+    onDeckClick: (_: DeckData) => void,
+    hideCardsTooltip?: boolean
 }
 
-export function DecksSearchBox({ onDeckClick }: Props) {
+export function DecksSearchBox({ fontSize, onDeckClick, hideCardsTooltip }: Props) {
 
     const [ decks, setDecks ] = useState(Collection.empty<DeckData>())
     const [ isLoading, setIsLoading ] = useState(false)
@@ -22,13 +24,14 @@ export function DecksSearchBox({ onDeckClick }: Props) {
 
     return (
         <Stack spacing='3.5'>
-            <Text fontWeight='bold' fontSize='xl'>Search decks</Text>
+            <Text fontWeight='bold' fontSize='2xl'>Search decks</Text>
             
             <Box paddingLeft='3'>
                 <SubmitableInput    id='searchDecksByName' 
                                     placeHolder='Please enter deck name' 
                                     buttonLabel='Search'
-                                    label='Search deck by name' 
+                                    label='Search deck by name'
+                                    fontSize={fontSize} 
                                     isValid={isNonEmpty}
                                     onSubmit={searchDecksByName}
                                     isLoading={searchByNameIsLoading} />
@@ -39,6 +42,7 @@ export function DecksSearchBox({ onDeckClick }: Props) {
                                     placeHolder='Please enter deck id' 
                                     buttonLabel='Search'
                                     label='Search deck by id' 
+                                    fontSize={fontSize} 
                                     isValid={isNonEmpty}
                                     onSubmit={searchDeckById}
                                     isLoading={searchByIdIsLoading} />
@@ -109,12 +113,12 @@ export function DecksSearchBox({ onDeckClick }: Props) {
     
                         <Alert status="error">
                             <AlertIcon />
-                            There was an error processing your request
+                            <Text fontSize={fontSize ?? 'xl'}>There was an error processing your request</Text>
                         </Alert> :
                             
                             decks.isEmpty() ? 
                             
-                                <Text>No decks to show</Text> : 
+                                <Text fontSize={fontSize ?? 'xl'}>No decks to show</Text> : 
                                 
                                 <Table variant='striped' colorScheme='blue'> 
                                     <Tbody>
@@ -122,7 +126,7 @@ export function DecksSearchBox({ onDeckClick }: Props) {
                                             decks.map( deck => 
                                                 <Tr key={deck.id}>
                                                     <Td borderRadius='1rem'>
-                                                        <DeckPreview key={deck.id} data={deck} onClick={() => onDeckClick(deck)} />
+                                                        <DeckPreview key={deck.id} data={deck} onClick={() => onDeckClick(deck)} hideCardsTooltip={hideCardsTooltip}/>
                                                     </Td>
                                                 </Tr>
                                             ).collection

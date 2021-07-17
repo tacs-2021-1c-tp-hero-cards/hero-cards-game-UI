@@ -33,10 +33,11 @@ export type DeckHistoricData = {
 
 type Props = {
     data: DeckData,
-    onClick?: () => void
+    onClick?: () => void,
+    hideCardsTooltip?: boolean
 }
 
-export function DeckPreview( { data, onClick }: Props ) {
+export function DeckPreview( { data, onClick, hideCardsTooltip }: Props ) {
     const cards = Collection.wrap<CardAttributes>(data.cards)
 
     return (
@@ -61,7 +62,7 @@ export function DeckPreview( { data, onClick }: Props ) {
                 <SimpleGrid columns={[3, 6, 12]} gap='2'>
                     { 
                         cards.take(24).map( card => 
-                            <CardPreview card={card} height='100px' hideTooltip />
+                            <CardPreview card={card} height='100px' hideTooltip={hideCardsTooltip} />
                         ).collection
                     }
                 </SimpleGrid>

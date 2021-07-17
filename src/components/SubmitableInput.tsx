@@ -7,12 +7,13 @@ type InputProps = {
     placeHolder: string, 
     buttonLabel: string,
     label?: string,
+    fontSize?: string,
     isValid: (value: string) => boolean, 
     onSubmit: (value: string) => void,
     isLoading?: boolean
 }
 
-export function SubmitableInput({ id, placeHolder, buttonLabel, label, isValid, onSubmit, isLoading }: InputProps) {
+export function SubmitableInput({ id, placeHolder, buttonLabel, label, fontSize, isValid, onSubmit, isLoading }: InputProps) {
   const [input, setInput] = useState('')
   const [isInvalid, setIsInvalid] = useState(false)
 
@@ -39,7 +40,7 @@ export function SubmitableInput({ id, placeHolder, buttonLabel, label, isValid, 
 
   return (
     <Stack>
-      <FormLabel><Text>{label}</Text></FormLabel>
+      <FormLabel><Text fontSize={fontSize ?? 'xl'}>{label}</Text></FormLabel>
 
       <InputGroup>
         <Tooltip bg='crimson' arrow='crimson' hasArrow label='Cannot be empty!' placement='bottom' isOpen={isInvalid}>
@@ -47,6 +48,7 @@ export function SubmitableInput({ id, placeHolder, buttonLabel, label, isValid, 
               type="text"
               backgroundColor='gray.200'
               id={id}
+              fontSize={fontSize ?? 'xl'}
               fontStyle='italic'
               placeholder={placeHolder}
               onChange={(e) => handleChange(e.target.value)}
@@ -58,6 +60,7 @@ export function SubmitableInput({ id, placeHolder, buttonLabel, label, isValid, 
             <Button size='md'
                     width='15rem'
                     height='2.35rem' 
+                    fontSize={fontSize ?? 'xl'}
                     onClick={handleSubmit} 
                     colorScheme='linkedin' 
                     isLoading={isLoading}>

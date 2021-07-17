@@ -7,10 +7,11 @@ type Props = {
     onClose: () => void,
     header: string,
     body: string,
-    onSubmit: () => void
+    onSubmit: () => void,
+    fontSize?: string
 }
 
-export function AlertPopUp({ isOpen, onClose, header, body, onSubmit }: Props) {
+export function AlertPopUp({ isOpen, onClose, header, body, onSubmit, fontSize }: Props) {
     const cancelRef = React.useRef(null)
   
     return (
@@ -19,8 +20,8 @@ export function AlertPopUp({ isOpen, onClose, header, body, onSubmit }: Props) {
                         onClose={onClose}>
 
             <AlertDialogOverlay>
-                <AlertDialogContent>
-                    <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                <AlertDialogContent fontSize={fontSize ?? 'xl'}>
+                    <AlertDialogHeader fontSize="2xl" fontWeight="bold">
                         {header}
                     </AlertDialogHeader>
 
@@ -29,10 +30,10 @@ export function AlertPopUp({ isOpen, onClose, header, body, onSubmit }: Props) {
                     </AlertDialogBody>
 
                     <AlertDialogFooter>
-                        <Button ref={cancelRef} onClick={onClose}>
+                        <Button ref={cancelRef} onClick={onClose} fontSize={fontSize ?? 'xl'} width='8rem'>
                             Cancel
                         </Button>
-                        <Button colorScheme="red" onClick={onSubmit} ml={3}>
+                        <Button colorScheme="red" onClick={onSubmit} ml={3} fontSize={fontSize ?? 'xl'} width='8rem'>
                             Accept
                         </Button>
                     </AlertDialogFooter>

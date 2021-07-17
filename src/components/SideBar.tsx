@@ -55,7 +55,7 @@ function SideBarContent({
 
     return (
         <Box>
-            <Button leftIcon={<HamburgerIcon />} variant='ghost' onClick={onOpen}  size='lg' width='1rem' colorScheme={Collection.wrap(notifications).isEmpty() ? 'gray' : 'red'} />
+            <Button leftIcon={<HamburgerIcon />} variant='ghost' onClick={onOpen} size='lg' width='1rem' colorScheme={Collection.wrap(notifications).isEmpty() ? 'gray' : 'red'} />
 
             <Drawer isOpen={isOpen}
                     placement="left"
@@ -73,7 +73,7 @@ function SideBarContent({
                                     cursor='pointer' 
                                     width='7.5rem' >
                                 <Image boxSize='3.5rem' src={logo} />
-                                <Center>Menu</Center>
+                                <Center fontSize='2xl'>Menu</Center>
                             </Stack>
                         </Stack>
                     </DrawerHeader>
@@ -89,6 +89,7 @@ function SideBarContent({
                                                 leftIcon={<UserIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
+                                                fontSize='xl'
                                                 onClick={() => redirect('/user')}>
                                             My hub
                                         </Button> :
@@ -101,6 +102,7 @@ function SideBarContent({
                                                 leftIcon={<LogOutIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
+                                                fontSize='xl'
                                                 onClick={() => 
                                                     logOut(() => redirect('/'), () => redirect('/'))}>
                                             Log Out
@@ -114,6 +116,7 @@ function SideBarContent({
                                                 leftIcon={<UserIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
+                                                fontSize='xl'
                                                 onClick={() => redirect('/logIn')}>
                                             Log In
                                         </Button> : 
@@ -126,6 +129,7 @@ function SideBarContent({
                                                 leftIcon={<NewUserIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
+                                                fontSize='xl'
                                                 onClick={() => redirect('/signUp')}>
                                             Sign Up
                                         </Button> : 
@@ -138,6 +142,7 @@ function SideBarContent({
                                                 leftIcon={<ManageIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
+                                                fontSize='xl'
                                                 onClick={() => redirect('/decks')}>
                                             Manage decks
                                         </Button> : 
@@ -150,6 +155,7 @@ function SideBarContent({
                                                 leftIcon={<AiIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
+                                                fontSize='xl'
                                                 onClick={() => redirect('/bots')}>
                                             Manage bots
                                         </Button> : 
@@ -162,6 +168,7 @@ function SideBarContent({
                                                 leftIcon={<SearchIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
+                                                fontSize='xl'
                                                 onClick={() => redirect('/cards')}>
                                             Search cards
                                         </Button> :
@@ -174,6 +181,7 @@ function SideBarContent({
                                                 leftIcon={<PlayIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
+                                                fontSize='xl'
                                                 onClick={() => redirect('/matches')}>
                                             Start a match
                                         </Button> : 

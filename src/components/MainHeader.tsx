@@ -27,10 +27,12 @@ export function MainHeader(props: SideBarProps) {
                             
                     <Stack direction='row'>
                         <Tooltip hasArrow label='Home' placement='bottom'>
-                            <Image boxSize='60px' src={logo} />
+                            <Center>
+                                <Image boxSize='70px' src={logo} />
+                            </Center>
                         </Tooltip>
 
-                        <Center>
+                        <Center fontSize='5xl'>
                             Hero Cards Game!
                         </Center>
                     </Stack>

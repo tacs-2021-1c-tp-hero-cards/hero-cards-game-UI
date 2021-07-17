@@ -11,14 +11,15 @@ export type Notification = {
 }
 
 type NotificationPreview = Notification & {
-    index: number
+    index: number,
+    fontSize?: string
 }
 
 export function NotificationPreview(props: NotificationPreview) { return withRedirect(props) (withToast) (NotificationPreviewContent) }
 
 type NotificationPreviewProps = NotificationPreview & RedirectProps & ToastProps
 
-function NotificationPreviewContent({ matchId, username, index, redirect, toast }: NotificationPreviewProps) {
+function NotificationPreviewContent({ matchId, username, index, redirect, toast, fontSize }: NotificationPreviewProps) {
     const [isOpen, setIsOpen] = React.useState(false)
     const onClose = () => setIsOpen(false)
     const rejectRef = React.useRef<HTMLButtonElement>(null)
@@ -50,6 +51,7 @@ function NotificationPreviewContent({ matchId, username, index, redirect, toast 
                 padding='0.3rem'
                 borderRadius='0.25rem'
                 cursor='pointer'
+                fontSize={fontSize ?? 'xl'}
                 onClick={() => setIsOpen(true)}>
                     
             <Text fontWeight='bold' isTruncated>{username}</Text>
@@ -61,25 +63,26 @@ function NotificationPreviewContent({ matchId, username, index, redirect, toast 
                             <AlertDialogOverlay>
                             <AlertDialogContent>
                                 <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                                    You have been invited to a match
+                                    <Text fontSize='2xl'>You have been invited to a match</Text>
                                 </AlertDialogHeader>
 
                                 <AlertDialogBody>
                                     <Stack spacing='0.3rem'>
                                         <Stack  direction='row' 
-                                                spacing='3px'>
+                                                spacing='3px'
+                                                fontSize={fontSize ?? 'xl'}>
                                             <Text fontWeight='bold' isTruncated>{username}</Text>
                                             <Text width='16rem'>defied you in a match</Text> 
                                         </Stack>
-                                        <Text>¿Do you accept the challenge?</Text>
+                                        <Text fontSize={fontSize ?? 'xl'}>¿Do you accept the challenge?</Text>
                                     </Stack>
                                 </AlertDialogBody>
 
                                 <AlertDialogFooter>
-                                <Button ref={rejectRef} onClick={reject}>
+                                <Button ref={rejectRef} onClick={reject} fontSize={fontSize ?? 'xl'} width='10rem'>
                                     Reject
                                 </Button>
-                                <Button colorScheme="green" onClick={accept} ml={3}>
+                                <Button colorScheme="green" onClick={accept} ml={3} fontSize={fontSize ?? 'xl'} width='10rem'>
                                     Accept
                                 </Button>
                                 </AlertDialogFooter>
