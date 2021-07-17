@@ -8,11 +8,11 @@ export type State = {
 
 export type SocketData = {
     client: any,
-    notifications: Collection<Notification>,
-    confirmations: Collection<any>,
-    rejections: Collection<any>,
-    abortions: Collection<any>,
-    duelUpdates: Collection<any>
+    notifications: Notification[],
+    confirmations: any[],
+    rejections: any[],
+    abortions: any[],
+    duelUpdates: any[]
 }
 
 export type UserData = {

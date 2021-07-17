@@ -1,13 +1,14 @@
 import { ServerConnector } from "../BackendConnector"
 import { setToken } from "./Token"
 import { User } from "../components/User"
-import store from "../store/Store"
 import Collection from "./Collections"
 import { connect } from "../websocket/client"
+import { updateState } from "../store/hooks"
 
 
 
-export function logIn(user: User, onSuccess: () => void, onFailure: () => void) {
+export function logIn(user: User, onSuccess: (user: User) => void, onFailure: () => void) {
+    
     ServerConnector.logIn(user,
                          (data) => 
                             ServerConnector.getUsersByToken(
@@ -16,12 +17,15 @@ export function logIn(user: User, onSuccess: () => void, onFailure: () => void) 
                                     const activeUser = Collection.wrap(users).head()
 
                                     setToken(data.token)
-                                    store.dispatch({ type: 'user/updateUser', payload: activeUser })
+                                    console.log(data.token + activeUser)
+                                    updateState({ type: 'user/updateUser', payload: activeUser })
+
+                                    console.log("dispatched")
 
                                     //Web socket connection
                                     connect()
 
-                                    onSuccess()
+                                    onSuccess(activeUser)
                                 },
                                 (_) => onFailure()
                             ),

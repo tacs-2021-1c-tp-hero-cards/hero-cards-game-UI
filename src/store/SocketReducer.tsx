@@ -1,13 +1,12 @@
-import Collection from "../commons/Collections"
 import { SocketData } from "./State"
 
 const initialState: SocketData = {
     client: undefined,
-    notifications: Collection.empty(),
-    confirmations: Collection.empty(),
-    rejections: Collection.empty(),
-    abortions: Collection.empty(),
-    duelUpdates: Collection.empty()
+    notifications: [],
+    confirmations: [],
+    rejections: [],
+    abortions: [],
+    duelUpdates: []
 }
 
 export default function socketReducer(state = initialState, action: any): SocketData {
@@ -23,7 +22,7 @@ export default function socketReducer(state = initialState, action: any): Socket
             console.log(previousNotifications)
             return {
                 ...state,
-                notifications: previousNotifications.add(action.payload)
+                notifications: previousNotifications.concat(action.payload)
             }
         }
         case 'socket/removeNotification' : {
@@ -31,7 +30,7 @@ export default function socketReducer(state = initialState, action: any): Socket
             console.log(previousNotifications)
             return {
                 ...state,
-                notifications: previousNotifications.remove(action.payload)
+                notifications: previousNotifications//.remove(action.payload)
             }
         }
         case 'socket/setConfirmation' : {

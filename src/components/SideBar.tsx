@@ -1,18 +1,21 @@
 import React from "react"
 import { Stack, Button, useDisclosure, Box, Drawer, DrawerOverlay, DrawerContent, Image, DrawerBody, DrawerHeader, Text, Center, 
         StackDivider } from "@chakra-ui/react"
-import { RedirectProps, withRedirect } from "../commons/BehaviorAddOns"
+import { RedirectProps, StateProps, withRedirect, withState } from "../commons/BehaviorAddOns"
 import { logOut } from "../commons/LogOut"
 import { LogOutIcon, ManageIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon, AiIcon } from "./icons";
 import { HamburgerIcon } from "@chakra-ui/icons"
 import logo from '../logo.png'
 import { Notification, NotificationPreview } from "./Notification"
 import { tokenIsAlive } from "../commons/Token";
-import { useSelector, shallowEqual } from 'react-redux'
+import { shallowEqual } from 'react-redux'
 import { State } from "../store/State";
+import Collection from "../commons/Collections";
+import { updateState, useGetState } from '../store/hooks'
+import store from "../store/Store";
 
 
-export function SideBar(props: SideBarProps) { return (withRedirect(props) (SideBarContent))}
+export function SideBar(props: SideBarProps) { return (withRedirect(props) (withState) (SideBarContent))}
 
 export type SideBarProps = {
     hideHubButton?: boolean,
@@ -24,10 +27,11 @@ export type SideBarProps = {
     startAMatchButton?: boolean
 }
 
-type Props = RedirectProps & SideBarProps
+type Props = RedirectProps & StateProps & SideBarProps
 
 function SideBarContent({ 
                             redirect,
+                            getState,
                             hideHubButton, 
                             logInButton, 
                             signUpButton, 
@@ -42,18 +46,22 @@ function SideBarContent({
 
     function getNotifications(state: State) {
         return (state.socket.notifications.map((n: Notification, index: number) => 
-                    <NotificationPreview matchId={n.matchId} username={n.username} index={index} />
+                    <NotificationPreview key={index} matchId={n.matchId} username={n.username} index={index} />
                 )
         )
     }
 
-    const notifications = useSelector(getNotifications, shallowEqual)
+    const notifications = useGetState(getNotifications, shallowEqual)
 
     const isLoggedIn = tokenIsAlive()
 
     return (
         <Box>
-            <Button leftIcon={<HamburgerIcon />} variant='ghost' onClick={onOpen}  size='lg' width='1rem' colorScheme={notifications.isEmpty() ? 'gray' : 'red'} />
+            <Button leftIcon={<HamburgerIcon />} variant='ghost' onClick={onOpen}  size='lg' width='1rem' colorScheme={Collection.wrap(notifications).isEmpty() ? 'gray' : 'red'} />
+            <Button leftIcon={<HamburgerIcon />} variant='ghost' onClick={() => updateState({
+        type: 'socket/pushNotification',
+        payload: {matchId: 42, username: 'Lalala', index: 0}
+    })}  size='lg' width='1rem' colorScheme={'yellow'} />
 
             <Drawer isOpen={isOpen}
                     placement="left"
@@ -179,11 +187,11 @@ function SideBarContent({
                                 }
 
                                 {
-                                    notifications.nonEmpty() ? 
+                                    Collection.wrap(notifications).nonEmpty() ? 
                                         <Stack>
                                             <Text>Notifications:</Text>
                                             <Stack divider={<StackDivider borderColor='gray' />} spacing='0.5rem'>
-                                                {notifications.collection}
+                                                {notifications}
                                             </Stack>
                                         </Stack> :
                                         <></>

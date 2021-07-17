@@ -6,15 +6,15 @@ import { validateUsername, validatePassword } from '../commons/InputValidations'
 import { logIn } from '../commons/LogIn';
 import { SubmitDataErrorToast } from '../commons/Toast';
 import { User } from './User';
-import { RedirectProps, ToastProps, withRedirect, withToast } from '../commons/BehaviorAddOns';
+import { RedirectProps, StateProps, ToastProps, withRedirect, withState, withToast } from '../commons/BehaviorAddOns';
 import { UserIcon } from './icons';
  
 
-export function LogInForm() { return( withRedirect({}) (withToast) (LogInFormContent) )}
+export function LogInForm() { return( withRedirect({}) (withToast) (withState) (LogInFormContent) )}
 
-type LogInFormProps = RedirectProps & ToastProps
+type LogInFormProps = RedirectProps & ToastProps & StateProps
 
-function LogInFormContent({ redirect, toast }: LogInFormProps) {
+function LogInFormContent({ redirect, toast, updateState }: LogInFormProps) {
 
   const initialValues: User = {
     userName: '',
@@ -28,7 +28,10 @@ function LogInFormContent({ redirect, toast }: LogInFormProps) {
 
   function onSubmit(user: User, actions: any) {
     logIn(user, 
-      () => redirect('/user'), 
+      (user: User) => {
+        updateState({ type: 'user/updateUser', payload: user })
+        redirect('/user')
+      }, 
       () => toast(SubmitDataErrorToast)
     )
     

@@ -1,19 +1,22 @@
 import React from "react"
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, 
         Stack, Text } from "@chakra-ui/react"
-import store from "../store/Store"
 import { RedirectProps, ToastProps, withRedirect, withToast } from "../commons/BehaviorAddOns"
 import { customToast } from "../commons/Toast"
+import { updateState } from "../store/hooks"
 
 export type Notification = {
     matchId: number,
-    username: string,
-    index: number,
+    username: string
 }
 
-export function NotificationPreview(props: Notification) { return withRedirect(props) (withToast) (NotificationPreviewContent) }
+type NotificationPreview = Notification & {
+    index: number
+}
 
-type NotificationPreviewProps = Notification & RedirectProps & ToastProps
+export function NotificationPreview(props: NotificationPreview) { return withRedirect(props) (withToast) (NotificationPreviewContent) }
+
+type NotificationPreviewProps = NotificationPreview & RedirectProps & ToastProps
 
 function NotificationPreviewContent({ matchId, username, index, redirect, toast }: NotificationPreviewProps) {
     const [isOpen, setIsOpen] = React.useState(false)
@@ -21,7 +24,7 @@ function NotificationPreviewContent({ matchId, username, index, redirect, toast 
     const rejectRef = React.useRef<HTMLButtonElement>(null)
 
     function accept() {
-        store.dispatch({ type: 'socket/removeNotification', payload: index })
+        updateState({ type: 'socket/removeNotification', payload: index })
         // confirm match on server and redirect to match
         /*ServerConnector.confirmMatch(
             matchId, 
@@ -33,7 +36,7 @@ function NotificationPreviewContent({ matchId, username, index, redirect, toast 
     }
 
     function reject() {
-        store.dispatch({ type: 'socket/removeNotification', payload: index })
+        updateState({ type: 'socket/removeNotification', payload: index })
         //reject match on server
         toast(customToast('Rejected', 'warning', 'The match has been rejected'))
         onClose()

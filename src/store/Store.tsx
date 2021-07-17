@@ -12,7 +12,10 @@ export const config = {
     stateReconciler: autoMergeLevel1
 }
 
-const persisted = persistReducer<State, AnyAction>(config, rootReducer)
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
+
+const persisted = persistReducer<RootState, AnyAction>(config, rootReducer)
 
 const store: Store = createStore(persisted)
 
