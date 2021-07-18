@@ -12,11 +12,11 @@ function NotLoggedInContent({ redirect }: NotLoggedInProps) {
 
     return (
         <Stack spacing='1px'>
-            <MainHeader logInButton signUpButton />
+            <MainHeader hideLogInButton hideSignUpButton />
 
             <Box bg='orange.400' borderRadius='7px'>
                 <Center padding='4' fontSize='xl' fontWeight='bold'>
-                    It looks like you're not logged in 😱
+                    It looks like you're not logged in and therefore you can't see this content
                 </Center>
             </Box>
 

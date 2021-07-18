@@ -56,7 +56,7 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
         return (
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader startAMatchButton />
+                    <MainHeader />
 
                     <Stack direction='row' spacing='1px'>
                         <Stack  bg='gray.300'
@@ -98,7 +98,7 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
                 return (
                     <Alert status="error">
                         <AlertIcon />
-                        There was an error processing your request. Maybe the match you are looking for doesn't exists.
+                        There was an error processing your request. 
                     </Alert>
                 )
         }

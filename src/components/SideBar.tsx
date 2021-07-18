@@ -20,12 +20,12 @@ export function SideBar(props: SideBarProps) { return (withRedirect(props) (Side
 
 export type SideBarProps = {
     hideHubButton?: boolean,
-    logInButton?: boolean,
-    signUpButton?: boolean,
+    hideLogInButton?: boolean,
+    hideSignUpButton?: boolean,
     hideDecksButton?: boolean,
-    manageBotsButton?: boolean,
+    hideManageBotsButton?: boolean,
     hideCardsButton?: boolean,
-    startAMatchButton?: boolean
+    hideMatchButton?: boolean
 }
 
 type Props = RedirectProps & SideBarProps
@@ -33,12 +33,12 @@ type Props = RedirectProps & SideBarProps
 function SideBarContent({ 
                             redirect,
                             hideHubButton, 
-                            logInButton, 
-                            signUpButton, 
+                            hideLogInButton, 
+                            hideSignUpButton, 
                             hideDecksButton, 
-                            manageBotsButton, 
+                            hideManageBotsButton, 
                             hideCardsButton,
-                            startAMatchButton 
+                            hideMatchButton 
                         }: Props) {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -52,8 +52,10 @@ function SideBarContent({
     }
 
     const notifications = useGetState(getNotifications, shallowEqual)
+    const user = useGetState(state => state.user)
 
     const isLoggedIn = tokenIsAlive()
+    const isAdmin = user?.admin
 
     return (
         <Box>
@@ -98,21 +100,7 @@ function SideBarContent({
                                 }
 
                                 {
-                                    isLoggedIn ? 
-                                        <Button colorScheme="orange"
-                                                leftIcon={<LogOutIcon />}
-                                                variant="solid"
-                                                textColor='gray.700'
-                                                fontSize='xl'
-                                                onClick={() => 
-                                                    logOut(() => redirect('/'), () => redirect('/'))}>
-                                            Log Out
-                                        </Button> : 
-                                        <></>
-                                }
-
-                                {
-                                    (logInButton ?? false) && !isLoggedIn ? 
+                                    !isLoggedIn && (!hideLogInButton ?? true) ? 
                                         <Button colorScheme="orange"
                                                 leftIcon={<UserIcon />}
                                                 variant="solid"
@@ -125,7 +113,7 @@ function SideBarContent({
                                 }
 
                                 {
-                                    (signUpButton ?? false) && !isLoggedIn ? 
+                                    !isLoggedIn && (hideSignUpButton ?? true) ? 
                                         <Button colorScheme="orange"
                                                 leftIcon={<NewUserIcon />}
                                                 variant="solid"
@@ -151,19 +139,6 @@ function SideBarContent({
                                 }
 
                                 {
-                                    (manageBotsButton ?? false) ? 
-                                        <Button colorScheme="yellow"
-                                                leftIcon={<AiIcon />}
-                                                variant="solid"
-                                                textColor='gray.700'
-                                                fontSize='xl'
-                                                onClick={() => redirect('/bots')}>
-                                            Manage bots
-                                        </Button> : 
-                                        <></>
-                                }
-
-                                {
                                     (!hideCardsButton ?? true) ?
                                         <Button colorScheme="cyan"
                                                 leftIcon={<SearchIcon />}
@@ -177,7 +152,7 @@ function SideBarContent({
                                 }
 
                                 {
-                                    (startAMatchButton ?? false) ?
+                                    isLoggedIn && (!hideMatchButton ?? true) ?
                                         <Button colorScheme="green"
                                                 leftIcon={<PlayIcon />}
                                                 variant="solid"
@@ -185,6 +160,33 @@ function SideBarContent({
                                                 fontSize='xl'
                                                 onClick={() => redirect('/matches')}>
                                             Start a match
+                                        </Button> : 
+                                        <></>
+                                }
+
+                                {
+                                    isLoggedIn && isAdmin && (!hideManageBotsButton ?? true) ? 
+                                        <Button colorScheme="yellow"
+                                                leftIcon={<AiIcon />}
+                                                variant="solid"
+                                                textColor='gray.700'
+                                                fontSize='xl'
+                                                onClick={() => redirect('/bots')}>
+                                            Manage bots
+                                        </Button> : 
+                                        <></>
+                                }
+
+                                {
+                                    isLoggedIn ? 
+                                        <Button colorScheme="red"
+                                                leftIcon={<LogOutIcon />}
+                                                variant="solid"
+                                                textColor='gray.700'
+                                                fontSize='xl'
+                                                onClick={() => 
+                                                    logOut(() => redirect('/'), () => redirect('/'))}>
+                                            Log Out
                                         </Button> : 
                                         <></>
                                 }

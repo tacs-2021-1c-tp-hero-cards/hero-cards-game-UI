@@ -41,7 +41,7 @@ function StartMatchContent({ renderWithTokenValidation, redirect, toast }: UserP
         return (
             <Stack spacing='1px'>
                 
-                <MainHeader />
+                <MainHeader hideMatchButton />
 
                 <Stack direction='row' spacing='1px' boxSize='full'>
                 

@@ -13,7 +13,7 @@ function SignUpContent({ redirect }: SignUpProps) {
   return (
     <Stack spacing='1px'>
       
-      <MainHeader logInButton />
+      <MainHeader hideSignUpButton />
 
       <Stack padding='4'
               backgroundColor='gray.200'

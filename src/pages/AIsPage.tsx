@@ -3,15 +3,15 @@ import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
 import { CreateBot } from "../components/CreateBot";
 import { StackDivider } from "@chakra-ui/react";
-import { AdminSupportProps, RedirectProps, TokenProps, withAdminValidation, withRedirect, withTokenValidation } from "../commons/BehaviorAddOns";
+import { AdminSupportProps, TokenProps, withAdminValidation, withTokenValidation } from "../commons/BehaviorAddOns";
 import { UsersSearchBox } from "../components/UserSearchBox";
 
 
-export default function BotsPage() { return( withTokenValidation({}) (withRedirect) (withAdminValidation) (BotsContent) )}
+export default function BotsPage() { return( withTokenValidation({}) (withAdminValidation) (BotsContent) )}
 
-type DecksProps = TokenProps & RedirectProps & AdminSupportProps
+type DecksProps = TokenProps & AdminSupportProps
 
-function BotsContent({ renderWithTokenValidation, redirect, renderWithAdminValidation }: DecksProps) {
+function BotsContent({ renderWithTokenValidation, renderWithAdminValidation }: DecksProps) {
 
     return( renderWithTokenValidation(() => renderWithAdminValidation(content)))
 
@@ -19,7 +19,7 @@ function BotsContent({ renderWithTokenValidation, redirect, renderWithAdminValid
         return(
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader />
+                    <MainHeader hideManageBotsButton />
 
                     <Stack direction='row' spacing='1px'>
 

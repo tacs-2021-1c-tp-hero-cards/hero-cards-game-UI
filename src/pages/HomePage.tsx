@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <Stack spacing='1px'>
       
-      <MainHeader logInButton signUpButton />
+      <MainHeader />
 
       <Stack direction='row' spacing='1px'>
         <Stack spacing='1px'>

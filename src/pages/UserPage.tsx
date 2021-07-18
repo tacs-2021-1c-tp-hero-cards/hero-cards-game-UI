@@ -1,15 +1,15 @@
 import React from 'react'
 import { Box, Center, Stack, StackDivider, Text } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
-import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '../commons/BehaviorAddOns'
+import { TokenProps, withTokenValidation } from '../commons/BehaviorAddOns'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/Store'
 
-export default function UserPage() { return( withRedirect({}) (withTokenValidation) (UserContent) )}
+export default function UserPage() { return( withTokenValidation({}) (UserContent) )}
 
-type UserProps = RedirectProps & TokenProps
+type UserProps = TokenProps
 
-function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
+function UserContent({ renderWithTokenValidation }: UserProps) {
     
     function getUser(state: RootState) {
         return state.user
@@ -23,12 +23,7 @@ function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
         return (
             <Stack spacing='1px'>
                 
-                {
-                    user?.admin ?
-                        <MainHeader hideHubButton manageBotsButton startAMatchButton /> :
-                        <MainHeader hideHubButton startAMatchButton /> 
-                        
-                }
+                <MainHeader hideHubButton /> 
 
                 <Box bg='lightblue' borderRadius='7px'>
                     <Center padding='4' fontSize='xl' fontStyle='italic' fontWeight='bold'>
