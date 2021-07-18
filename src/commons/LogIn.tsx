@@ -1,6 +1,6 @@
 import { ServerConnector } from "../BackendConnector"
 import { setToken } from "./Token"
-import { User } from "../components/User"
+import { User } from "../components/players/User"
 import Collection from "./Collections"
 import { connect } from "../websocket/client"
 import { updateState } from "../store/hooks"

@@ -7,13 +7,13 @@ import { ConditionalRenderSupportProps, RedirectProps, ToastProps, withRedirect,
         withToast } from '../commons/BehaviorAddOns'
 import { MainHeader } from '../components/MainHeader'
 import { ServerConnector } from '../BackendConnector'
-import { DeckData, DeckInsights } from '../components/Deck'
+import { DeckData, DeckInsights } from '../components/decks/Deck'
 import { useState } from 'react'
-import { ModifyDeck } from '../components/ModifyDeck'
+import { ModifyDeck } from '../components/decks/ModifyDeck'
 import { WarningIcon } from '@chakra-ui/icons'
 import { SubmitDataErrorToast } from '../commons/Toast'
-import { DeleteIcon, ManageIcon } from '../components/icons'
-import { User } from '../components/User'
+import { DeleteIcon, ManageIcon } from '../components/miscellaneous/icons'
+import { User } from '../components/players/User'
 import { useGetState } from '../store/hooks'
 
 export default function DeckPage() { return( withRedirect({}) (withToast) (withRenderCondition) (DeckContent) )}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Button, Stack, StackDivider, Text } from "@chakra-ui/react"
-import { SignUpForm } from '../components/SignUpForm'
+import { SignUpForm } from '../components/session/SignUpForm'
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
 

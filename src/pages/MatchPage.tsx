@@ -5,8 +5,8 @@ import { ConditionalRenderSupportProps, ToastProps, TokenProps, withRenderCondit
 import { MainHeader } from '../components/MainHeader'
 import { ServerConnector } from '../BackendConnector'
 import { useState } from 'react'
-import { Match } from '../components/Match'
-import { DeckPreview } from '../components/Deck'
+import { Match } from '../components/matches/Match'
+import { DeckPreview } from '../components/decks/Deck'
 import store from '../store/Store'
 
 export default function MatchPage() { return( withRenderCondition({}) (withTokenValidation) (withToast) (MatchContent) )}

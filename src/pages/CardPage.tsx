@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { MainHeader } from '../components/MainHeader'
 import { ServerConnector } from '../BackendConnector'
 import { useState } from 'react'
-import { CardAttributes, CharacterDetails, CharacterInsights } from '../components/Card'
+import { CardAttributes, CharacterDetails, CharacterInsights } from '../components/cards/Card'
 import { ConditionalRenderSupportProps, withRenderCondition } from '../commons/BehaviorAddOns'
 
 export default function CardPage() { return withRenderCondition({}) (CardContent) }

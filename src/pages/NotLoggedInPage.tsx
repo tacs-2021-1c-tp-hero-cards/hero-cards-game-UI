@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Center, Stack, StackDivider, HStack, Button } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
-import { NewUserIcon, UserIcon } from '../components/icons'
+import { NewUserIcon, UserIcon } from '../components/miscellaneous/icons'
 
 export default function NotLoggedInPage() { return( withRedirect({}) (NotLoggedInContent) )}
 

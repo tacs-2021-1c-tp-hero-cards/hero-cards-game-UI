@@ -3,13 +3,13 @@ import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
 import { Alert, AlertIcon, Center, CircularProgress, SimpleGrid, StackDivider } from "@chakra-ui/react";
 import { RedirectProps, withRedirect } from "../commons/BehaviorAddOns";
-import { DeckData } from "../components/Deck";
+import { DeckData } from "../components/decks/Deck";
 import { ServerConnector } from "../BackendConnector";
 import Collection from "../commons/Collections";
 import { useState } from "react";
-import { SubmitableInput } from "../components/SubmitableInput";
+import { SubmitableInput } from "../components/miscellaneous/SubmitableInput";
 import { isNonEmpty } from "../commons/InputValidations";
-import { CardPreview } from "../components/Card";
+import { CardPreview } from "../components/cards/Card";
 
 
 export default function CardsPage() { return( withRedirect({}) (CardsContent) )}

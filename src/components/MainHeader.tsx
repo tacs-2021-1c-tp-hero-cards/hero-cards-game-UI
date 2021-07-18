@@ -3,7 +3,7 @@ import { Box, Center, Button, Image, Stack, Tooltip } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 import logo from '../logo.png'
 import { SideBar, SideBarProps } from "./SideBar";
-import LogInBanner from './LogInBanner'
+import LogInBanner from './session/LogInBanner'
 import { tokenIsAlive } from "../commons/Token";
 
 type MainHeaderProps = SideBarProps & {

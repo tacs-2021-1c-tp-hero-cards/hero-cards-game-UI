@@ -1,10 +1,10 @@
 import React from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
-import { CreateBot } from "../components/CreateBot";
+import { CreateBot } from "../components/players/bots/CreateBot";
 import { StackDivider } from "@chakra-ui/react";
 import { AdminSupportProps, TokenProps, withAdminValidation, withTokenValidation } from "../commons/BehaviorAddOns";
-import { UsersSearchBox } from "../components/UserSearchBox";
+import { UsersSearchBox } from "../components/players/UserSearchBox";
 
 
 export default function BotsPage() { return( withTokenValidation({}) (withAdminValidation) (BotsContent) )}

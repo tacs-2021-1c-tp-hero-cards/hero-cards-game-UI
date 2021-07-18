@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Button, Stack, StackDivider, Text } from "@chakra-ui/react"
-import { LogInForm } from '../components/LogInForm'
+import { LogInForm } from '../components/session/LogInForm'
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
 import { tokenIsAlive } from '../commons/Token'

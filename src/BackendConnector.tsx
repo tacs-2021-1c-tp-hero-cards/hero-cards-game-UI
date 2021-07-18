@@ -1,14 +1,18 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import { User } from "./components/User";
-import { CardAttributes, CharacterDetails } from "./components/Card";
-import { DeckData, NewDeck, UpdatedDeck } from "./components/Deck";
-import { Match, MatchCreation } from "./components/Match"
+import { User } from "./components/players/User";
+import { CardAttributes, CharacterDetails } from "./components/cards/Card";
+import { DeckData, NewDeck, UpdatedDeck } from "./components/decks/Deck";
+import { Match, MatchCreation } from "./components/matches/Match"
 import config from "./config.json"
-import { AI, AiData } from "./components/AI";
+import { AI, AiData } from "./components/players/bots/AI";
 import { getToken } from "./commons/Token";
 
 type Authentication = {
   token: string
+}
+
+type ConfirmationBody = {
+  confirm: boolean
 }
 
 class BackendConnector {
@@ -242,6 +246,25 @@ class BackendConnector {
   getMatch(matchId: number, onSuccess: (match: Match) => void, onFailure: (error: any) => void) {
     BackendConnector.connector
       .get(`/matches/${matchId}`, this.headers())
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
+  acceptMatch(matchId: number, onSuccess: (match: Match) => void, onFailure: (error: any) => void) {
+    this.confirmMatch(matchId, { confirm: true }, onSuccess, onFailure)
+  }
+
+  rejectMatch(matchId: number, onSuccess: (match: Match) => void, onFailure: (error: any) => void) {
+    this.confirmMatch(matchId, { confirm: false }, onSuccess, onFailure)
+  }
+
+  private confirmMatch(matchId: number, body: ConfirmationBody, onSuccess: (match: Match) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .patch(`/matches/${matchId}/confirmation`, body, this.headers())
       .then(function (response) {
         onSuccess(response.data)
       })

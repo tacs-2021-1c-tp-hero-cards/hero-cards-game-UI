@@ -4,16 +4,16 @@ import { Stack, Button, useDisclosure, Box, Drawer, DrawerOverlay, DrawerContent
         IconButton} from "@chakra-ui/react"
 import { RedirectProps, withRedirect } from "../commons/BehaviorAddOns"
 import { logOut } from "../commons/LogOut"
-import { LogOutIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon, AiIcon } from "./icons";
+import { LogOutIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon, AiIcon } from "./miscellaneous/icons";
 import { HamburgerIcon } from "@chakra-ui/icons"
 import logo from '../logo.png'
-import { Notification, NotificationPreview } from "./Notification"
+import { Notification, NotificationPreview } from "./notifications/Notification"
 import { tokenIsAlive } from "../commons/Token";
 import { shallowEqual } from 'react-redux'
 import Collection from "../commons/Collections";
 import { useGetState } from '../store/hooks'
 import { RootState } from "../store/Store";
-import MyHubButton from './MyHubButton'
+import MyHubButton from './miscellaneous/MyHubButton'
 
 
 export function SideBar(props: SideBarProps) { return (withRedirect(props) (SideBarContent))}
@@ -113,7 +113,7 @@ function SideBarContent({
                                 }
 
                                 {
-                                    !isLoggedIn && (hideSignUpButton ?? true) ? 
+                                    !isLoggedIn && (!hideSignUpButton ?? true) ? 
                                         <Button colorScheme="orange"
                                                 leftIcon={<NewUserIcon />}
                                                 variant="solid"

@@ -1,14 +1,14 @@
 import React from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
-import { CreateDeck } from "../components/CreateDeck";
+import { CreateDeck } from "../components/decks/CreateDeck";
 import { StackDivider } from "@chakra-ui/react";
 import { AdminSupportProps, RedirectProps, TokenProps, withAdminValidation, withRedirect, withTokenValidation } from "../commons/BehaviorAddOns";
-import { DeckData } from "../components/Deck";
-import { DecksSearchBox } from "../components/DecksSearchBox"
+import { DeckData } from "../components/decks/Deck";
+import { DecksSearchBox } from "../components/decks/DecksSearchBox"
 import { RootState } from "../store/Store";
 import { useGetState } from "../store/hooks";
-import { User } from "../components/User";
+import { User } from "../components/players/User";
 
 
 export default function DecksPage() { return( withRedirect({}) (withTokenValidation) (withAdminValidation) (DecksContent) )}
