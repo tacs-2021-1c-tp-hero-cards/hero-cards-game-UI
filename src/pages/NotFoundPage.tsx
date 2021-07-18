@@ -4,7 +4,7 @@ import { MainHeader } from '../components/MainHeader'
 import { tokenIsAlive } from '../commons/Token'
 
 
-export function NotFoundPage() {
+export default function NotFoundPage() {
 
     const isLoggedIn = tokenIsAlive()
 
@@ -12,7 +12,7 @@ export function NotFoundPage() {
         <Stack spacing='1px'>
             {
                 isLoggedIn ? 
-                    <MainHeader searchCardsButton /> : 
+                    <MainHeader startAMatchButton searchCardsButton /> : 
                     <MainHeader logInButton signUpButton />
             }
 

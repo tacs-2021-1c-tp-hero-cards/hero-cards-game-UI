@@ -12,7 +12,7 @@ import { WarningIcon } from '@chakra-ui/icons'
 import { SubmitDataErrorToast } from '../commons/Toast'
 import { DeleteIcon } from '../components/icons'
 
-export function DeckPage() { return( withRedirect({}) (withTokenValidation) (withToast) (DeckContent) )}
+export default function DeckPage() { return( withRedirect({}) (withTokenValidation) (withToast) (DeckContent) )}
 
 type ShowDeckProps = TokenProps & RedirectProps & ToastProps
 
@@ -121,9 +121,12 @@ export function DeckContent({ renderWithTokenValidation, redirect, toast }: Show
                                 divider={<StackDivider borderColor='gray.500' />}>
 
                             { isLoading ? 
-                                <Center>
-                                    <CircularProgress isIndeterminate color="green.300" />  
-                                </Center> : 
+                                <Stack spacing='2rem'>
+                                    <Center fontSize='2xl'>Searching deck data...</Center>
+                                    <Center>
+                                        <CircularProgress isIndeterminate color="green.300" />  
+                                    </Center>
+                                </Stack> : 
                                 
                                 deck ? 
                                     <DeckInsights deck={deck} /> : 

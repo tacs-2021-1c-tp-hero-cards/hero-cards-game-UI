@@ -7,7 +7,7 @@ import { ServerConnector } from '../BackendConnector'
 import { useState } from 'react'
 import { CardAttributes, CharacterDetails, CharacterInsights } from '../components/Card'
 
-export function CardPage() { return( withRedirect({}) (withTokenValidation) (withToast) (CardContent) )}
+export default function CardPage() { return( withRedirect({}) (withTokenValidation) (withToast) (CardContent) )}
 
 type ShowCardProps = TokenProps & RedirectProps & ToastProps
 
@@ -75,12 +75,14 @@ export function CardContent({ renderWithTokenValidation, redirect, toast }: Show
                                 divider={<StackDivider borderColor='gray.500' />}>
 
                             { isLoading ? 
-                                <Center>
-                                    <CircularProgress isIndeterminate color="green.300" />  
-                                </Center> : 
+                                <Stack spacing='2rem'>
+                                    <Center fontSize='2xl'>Searching character data...</Center>
+                                    <Center>
+                                        <CircularProgress isIndeterminate color="green.300" />  
+                                    </Center>
+                                </Stack> : 
                                 
                                 character ? 
-                                    // FIXME: Mostrar detalles del personaje en vez de solo la carta
                                     <CharacterInsights character={character} card={card} /> : 
                                     <Alert status="error">
                                         <AlertIcon />

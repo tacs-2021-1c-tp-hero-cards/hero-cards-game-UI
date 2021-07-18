@@ -237,6 +237,17 @@ class BackendConnector {
         onFailure(error)
       })
   }
+
+  getMatch(matchId: number, onSuccess: (match: Match) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .get(`/matches/${matchId}`, this.headers())
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
 }
 
 export const ServerConnector = new BackendConnector()

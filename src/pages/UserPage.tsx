@@ -5,7 +5,7 @@ import { RedirectProps, TokenProps, withRedirect, withTokenValidation } from '..
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/Store'
 
-export function UserPage() { return( withRedirect({}) (withTokenValidation) (UserContent) )}
+export default function UserPage() { return( withRedirect({}) (withTokenValidation) (UserContent) )}
 
 type UserProps = RedirectProps & TokenProps
 

@@ -4,7 +4,7 @@ import { SignUpForm } from '../components/SignUpForm'
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
 
-export function SignUpPage() { return( withRedirect({}) (SignUpContent) )}
+export default function SignUpPage() { return( withRedirect({}) (SignUpContent) )}
 
 type SignUpProps = RedirectProps
 

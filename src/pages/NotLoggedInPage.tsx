@@ -4,7 +4,7 @@ import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
 import { NewUserIcon, UserIcon } from '../components/icons'
 
-export function NotLoggedInPage() { return( withRedirect({}) (NotLoggedInContent) )}
+export default function NotLoggedInPage() { return( withRedirect({}) (NotLoggedInContent) )}
 
 type NotLoggedInProps = RedirectProps
 

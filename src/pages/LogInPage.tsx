@@ -6,7 +6,7 @@ import { RedirectProps, withRedirect } from '../commons/BehaviorAddOns'
 import { tokenIsAlive } from '../commons/Token'
 
 
-export function LogInPage() { return( withRedirect({}) (LogInContent) )}
+export default function LogInPage() { return( withRedirect({}) (LogInContent) )}
 
 type LogInProps = RedirectProps
 

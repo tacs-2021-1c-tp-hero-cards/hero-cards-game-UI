@@ -32,12 +32,14 @@ export type DeckHistoricData = {
 }
 
 type Props = {
-    data: DeckData,
+    data: DeckData | DeckHistoricData,
     onClick?: () => void,
-    hideCardsTooltip?: boolean
+    hideCardsTooltip?: boolean,
+    width?: string,
+    alignSelf?: string
 }
 
-export function DeckPreview( { data, onClick, hideCardsTooltip }: Props ) {
+export function DeckPreview( { data, onClick, hideCardsTooltip, width, alignSelf }: Props ) {
     const cards = Collection.wrap<CardAttributes>(data.cards)
 
     return (
@@ -47,7 +49,9 @@ export function DeckPreview( { data, onClick, hideCardsTooltip }: Props ) {
                 border='2px' 
                 borderColor='gray.600'
                 spacing='3px'
-                cursor='pointer'
+                cursor={onClick ? 'pointer' : ''}
+                width={width}
+                alignSelf={alignSelf}
                 onClick={onClick}
                 divider={<StackDivider border='1px' backgroundColor='gray.500' />} >
 
@@ -82,7 +86,7 @@ export function DeckPreview( { data, onClick, hideCardsTooltip }: Props ) {
 
 
 type InsightsProps = {
-    deck: DeckData
+    deck: DeckData | DeckHistoricData
 }
 
 type InsightsFullProps = RedirectProps & InsightsProps

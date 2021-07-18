@@ -7,7 +7,7 @@ import { AdminSupportProps, RedirectProps, TokenProps, withAdminValidation, with
 import { UsersSearchBox } from "../components/UserSearchBox";
 
 
-export function BotsPage() { return( withTokenValidation({}) (withRedirect) (withAdminValidation) (BotsContent) )}
+export default function BotsPage() { return( withTokenValidation({}) (withRedirect) (withAdminValidation) (BotsContent) )}
 
 type DecksProps = TokenProps & RedirectProps & AdminSupportProps
 

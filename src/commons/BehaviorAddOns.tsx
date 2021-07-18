@@ -1,8 +1,8 @@
 import { useToast } from "@chakra-ui/toast"
 import React from "react"
 import { useHistory, useLocation } from "react-router-dom"
-import { NotFoundPage } from "../pages/NotFoundPage"
-import { NotLoggedInPage } from "../pages/NotLoggedInPage"
+import NotFoundPage from "../pages/NotFoundPage"
+import NotLoggedInPage from "../pages/NotLoggedInPage"
 import store from "../store/Store"
 import { logOut } from "./LogOut"
 import { tokenIsAlive } from "./Token"
@@ -126,6 +126,25 @@ export function withAdminValidation(props: any) {
   const newProps = {
     ...props,
     renderWithAdminValidation: renderValidation
+  }
+
+  return (component: RendereableComponent) => component(newProps)
+}
+
+
+export type ConditionalRenderSupportProps = {
+  renderOnCondition: (condition: boolean, content: ComponentContent) => any
+}
+
+export function withRenderCondition(props: any) {
+
+  function renderValidation(condition: boolean, component: ComponentContent) {
+    return condition ? component() : <NotFoundPage />
+  }
+
+  const newProps = {
+    ...props,
+    renderOnCondition: renderValidation
   }
 
   return (component: RendereableComponent) => component(newProps)

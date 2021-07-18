@@ -12,7 +12,7 @@ import { isNonEmpty } from "../commons/InputValidations";
 import { CardPreview } from "../components/Card";
 
 
-export function CardsPage() { return( withToast({}) (withTokenValidation) (withRedirect) (CardsContent) )}
+export default function CardsPage() { return( withToast({}) (withTokenValidation) (withRedirect) (CardsContent) )}
 
 type CardsProps = ToastProps & TokenProps & RedirectProps
 

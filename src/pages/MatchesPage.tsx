@@ -20,7 +20,7 @@ import ReturnButton from '../components/ReturnButton'
 import MyHubButton from '../components/MyHubButton'
 
 
-export function StartMatchPage() { return( withRedirect({}) (withTokenValidation) (withToast) (StartMatchContent) )}
+export default function StartMatchPage() { return( withRedirect({}) (withTokenValidation) (withToast) (StartMatchContent) )}
 
 type UserProps = RedirectProps & TokenProps & ToastProps
 

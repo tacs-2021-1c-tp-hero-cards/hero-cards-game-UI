@@ -11,7 +11,7 @@ export type MatchCreation = {
 export type Match = {
     id: number,
     player: Player,
-    oponent: Player,
+    opponent: Player,
     deck: DeckHistoricData,
     status: string,
     duelHistoryList: HistoricDuel[]

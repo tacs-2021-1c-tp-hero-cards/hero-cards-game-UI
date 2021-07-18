@@ -8,7 +8,7 @@ import { DeckData } from "../components/Deck";
 import { DecksSearchBox } from "../components/DecksSearchBox"
 
 
-export function DecksPage() { return( withTokenValidation({}) (withRedirect) (withAdminValidation) (DecksContent) )}
+export default function DecksPage() { return( withTokenValidation({}) (withRedirect) (withAdminValidation) (DecksContent) )}
 
 type DecksProps = TokenProps & RedirectProps & AdminSupportProps
 

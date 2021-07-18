@@ -3,7 +3,7 @@ import { Stack, Image } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 
 
-export function HomePage() {
+export default function HomePage() {
 
   return (
     <Stack spacing='1px'>
