@@ -31,7 +31,7 @@ export function CardsContent({ redirect }: CardsProps) {
         return(
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader hideCardsButton />
+                    <MainHeader hideCardsButton showBanner />
 
                     <Stack direction='row' spacing='1px'>
                         <Stack  bg='gray.300'

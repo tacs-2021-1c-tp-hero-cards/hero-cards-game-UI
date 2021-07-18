@@ -64,7 +64,7 @@ export function DecksContent({ redirect, renderWithTokenValidation, renderWithAd
         return(
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader hideDecksButton />
+                    <MainHeader hideDecksButton showBanner />
 
                     <Stack direction='row' spacing='1px'>
 

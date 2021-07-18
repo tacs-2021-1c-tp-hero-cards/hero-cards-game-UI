@@ -56,7 +56,7 @@ export function DeckContent({ redirect, toast }: ShowDeckProps) {
         return (
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader />
+                    <MainHeader showBanner />
 
                     <Stack direction='row' spacing='1px'>
                         <Stack  padding='4'

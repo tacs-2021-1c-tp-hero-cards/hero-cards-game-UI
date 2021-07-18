@@ -8,7 +8,7 @@ export function UnexpectedErrorPage() {
 
     return( 
         <Stack spacing='1px'>
-            <MainHeader />
+            <MainHeader showBanner />
 
             <Box bg='red.600' borderRadius='7px'>
                 <Center padding='4' fontSize='xl' fontWeight='bold'>

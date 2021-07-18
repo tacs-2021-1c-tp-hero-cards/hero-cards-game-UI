@@ -13,7 +13,7 @@ export default function NotFoundPage() {
             {
                 isLoggedIn ? 
                     <MainHeader startAMatchButton /> : 
-                    <MainHeader logInButton signUpButton />
+                    <MainHeader logInButton signUpButton showBanner />
             }
 
             <Box bg='yellow.400' borderRadius='7px'>

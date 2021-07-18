@@ -5,20 +5,22 @@ import { MainHeader } from '../components/MainHeader'
 import { ServerConnector } from '../BackendConnector'
 import { useState } from 'react'
 import { CardAttributes, CharacterDetails, CharacterInsights } from '../components/Card'
+import { ConditionalRenderSupportProps, withRenderCondition } from '../commons/BehaviorAddOns'
 
-export default function CardPage() { return CardContent({}) }
+export default function CardPage() { return withRenderCondition({}) (CardContent) }
 
-type ShowCardProps = {}
+type ShowCardProps = ConditionalRenderSupportProps
 
-export function CardContent({}: ShowCardProps) {
+export function CardContent({ renderOnCondition }: ShowCardProps) {
     let { characterId }: any = useParams()
 
     const [ character, setCharacter ] = useState<CharacterDetails>()
     const [ card, setCard ] = useState<CardAttributes>()
-    const [ isLoading, setIsLoading ] = useState(true)
-    const [ searchingCharacter, setSearchingCharacter] = useState(false)
+    const [ isLoading, setIsLoading ] = useState<boolean>(true)
+    const [ searchingCharacter, setSearchingCharacter] = useState<boolean>(false)
+    const [ error, setError ] = useState<boolean>(false)
 
-    if (!character && !searchingCharacter) {
+    if (!error && !character && !searchingCharacter) {
         setSearchingCharacter(true)
 
         ServerConnector.getCharacterDetails(
@@ -49,21 +51,23 @@ export function CardContent({}: ShowCardProps) {
                     )
                 )
 
+                setError(false)
             },
             (error) => {
                 setSearchingCharacter(false)
                 setIsLoading(false)
+                setError(true)
             }
         )
     }
 
-    return content()
+    return renderOnCondition(!error && (isLoading || character), content)
 
     function content() {
         return (
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader />
+                    <MainHeader showBanner />
 
                     <Stack direction='row' spacing='1px'>
                         <Stack  bg='gray.300'
