@@ -44,14 +44,14 @@ function SideBarContent({
     const { isOpen, onOpen, onClose } = useDisclosure()
     const firstField = React.useRef<HTMLButtonElement>(null)
 
-    function getNotifications(state: RootState) {
-        return (state.socket.notifications.map((n: Invite, index: number) => 
+    function getInvites(state: RootState) {
+        return (state.socket.invites.map((n: Invite, index: number) => 
                     <InvitePreview key={index} matchId={n.matchId} username={n.username} index={index} />
                 )
         )
     }
 
-    const notifications = useGetState(getNotifications, shallowEqual)
+    const invites = useGetState(getInvites, shallowEqual)
     const user = useGetState(state => state.user)
 
     const isLoggedIn = tokenIsAlive()
@@ -65,7 +65,7 @@ function SideBarContent({
                         size='lg' 
                         variant='ghost' 
                         icon={<HamburgerIcon />}
-                        colorScheme={Collection.wrap(notifications).isEmpty() ? 'gray' : 'red'} />
+                        colorScheme={Collection.wrap(invites).isEmpty() ? 'gray' : 'red'} />
 
             <Drawer isOpen={isOpen}
                     placement="left"
@@ -192,11 +192,11 @@ function SideBarContent({
                                 }
 
                                 {
-                                    Collection.wrap(notifications).nonEmpty() ? 
+                                    Collection.wrap(invites).nonEmpty() ? 
                                         <Stack>
                                             <Text>Notifications:</Text>
                                             <Stack divider={<StackDivider borderColor='gray' />} spacing='0.5rem'>
-                                                {notifications}
+                                                {invites}
                                             </Stack>
                                         </Stack> :
                                         <></>
