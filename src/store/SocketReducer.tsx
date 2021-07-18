@@ -3,7 +3,7 @@ import { SocketData } from "./State"
 
 const initialState: SocketData = {
     client: undefined,
-    notifications: [],
+    invites: [],
     confirmations: [],
     rejections: [],
     abortions: [],
@@ -12,52 +12,112 @@ const initialState: SocketData = {
 
 export default function socketReducer(state = initialState, action: any): SocketData {
     switch(action.type) {
+
+        // SOCKET CLIENT
         case 'socket/updateClient' : {
             return {
                 ...state,
                 client: action.payload
             }
         }
-        case 'socket/pushNotification' : {
-            const previousNotifications = Collection.wrap(state.notifications)
-            console.log(previousNotifications)
+
+
+        // INVITES
+        case 'socket/pushInvite' : {
+            const previousInvites = Collection.wrap(state.invites)
+            console.log(previousInvites)
             return {
                 ...state,
-                notifications: previousNotifications.add(action.payload).collection
+                invites: previousInvites.add(action.payload).collection
             }
         }
-        case 'socket/removeNotification' : {
-            const previousNotifications = Collection.wrap(state.notifications)
-            console.log(previousNotifications)
+        case 'socket/removeInvite' : {
+            const previousInvites = Collection.wrap(state.invites)
+            console.log(previousInvites)
             return {
                 ...state,
-                notifications: previousNotifications.remove(action.payload).collection
+                invites: previousInvites.remove(action.payload).collection
             }
         }
-        case 'socket/setConfirmation' : {
+
+
+        //CONFIRMATIONS
+        case 'socket/pushConfirmation' : {
+            const previousConfirmations = Collection.wrap(state.confirmations)
+            console.log(previousConfirmations)
             return {
                 ...state,
-                confirmations: action.payload //TODO: consider multiple confirmations
+                confirmations: previousConfirmations.add(action.payload).collection
             }
         }
-        case 'socket/setRejection' : {
+        case 'socket/removeConfirmation' : {
+            const previousConfirmations = Collection.wrap(state.confirmations)
+            console.log(previousConfirmations)
             return {
                 ...state,
-                rejections: action.payload //TODO: consider multiple rejections
+                confirmations: previousConfirmations.remove(action.payload).collection
             }
         }
-        case 'socket/setAbortion' : {
+
+
+        //REJECTIONS
+        case 'socket/pushRejection' : {
+            const previousRejections = Collection.wrap(state.rejections)
+            console.log(previousRejections)
             return {
                 ...state,
-                abortions: action.payload //TODO: consider multiple abortions
+                rejections: previousRejections.add(action.payload).collection
             }
         }
-        case 'socket/setDuelUpdate' : {
+        case 'socket/removeRejection' : {
+            const previousRejection = Collection.wrap(state.rejections)
+            console.log(previousRejection)
             return {
                 ...state,
-                duelUpdates: action.payload //TODO: consider multiple duel updates
+                rejections: previousRejection.remove(action.payload).collection
             }
         }
+
+
+        // ABORTIONS
+        case 'socket/pushAbortion' : {
+            const previousAbortions = Collection.wrap(state.abortions)
+            console.log(previousAbortions)
+            return {
+                ...state,
+                abortions: previousAbortions.add(action.payload).collection
+            }
+        }
+        case 'socket/removeAbortion' : {
+            const previousAbortions = Collection.wrap(state.abortions)
+            console.log(previousAbortions)
+            return {
+                ...state,
+                abortions: previousAbortions.remove(action.payload).collection
+            }
+        }
+
+
+        // DUEL UPDATES
+        case 'socket/pushDuelUpdate' : {
+            const previousDuelUpdates = Collection.wrap(state.duelUpdates)
+            console.log(previousDuelUpdates)
+            return {
+                ...state,
+                duelUpdates: previousDuelUpdates.add(action.payload).collection
+            }
+        }
+        case 'socket/removeDuelUpdate' : {
+            const previousDuelUpdates = Collection.wrap(state.duelUpdates)
+            console.log(previousDuelUpdates)
+            return {
+                ...state,
+                duelUpdates: previousDuelUpdates.remove(action.payload).collection
+            }
+        }
+
+
+        // OTHERS
         case 'socket/clear' : {
             return initialState
         }

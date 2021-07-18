@@ -7,7 +7,7 @@ import { logOut } from "../commons/LogOut"
 import { LogOutIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon, AiIcon } from "./miscellaneous/icons";
 import { HamburgerIcon } from "@chakra-ui/icons"
 import logo from '../logo.png'
-import { Notification, NotificationPreview } from "./notifications/Notification"
+import { Invite, InvitePreview } from "./notifications/Invite"
 import { tokenIsAlive } from "../commons/Token";
 import { shallowEqual } from 'react-redux'
 import Collection from "../commons/Collections";
@@ -45,8 +45,8 @@ function SideBarContent({
     const firstField = React.useRef<HTMLButtonElement>(null)
 
     function getNotifications(state: RootState) {
-        return (state.socket.notifications.map((n: Notification, index: number) => 
-                    <NotificationPreview key={index} matchId={n.matchId} username={n.username} index={index} />
+        return (state.socket.notifications.map((n: Invite, index: number) => 
+                    <InvitePreview key={index} matchId={n.matchId} username={n.username} index={index} />
                 )
         )
     }

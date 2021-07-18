@@ -6,21 +6,21 @@ import { customToast } from "../../commons/Toast"
 import { updateState } from "../../store/hooks"
 import { ServerConnector } from "../../BackendConnector"
 
-export type Notification = {
+export type Invite = {
     matchId: number,
     username: string
 }
 
-type NotificationPreview = Notification & {
+type InvitePreview = Invite & {
     index: number,
     fontSize?: string
 }
 
-export function NotificationPreview(props: NotificationPreview) { return withRedirect(props) (withToast) (NotificationPreviewContent) }
+export function InvitePreview(props: InvitePreview) { return withRedirect(props) (withToast) (InvitePreviewContent) }
 
-type NotificationPreviewProps = NotificationPreview & RedirectProps & ToastProps
+type InvitePreviewProps = InvitePreview & RedirectProps & ToastProps
 
-function NotificationPreviewContent({ matchId, username, index, redirect, toast, fontSize }: NotificationPreviewProps) {
+function InvitePreviewContent({ matchId, username, index, redirect, toast, fontSize }: InvitePreviewProps) {
     const [isOpen, setIsOpen] = React.useState(false)
     const onClose = () => setIsOpen(false)
     const rejectRef = React.useRef<HTMLButtonElement>(null)

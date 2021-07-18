@@ -16,7 +16,7 @@ export function connect() {
         console.log(`Connected: ${frame}`)
 
         // Notifications
-        stompClient.subscribe(`/topic/user/${token}/notifications`, handleNotification)
+        stompClient.subscribe(`/topic/user/${token}/notifications`, handleInvite)
 
         // Confirmations
         stompClient.subscribe(`/topic/user/${token}/confirmations`, handleConfirmation)
@@ -42,31 +42,34 @@ export function disconnect() {
 }
 
 
-function handleNotification(notification: IMessage) {
-    console.log("new notification")
-    const content = JSON.parse(notification.body)
+function handleInvite(invite: IMessage) {
+    console.log("new invite")
+    const content = JSON.parse(invite.body)
     console.log(content)
 
-    const newNotification = {
+    const newInvite = {
         matchId: content.matchId,
         username: content.user.userName
     }
 
     updateState({
-        type: 'socket/pushNotification',
-        payload: newNotification
+        type: 'socket/pushInvite',
+        payload: newInvite
     })
 }
 
 function handleConfirmation(confirmation: IMessage) {
     console.log("match confirmed")
     const content = JSON.parse(confirmation.body)
+    console.log(content)
 
-    //TODO: parse correctly
-    const newConfirmation = content
+    const newConfirmation = {
+        matchId: content.matchId,
+        username: content.user.userName
+    }
 
     updateState({
-        type: 'socket/setConfirmations',
+        type: 'socket/pushConfirmation',
         payload: newConfirmation
     })
 }
@@ -74,12 +77,15 @@ function handleConfirmation(confirmation: IMessage) {
 function handleRejection(rejection: IMessage) {
     console.log("match rejected")
     const content = JSON.parse(rejection.body)
+    console.log(content)
 
-    //TODO: parse correctly
-    const newRejection = content
+    const newRejection = {
+        matchId: content.matchId,
+        username: content.user.userName
+    }
     
     updateState({
-        type: 'socket/setRejections',
+        type: 'socket/pushRejection',
         payload: newRejection
     })
 }
@@ -87,12 +93,15 @@ function handleRejection(rejection: IMessage) {
 function handleAbortion(abortion: IMessage) {
     console.log("match aborted")
     const content = JSON.parse(abortion.body)
+    console.log(content)
 
-    //TODO: parse correctly
-    const newAbortion = content
+    const newAbortion = {
+        matchId: content.matchId,
+        username: content.user.userName
+    }
     
     updateState({
-        type: 'socket/setAbortions',
+        type: 'socket/pushAbortion',
         payload: newAbortion
     })
 }
@@ -100,12 +109,13 @@ function handleAbortion(abortion: IMessage) {
 function handleDuelUpdate(duelUpdate: IMessage) {
     console.log("duel updated")
     const content = JSON.parse(duelUpdate.body)
+    console.log(content)
 
     //TODO: parse correctly
     const newUpdate = content
     
     updateState({
-        type: 'socket/setDuelUpdate',
+        type: 'socket/pushDuelUpdate',
         payload: newUpdate
     })
 }
