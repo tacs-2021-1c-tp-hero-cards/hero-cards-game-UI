@@ -3,7 +3,7 @@ import { Stack, Button, useDisclosure, Box, Drawer, DrawerOverlay, DrawerContent
         StackDivider } from "@chakra-ui/react"
 import { RedirectProps, withRedirect } from "../commons/BehaviorAddOns"
 import { logOut } from "../commons/LogOut"
-import { LogOutIcon, ManageIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon, AiIcon } from "./icons";
+import { LogOutIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon, AiIcon } from "./icons";
 import { HamburgerIcon } from "@chakra-ui/icons"
 import logo from '../logo.png'
 import { Notification, NotificationPreview } from "./Notification"
@@ -21,9 +21,9 @@ export type SideBarProps = {
     hideHubButton?: boolean,
     logInButton?: boolean,
     signUpButton?: boolean,
-    manageDecksButton?: boolean,
+    hideDecksButton?: boolean,
     manageBotsButton?: boolean,
-    searchCardsButton?: boolean,
+    hideCardsButton?: boolean,
     startAMatchButton?: boolean
 }
 
@@ -34,9 +34,9 @@ function SideBarContent({
                             hideHubButton, 
                             logInButton, 
                             signUpButton, 
-                            manageDecksButton, 
+                            hideDecksButton, 
                             manageBotsButton, 
-                            searchCardsButton, 
+                            hideCardsButton,
                             startAMatchButton 
                         }: Props) {
 
@@ -56,7 +56,13 @@ function SideBarContent({
 
     return (
         <Box>
-            <Button leftIcon={<HamburgerIcon />} variant='ghost' onClick={onOpen} size='lg' width='1rem' colorScheme={Collection.wrap(notifications).isEmpty() ? 'gray' : 'red'} />
+            <Button leftIcon={<HamburgerIcon />} 
+                    variant='ghost' 
+                    onClick={onOpen} 
+                    size='lg' 
+                    width='1rem' 
+                    marginLeft='0.5rem'
+                    colorScheme={Collection.wrap(notifications).isEmpty() ? 'gray' : 'red'} />
 
             <Drawer isOpen={isOpen}
                     placement="left"
@@ -131,14 +137,14 @@ function SideBarContent({
                                 }
 
                                 {
-                                    (manageDecksButton ?? false) ? 
-                                        <Button colorScheme="orange"
-                                                leftIcon={<ManageIcon />}
+                                    (!hideDecksButton ?? true) ? 
+                                        <Button colorScheme="teal"
+                                                leftIcon={<SearchIcon />}
                                                 variant="solid"
                                                 textColor='gray.700'
                                                 fontSize='xl'
                                                 onClick={() => redirect('/decks')}>
-                                            Manage decks
+                                            Search decks
                                         </Button> : 
                                         <></>
                                 }
@@ -157,7 +163,7 @@ function SideBarContent({
                                 }
 
                                 {
-                                    (searchCardsButton ?? false) ?
+                                    (!hideCardsButton ?? true) ?
                                         <Button colorScheme="cyan"
                                                 leftIcon={<SearchIcon />}
                                                 variant="solid"

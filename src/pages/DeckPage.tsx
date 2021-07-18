@@ -2,7 +2,7 @@ import React from 'react'
 import { Alert, AlertIcon, Box, Button, Center, CircularProgress, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, 
     ModalHeader, ModalOverlay, Stack, StackDivider, Text, useDisclosure } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
-import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from '../commons/BehaviorAddOns'
+import { RedirectProps, ToastProps, withRedirect, withToast } from '../commons/BehaviorAddOns'
 import { MainHeader } from '../components/MainHeader'
 import { ServerConnector } from '../BackendConnector'
 import { DeckData, DeckInsights } from '../components/Deck'
@@ -12,11 +12,11 @@ import { WarningIcon } from '@chakra-ui/icons'
 import { SubmitDataErrorToast } from '../commons/Toast'
 import { DeleteIcon } from '../components/icons'
 
-export default function DeckPage() { return( withRedirect({}) (withTokenValidation) (withToast) (DeckContent) )}
+export default function DeckPage() { return( withRedirect({}) (withToast) (DeckContent) )}
 
-type ShowDeckProps = TokenProps & RedirectProps & ToastProps
+type ShowDeckProps = RedirectProps & ToastProps
 
-export function DeckContent({ renderWithTokenValidation, redirect, toast }: ShowDeckProps) {
+export function DeckContent({ redirect, toast }: ShowDeckProps) {
     let { deckId }: any = useParams()
 
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -50,13 +50,13 @@ export function DeckContent({ renderWithTokenValidation, redirect, toast }: Show
         )
     }
 
-    return renderWithTokenValidation(content)
+    return content()
 
     function content() {
         return (
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader manageDecksButton />
+                    <MainHeader />
 
                     <Stack direction='row' spacing='1px'>
                         <Stack  padding='4'

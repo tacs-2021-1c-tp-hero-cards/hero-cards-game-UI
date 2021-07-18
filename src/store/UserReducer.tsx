@@ -3,7 +3,7 @@ import { UserData } from "./State"
 const initialState: UserData = {
     username: undefined,
     id: undefined,
-    admin: undefined,
+    admin: false,
     token: undefined
 }
 

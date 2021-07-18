@@ -6,21 +6,27 @@ import { StackDivider } from "@chakra-ui/react";
 import { AdminSupportProps, RedirectProps, TokenProps, withAdminValidation, withRedirect, withTokenValidation } from "../commons/BehaviorAddOns";
 import { DeckData } from "../components/Deck";
 import { DecksSearchBox } from "../components/DecksSearchBox"
+import { RootState } from "../store/Store";
+import { useGetState } from "../store/hooks";
+import { User } from "../components/User";
 
 
-export default function DecksPage() { return( withTokenValidation({}) (withRedirect) (withAdminValidation) (DecksContent) )}
+export default function DecksPage() { return( withRedirect({}) (withTokenValidation) (withAdminValidation) (DecksContent) )}
 
-type DecksProps = TokenProps & RedirectProps & AdminSupportProps
+type DecksProps = RedirectProps & TokenProps & AdminSupportProps
 
-export function DecksContent({ renderWithTokenValidation, redirect, renderWithAdminValidation }: DecksProps) {
+export function DecksContent({ redirect, renderWithTokenValidation, renderWithAdminValidation }: DecksProps) {
 
-    return( renderWithTokenValidation(() => renderWithAdminValidation(content)) )
+    const user: User = useGetState(state => state.user)
+    const isAdmin = user.admin
 
-    function content() {
+    return user && isAdmin ? renderWithTokenValidation(() => renderWithAdminValidation(adminContent)) : commonContent()
+
+    function adminContent() {
         return(
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader searchCardsButton manageBotsButton />
+                    <MainHeader manageBotsButton hideDecksButton />
 
                     <Stack direction='row' spacing='1px'>
 
@@ -54,4 +60,26 @@ export function DecksContent({ renderWithTokenValidation, redirect, renderWithAd
         )
     }
 
+    function commonContent() {
+        return(
+            <Box>
+                <Stack spacing='1px'>
+                    <MainHeader hideDecksButton />
+
+                    <Stack direction='row' spacing='1px'>
+
+                        <Stack  bg='gray.300'
+                                borderRadius='7px'
+                                padding='4'
+                                boxSize='full'>
+
+                            <DecksSearchBox onDeckClick={ (deck: DeckData) => redirect(`/decks/${deck.id}`) }/>
+                        
+                        </Stack>
+                    </Stack>
+                </Stack>
+
+            </Box>
+        )
+    }
 }

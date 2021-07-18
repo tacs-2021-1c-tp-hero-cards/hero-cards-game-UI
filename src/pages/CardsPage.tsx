@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { MainHeader } from "../components/MainHeader";
 import { Alert, AlertIcon, Center, CircularProgress, SimpleGrid, StackDivider } from "@chakra-ui/react";
-import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../commons/BehaviorAddOns";
+import { RedirectProps, withRedirect } from "../commons/BehaviorAddOns";
 import { DeckData } from "../components/Deck";
 import { ServerConnector } from "../BackendConnector";
 import Collection from "../commons/Collections";
@@ -12,11 +12,11 @@ import { isNonEmpty } from "../commons/InputValidations";
 import { CardPreview } from "../components/Card";
 
 
-export default function CardsPage() { return( withToast({}) (withTokenValidation) (withRedirect) (CardsContent) )}
+export default function CardsPage() { return( withRedirect({}) (CardsContent) )}
 
-type CardsProps = ToastProps & TokenProps & RedirectProps
+type CardsProps = RedirectProps
 
-export function CardsContent({ toast, renderWithTokenValidation, redirect }: CardsProps) {
+export function CardsContent({ redirect }: CardsProps) {
 
     const [ cards, setCards ] = useState(Collection.empty<DeckData>())
     const [ isLoading, setIsLoading ] = useState(false)
@@ -25,13 +25,13 @@ export function CardsContent({ toast, renderWithTokenValidation, redirect }: Car
     const [ searchInitiated, setSearchInitiated ] = useState(false)
     const [ cardError, setCardError ] = useState(false)
 
-    return( renderWithTokenValidation(content) )
+    return content()
 
     function content() {
         return(
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader />
+                    <MainHeader hideCardsButton />
 
                     <Stack direction='row' spacing='1px'>
                         <Stack  bg='gray.300'
@@ -42,13 +42,13 @@ export function CardsContent({ toast, renderWithTokenValidation, redirect }: Car
                                 divider={<StackDivider borderColor='gray.500' />}>
 
                             <Stack spacing='3.5'>
-                                <Text fontWeight='bold' fontSize='xl'>Search existent decks</Text>
+                                <Text fontWeight='bold' fontSize='xl'>Search cards</Text>
                                 
                                 <Box paddingLeft='3'>
                                     <SubmitableInput    id='searchCardsByName' 
                                                         placeHolder='Please enter card name' 
                                                         buttonLabel='Search'
-                                                        label='Search cards by name' 
+                                                        label='Search by name' 
                                                         isValid={isNonEmpty}
                                                         onSubmit={searchCardsByName}
                                                         isLoading={searchByNameIsLoading} />
@@ -58,7 +58,7 @@ export function CardsContent({ toast, renderWithTokenValidation, redirect }: Car
                                     <SubmitableInput    id='searchCardById' 
                                                         placeHolder='Please enter card id' 
                                                         buttonLabel='Search'
-                                                        label='Search card by id' 
+                                                        label='Search by id' 
                                                         isValid={isNonEmpty}
                                                         onSubmit={searchCardById}
                                                         isLoading={searchByIdIsLoading} />

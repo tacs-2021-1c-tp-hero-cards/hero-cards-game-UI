@@ -1,17 +1,16 @@
 import React from 'react'
 import { Alert, AlertIcon, Box, Center, CircularProgress, Stack, StackDivider } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
-import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from '../commons/BehaviorAddOns'
 import { MainHeader } from '../components/MainHeader'
 import { ServerConnector } from '../BackendConnector'
 import { useState } from 'react'
 import { CardAttributes, CharacterDetails, CharacterInsights } from '../components/Card'
 
-export default function CardPage() { return( withRedirect({}) (withTokenValidation) (withToast) (CardContent) )}
+export default function CardPage() { return CardContent({}) }
 
-type ShowCardProps = TokenProps & RedirectProps & ToastProps
+type ShowCardProps = {}
 
-export function CardContent({ renderWithTokenValidation, redirect, toast }: ShowCardProps) {
+export function CardContent({}: ShowCardProps) {
     let { characterId }: any = useParams()
 
     const [ character, setCharacter ] = useState<CharacterDetails>()
@@ -58,13 +57,13 @@ export function CardContent({ renderWithTokenValidation, redirect, toast }: Show
         )
     }
 
-    return renderWithTokenValidation(content)
+    return content()
 
     function content() {
         return (
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader searchCardsButton />
+                    <MainHeader />
 
                     <Stack direction='row' spacing='1px'>
                         <Stack  bg='gray.300'

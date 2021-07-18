@@ -12,7 +12,7 @@ export default function NotFoundPage() {
         <Stack spacing='1px'>
             {
                 isLoggedIn ? 
-                    <MainHeader startAMatchButton searchCardsButton /> : 
+                    <MainHeader startAMatchButton /> : 
                     <MainHeader logInButton signUpButton />
             }
 

@@ -24,9 +24,9 @@ function UserContent({ redirect, renderWithTokenValidation }: UserProps) {
             <Stack spacing='1px'>
                 
                 {
-                    user && user.admin ?
-                        <MainHeader hideHubButton manageDecksButton manageBotsButton searchCardsButton startAMatchButton /> :
-                        <MainHeader hideHubButton searchCardsButton startAMatchButton /> 
+                    user?.admin ?
+                        <MainHeader hideHubButton manageBotsButton startAMatchButton /> :
+                        <MainHeader hideHubButton startAMatchButton /> 
                         
                 }
 

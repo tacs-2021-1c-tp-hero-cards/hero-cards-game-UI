@@ -24,11 +24,12 @@ class BackendConnector {
   })
 
   headers(): AxiosRequestConfig {
-    return {
+    const token = getToken()
+    return token ? {
       headers: {
-        'x-user-token': getToken()
+        'x-user-token': token
       }
-    }
+    } : {}
   }
 
   signUp(user: User, onSuccess: (data: number) => void, onFailure: (error: any) => void) {

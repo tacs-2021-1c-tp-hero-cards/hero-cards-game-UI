@@ -30,7 +30,7 @@ export function DecksSearchBox({ fontSize, onDeckClick, hideCardsTooltip }: Prop
                 <SubmitableInput    id='searchDecksByName' 
                                     placeHolder='Please enter deck name' 
                                     buttonLabel='Search'
-                                    label='Search deck by name'
+                                    label='Search by name'
                                     fontSize={fontSize} 
                                     isValid={isNonEmpty}
                                     onSubmit={searchDecksByName}
@@ -41,7 +41,7 @@ export function DecksSearchBox({ fontSize, onDeckClick, hideCardsTooltip }: Prop
                 <SubmitableInput    id='searchDeckById' 
                                     placeHolder='Please enter deck id' 
                                     buttonLabel='Search'
-                                    label='Search deck by id' 
+                                    label='Search by id' 
                                     fontSize={fontSize} 
                                     isValid={isNonEmpty}
                                     onSubmit={searchDeckById}

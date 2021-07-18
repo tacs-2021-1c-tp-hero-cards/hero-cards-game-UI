@@ -19,7 +19,7 @@ function BotsContent({ renderWithTokenValidation, redirect, renderWithAdminValid
         return(
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader searchCardsButton manageDecksButton />
+                    <MainHeader />
 
                     <Stack direction='row' spacing='1px'>
 

@@ -218,7 +218,7 @@ export function CharacterInsights({ character, card }: InsightProps)  {
             <Stack direction='row-reverse'>
                 {
                     card ?
-                        <Image  src={card.imageUrl} 
+                        <Image src={card.imageUrl} 
                                 fallbackSrc='https://pbs.twimg.com/profile_images/798356695860723712/-NpEsPw9_400x400.jpg' 
                                 border='2px' 
                                 borderColor='gray.500' 

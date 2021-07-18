@@ -56,7 +56,7 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
         return (
             <Box>
                 <Stack spacing='1px'>
-                    <MainHeader startAMatchButton searchCardsButton />
+                    <MainHeader startAMatchButton />
 
                     <Stack direction='row' spacing='1px'>
                         <Stack  bg='gray.300'

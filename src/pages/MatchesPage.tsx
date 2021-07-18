@@ -2,9 +2,8 @@ import React from 'react'
 import { Button, Center, Stack, StackDivider, Text, Image } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from '../commons/BehaviorAddOns'
-import { AiIcon, PlayIcon, RetryIcon, UserIcon, UsersIcon } from '../components/icons'
+import { AiIcon, PlayIcon, RetryIcon, UsersIcon } from '../components/icons'
 import { useState } from 'react'
-import Collection from '../commons/Collections'
 import { DeckData } from '../components/Deck'
 import { AlertPopUp } from '../components/AlertPopUp'
 import { DecksSearchBox } from '../components/DecksSearchBox'
@@ -42,7 +41,7 @@ function StartMatchContent({ renderWithTokenValidation, redirect, toast }: UserP
         return (
             <Stack spacing='1px'>
                 
-                <MainHeader searchCardsButton />
+                <MainHeader />
 
                 <Stack direction='row' spacing='1px' boxSize='full'>
                 

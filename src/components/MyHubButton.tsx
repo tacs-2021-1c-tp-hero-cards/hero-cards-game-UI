@@ -13,7 +13,7 @@ type Props = HubButtonProps & RedirectProps
 
 function HubButton({ width, redirect }: Props) {
     return (
-        <Button colorScheme="orange"
+        <Button colorScheme="blue"
                 leftIcon={<UserIcon />}
                 variant="solid"
                 textColor='gray.700'
