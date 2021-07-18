@@ -16,14 +16,25 @@ import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTok
 import { customToast, SubmitDataErrorToast } from "../commons/Toast"
 import { EditIcon } from "./icons"
 
-type InnerProps = { alignSelf?: string, deck: DeckData, buttonWidth?: string }
+type InnerProps = { alignSelf?: string, deck: DeckData, buttonWidth?: string, buttonSize?: string, fontSize?: string }
 type DrawerProps = RedirectProps & TokenProps & ToastProps & ReloadProps & InnerProps
 
 type CheckedCardAttributes = CardAttributes & { checked: boolean }
 
 export function ModifyDeck(props: InnerProps) { return( withRedirect(props) (withTokenValidation) (withToast) (withReload) (ModifyDeckContent) )}
 
-function ModifyDeckContent({ alignSelf, deck, buttonWidth, renderWithTokenValidation, redirect, toast, reload }: DrawerProps) {
+function ModifyDeckContent({ 
+        alignSelf, 
+        deck, 
+        buttonWidth,
+        buttonSize,
+        fontSize, 
+        renderWithTokenValidation, 
+        redirect, 
+        toast, 
+        reload 
+    }: DrawerProps) {
+
     const initialRef = React.useRef(null)
     
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -190,7 +201,7 @@ function ModifyDeckContent({ alignSelf, deck, buttonWidth, renderWithTokenValida
     function content() {
         return (
             <Box alignSelf={alignSelf}>
-                <Button leftIcon={<EditIcon />} colorScheme='teal' onClick={openDrawer} width={buttonWidth!}>
+                <Button leftIcon={<EditIcon />} colorScheme='teal' onClick={openDrawer} width={buttonWidth!} size={buttonSize} fontSize={fontSize}>
                     Modify
                 </Button>
                 <Drawer isOpen={isOpen} size='xl' placement="right" onClose={closeDrawer} initialFocusRef={initialRef} >

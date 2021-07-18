@@ -101,6 +101,7 @@ function DeckInsightsContent( { deck, redirect }: InsightsFullProps ) {
     return (
         <Stack  padding='4px'
                 spacing='3px'
+                boxSize='full'
                 divider={<StackDivider borderColor='gray.500' />} >
 
             <Text fontSize='4xl'>Deck name: {capitalizeEveryWord(deck.name)}</Text>

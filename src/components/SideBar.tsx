@@ -1,6 +1,7 @@
 import React from "react"
 import { Stack, Button, useDisclosure, Box, Drawer, DrawerOverlay, DrawerContent, Image, DrawerBody, DrawerHeader, Text, Center, 
-        StackDivider } from "@chakra-ui/react"
+        StackDivider, 
+        IconButton} from "@chakra-ui/react"
 import { RedirectProps, withRedirect } from "../commons/BehaviorAddOns"
 import { logOut } from "../commons/LogOut"
 import { LogOutIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon, AiIcon } from "./icons";
@@ -56,13 +57,13 @@ function SideBarContent({
 
     return (
         <Box>
-            <Button leftIcon={<HamburgerIcon />} 
-                    variant='ghost' 
-                    onClick={onOpen} 
-                    size='lg' 
-                    width='1rem' 
-                    marginLeft='0.5rem'
-                    colorScheme={Collection.wrap(notifications).isEmpty() ? 'gray' : 'red'} />
+            <IconButton aria-label='Side bar' 
+                        onClick={onOpen} 
+                        marginLeft='1rem'
+                        size='lg' 
+                        variant='ghost' 
+                        icon={<HamburgerIcon />}
+                        colorScheme={Collection.wrap(notifications).isEmpty() ? 'gray' : 'red'} />
 
             <Drawer isOpen={isOpen}
                     placement="left"

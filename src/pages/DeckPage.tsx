@@ -1,8 +1,13 @@
 import React from 'react'
-import { Alert, AlertIcon, Box, Button, Center, CircularProgress, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, 
-    ModalHeader, ModalOverlay, Stack, StackDivider, Text, useDisclosure } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, ButtonGroup, Center, CircularProgress, IconButton, Modal, ModalBody, ModalCloseButton, 
+    ModalContent, ModalFooter, ModalHeader, ModalOverlay, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, 
+    PopoverFooter, 
+    PopoverHeader, 
+    PopoverTrigger, Stack, StackDivider, Text, useDisclosure } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
-import { RedirectProps, ToastProps, withRedirect, withToast } from '../commons/BehaviorAddOns'
+import { AdminSupportProps, ConditionalRenderSupportProps, RedirectProps, ToastProps, TokenProps, withAdminValidation, withRedirect, 
+        withRenderCondition, 
+        withToast, withTokenValidation } from '../commons/BehaviorAddOns'
 import { MainHeader } from '../components/MainHeader'
 import { ServerConnector } from '../BackendConnector'
 import { DeckData, DeckInsights } from '../components/Deck'
@@ -10,19 +15,21 @@ import { useState } from 'react'
 import { ModifyDeck } from '../components/ModifyDeck'
 import { WarningIcon } from '@chakra-ui/icons'
 import { SubmitDataErrorToast } from '../commons/Toast'
-import { DeleteIcon } from '../components/icons'
+import { DeleteIcon, ManageIcon } from '../components/icons'
+import { User } from '../components/User'
+import { useGetState } from '../store/hooks'
 
-export default function DeckPage() { return( withRedirect({}) (withToast) (DeckContent) )}
+export default function DeckPage() { return( withRedirect({}) (withToast) (withRenderCondition) (DeckContent) )}
 
-type ShowDeckProps = RedirectProps & ToastProps
+type ShowDeckProps = RedirectProps & ToastProps & ConditionalRenderSupportProps
 
-export function DeckContent({ redirect, toast }: ShowDeckProps) {
+export function DeckContent({ redirect, toast, renderOnCondition }: ShowDeckProps) {
     let { deckId }: any = useParams()
 
-    const { isOpen, onOpen, onClose } = useDisclosure()
-
     const [ deck, setDeck ] = useState<DeckData>()
-    const [ isLoading, setIsLoading ] = useState(true)
+    const [ isLoading, setIsLoading ] = useState<boolean>(true)
+    const [ error, setError ] = useState<boolean>(false)
+
     let searchingDeck = false
 
     if (!deck && !searchingDeck) {
@@ -34,23 +41,22 @@ export function DeckContent({ redirect, toast }: ShowDeckProps) {
                 searchingDeck = false
                 setIsLoading(false)
                 setDeck(decks[0])
+                setError(false)
             },
             (error) => {
                 searchingDeck = false
                 setIsLoading(false)
+                setError(true)
             }
         )
     }
 
-    function deleteDeck() {
-        ServerConnector.deleteDeck(
-            deckId,
-            () => redirect('/decks'),
-            (_) => toast(SubmitDataErrorToast)
-        )
-    }
+    const user: User = useGetState(state => state.user)
+    const isAdmin = user.admin
 
-    return content()
+    let shouldRender = !error && (isLoading || deck)
+
+    return renderOnCondition(!!shouldRender, content)
 
     function content() {
         return (
@@ -58,61 +64,8 @@ export function DeckContent({ redirect, toast }: ShowDeckProps) {
                 <Stack spacing='1px'>
                     <MainHeader showBanner />
 
-                    <Stack direction='row' spacing='1px'>
-                        <Stack  padding='4'
-                                bg='gray.200'
-                                borderRadius='7px'
-                                minW='200px'
-                                divider={<StackDivider borderColor='gray.500' />}>
-
-                            <Box height='4rem'/>
-
-                            { deck ? 
-                                <Stack>
-                                    <ModifyDeck alignSelf='center' deck={deck} buttonWidth='10.5rem'/> 
-
-                                    <Stack>
-                                        <Button colorScheme="red"
-                                                leftIcon={<DeleteIcon />}
-                                                variant="solid"
-                                                textColor='gray.700'
-                                                width='10.5rem'
-                                                onClick={onOpen}>
-                                            Delete 
-                                        </Button>
-
-                                        <Modal isOpen={isOpen} onClose={onClose} >
-                                            <ModalOverlay />
-                                            <ModalContent borderRadius='0.5rem'>
-                                                <ModalHeader backgroundColor='red' borderTopRadius='0.5rem'>Delete deck</ModalHeader>
-                                                <ModalCloseButton size='lg'/>
-                                                <ModalBody>
-                                                    <Stack>
-                                                        <Text fontSize='xl'><WarningIcon color='crimson'/> ¡Warning!</Text>
-
-                                                        <Text>¿Are you sure you wan't to delete this deck?</Text>
-                                                        <Text>This action can't be undone...</Text>
-                                                    </Stack>
-                                                </ModalBody>
-
-                                                <ModalFooter>
-                                                    <Button mr={3} onClick={onClose}>
-                                                        Cancel
-                                                    </Button>
-                                                    <Button colorScheme="red" onClick={deleteDeck}>
-                                                        Delete deck
-                                                    </Button>
-                                                </ModalFooter>
-                                            </ModalContent>
-                                        </Modal>
-                                    </Stack>
-                                    
-                                </Stack> : 
-                                <></> 
-                            }
-
-                        </Stack>
-
+                    <Stack direction='row-reverse' spacing='1px'>
+                        
                         <Stack  bg='gray.300'
                                 borderRadius='7px'
                                 padding='4'
@@ -129,17 +82,113 @@ export function DeckContent({ redirect, toast }: ShowDeckProps) {
                                 </Stack> : 
                                 
                                 deck ? 
-                                    <DeckInsights deck={deck} /> : 
+                                    <Stack direction='row'>
+                                        <DeckInsights deck={deck} />
+                                        { isAdmin ? <AdminActions /> : <></> }
+                                    </Stack> : 
                                     <Alert status="error">
                                         <AlertIcon />
                                         There was an error processing your request. Maybe the deck you were looking for doesn't exists.
                                     </Alert>
                             } 
                         </Stack>
+                        
                     </Stack>
                 </Stack>
 
             </Box>
         )
     }
+
+    function AdminActions() {
+        const { onOpen, onClose, isOpen } = useDisclosure()
+
+        return (
+            <Box>
+                <Popover    isOpen={isOpen}
+                            onOpen={onOpen}
+                            onClose={onClose}
+                            placement="left-start" >
+                    <PopoverTrigger>
+                        <IconButton aria-label='Admin actions' size='lg' icon={<ManageIcon />} variant='ghost'/>
+                    </PopoverTrigger>
+                    <PopoverContent padding='1rem'>
+                        <PopoverArrow />
+                        <PopoverCloseButton size='md' />
+                        <PopoverHeader fontSize='2xl' fontWeight='bold'>
+                            Manage deck
+                        </PopoverHeader>
+
+                        <PopoverBody fontSize='xl'>
+                            Edit decks cards or change it's name. Or you can also delete it from the game.
+                        </PopoverBody>
+                        <PopoverFooter  border="0"
+                                        d="flex"
+                                        alignItems="center"
+                                        justifyContent="space-between"
+                                        pb='1rem'>
+
+                            <ButtonGroup size="sm">
+                                <ModifyDeck alignSelf='center' deck={deck!} buttonSize='md' fontSize='xl'/>
+                                <DeleteDeck />
+                            </ButtonGroup>
+                        </PopoverFooter>
+                    </PopoverContent>
+                </Popover>
+            </Box>
+        )
+    }
+
+    function deleteDeck() {
+        ServerConnector.deleteDeck(
+            deckId,
+            () => redirect('/decks'),
+            (_) => toast(SubmitDataErrorToast)
+        )
+    }
+
+    function DeleteDeck() {
+        const { onOpen, onClose, isOpen } = useDisclosure()
+
+        return (
+            <Stack>
+                <Button colorScheme="red"
+                        leftIcon={<DeleteIcon />}
+                        variant="solid"
+                        textColor='gray.700'
+                        onClick={onOpen}
+                        size='md'
+                        fontSize='xl'>
+                    Delete 
+                </Button>
+
+                <Modal isOpen={isOpen} onClose={onClose} >
+                    <ModalOverlay />
+                    <ModalContent borderRadius='0.5rem'>
+                        <ModalHeader backgroundColor='red' borderTopRadius='0.5rem' fontSize='2xl'>Delete deck</ModalHeader>
+                        <ModalCloseButton size='lg'/>
+                        <ModalBody>
+                            <Stack fontSize='xl'>
+                                <Text fontSize='2xl'><WarningIcon color='crimson'/> ¡Warning!</Text>
+
+                                <Text>¿Are you sure you wan't to delete this deck?</Text>
+                                <Text>This action can't be undone...</Text>
+                            </Stack>
+                        </ModalBody>
+
+                        <ModalFooter>
+                            <Button mr={3} onClick={onClose} fontSize='xl' size='md'>
+                                Cancel
+                            </Button>
+                            <Button colorScheme="red" onClick={deleteDeck} fontSize='xl' size='md'>
+                                Delete deck
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
+            </Stack>
+        )
+    }
 }
+
+
