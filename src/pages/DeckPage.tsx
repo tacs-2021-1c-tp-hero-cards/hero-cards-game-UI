@@ -12,11 +12,11 @@ import { WarningIcon } from '@chakra-ui/icons'
 import { SubmitDataErrorToast } from '../commons/Toast'
 import { DeleteIcon } from '../components/icons'
 
-export function ShowDeckPage() { return( withRedirect({}) (withTokenValidation) (withToast) (ShowDeckContent) )}
+export function DeckPage() { return( withRedirect({}) (withTokenValidation) (withToast) (DeckContent) )}
 
 type ShowDeckProps = TokenProps & RedirectProps & ToastProps
 
-export function ShowDeckContent({ renderWithTokenValidation, redirect, toast }: ShowDeckProps) {
+export function DeckContent({ renderWithTokenValidation, redirect, toast }: ShowDeckProps) {
     let { deckId }: any = useParams()
 
     const { isOpen, onOpen, onClose } = useDisclosure()

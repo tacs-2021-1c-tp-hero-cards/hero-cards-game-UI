@@ -7,11 +7,11 @@ import { ServerConnector } from '../BackendConnector'
 import { useState } from 'react'
 import { CardAttributes, CharacterDetails, CharacterInsights } from '../components/Card'
 
-export function ShowCardPage() { return( withRedirect({}) (withTokenValidation) (withToast) (ShowCardContent) )}
+export function CardPage() { return( withRedirect({}) (withTokenValidation) (withToast) (CardContent) )}
 
 type ShowCardProps = TokenProps & RedirectProps & ToastProps
 
-export function ShowCardContent({ renderWithTokenValidation, redirect, toast }: ShowCardProps) {
+export function CardContent({ renderWithTokenValidation, redirect, toast }: ShowCardProps) {
     let { characterId }: any = useParams()
 
     const [ character, setCharacter ] = useState<CharacterDetails>()
@@ -25,8 +25,6 @@ export function ShowCardContent({ renderWithTokenValidation, redirect, toast }: 
         ServerConnector.getCharacterDetails(
             characterId,
             (characterData) => {
-                console.log(characterData) // TODO: DELETE
-
                 setCharacter(characterData)
                 setSearchingCharacter(false)
                 setIsLoading(false)

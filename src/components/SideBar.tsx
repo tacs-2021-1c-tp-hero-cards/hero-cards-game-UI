@@ -12,6 +12,7 @@ import { shallowEqual } from 'react-redux'
 import Collection from "../commons/Collections";
 import { useGetState } from '../store/hooks'
 import { RootState } from "../store/Store";
+import MyHubButton from './MyHubButton'
 
 
 export function SideBar(props: SideBarProps) { return (withRedirect(props) (SideBarContent))}
@@ -85,14 +86,7 @@ function SideBarContent({
 
                                 {
                                     isLoggedIn && (!hideHubButton ?? true) ?
-                                        <Button colorScheme="orange"
-                                                leftIcon={<UserIcon />}
-                                                variant="solid"
-                                                textColor='gray.700'
-                                                fontSize='xl'
-                                                onClick={() => redirect('/user')}>
-                                            My hub
-                                        </Button> :
+                                        <MyHubButton /> :
                                         <></>
                                 }
 

@@ -10,8 +10,8 @@ import { UserPage } from "./pages/UserPage";
 import { DecksPage } from "./pages/DecksPage";
 import { CardsPage } from "./pages/CardsPage";
 import { BotsPage } from "./pages/AIsPage";
-import { ShowDeckPage } from "./pages/ShowDeckPage"
-import { ShowCardPage } from "./pages/ShowCardPage"
+import { DeckPage } from "./pages/DeckPage"
+import { CardPage } from "./pages/CardPage"
 import { StartMatchPage } from "./pages/MatchesPage"
 import { updateTokenExpiry } from "./commons/Token";
 import { useIdleTimer } from "react-idle-timer";
@@ -45,8 +45,8 @@ function App() {
           <Route exact path='/decks' component={DecksPage} />
           <Route exact path='/cards' component={CardsPage} />
           <Route exact path='/bots' component={BotsPage} />
-          <Route path='/decks/:deckId' component={ShowDeckPage} />
-          <Route path='/characters/:characterId' component={ShowCardPage} />
+          <Route path='/decks/:deckId' component={DeckPage} />
+          <Route path='/characters/:characterId' component={CardPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </Router>

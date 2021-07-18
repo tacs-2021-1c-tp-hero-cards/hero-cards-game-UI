@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Center, Stack, StackDivider, Text, Image } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from '../commons/BehaviorAddOns'
-import { AiIcon, PlayIcon, RetryIcon, UsersIcon } from '../components/icons'
+import { AiIcon, PlayIcon, RetryIcon, UserIcon, UsersIcon } from '../components/icons'
 import { useState } from 'react'
 import Collection from '../commons/Collections'
 import { DeckData } from '../components/Deck'
@@ -17,22 +17,24 @@ import { AI } from '../components/AI'
 import coin from '../coin.webp'
 import { SubmitDataErrorToast } from '../commons/Toast'
 import ReturnButton from '../components/ReturnButton'
+import MyHubButton from '../components/MyHubButton'
 
 
 export function StartMatchPage() { return( withRedirect({}) (withTokenValidation) (withToast) (StartMatchContent) )}
 
 type UserProps = RedirectProps & TokenProps & ToastProps
 
-function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
+function StartMatchContent({ renderWithTokenValidation, redirect, toast }: UserProps) {
     const [ oponentType, setOponentType ] = useState<string>()
     const [ oponent, setOponent ] = useState<User | AI>()
     const [ maybeOponent, setMaybeOponent ] = useState<User | AI>()
     const [ deck, setDeck ] = useState<DeckData>()
     const [ maybeDeck, setMaybeDeck ] = useState<DeckData>()
     const [ accepted, setAccepted ] = useState<boolean>(false)
-    const [ starter, setStarter ] = useState<User>()
+    const [ starter, setStarter ] = useState<string>()
     const [ coinTossed, setCoinTossed ] = useState<boolean>(false)
     const [ error, setError ] = useState<boolean>(false)
+    const [ matchId, setMatchId ] = useState<number>()
 
     return( renderWithTokenValidation(content) )
 
@@ -116,7 +118,7 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                     boxSize='full'
                     spacing='4'
                     divider={<StackDivider borderColor='gray.500' />} 
-                                                fontSize='xl'>
+                    fontSize='xl'>
 
                     <Center fontSize='4xl'>Choose your oponent</Center>
                     
@@ -251,7 +253,8 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
             },
             (match) => {
                 sleep(3000).then(() => {
-                    setStarter(Collection.wrap(match.players).map(p => p.user.userName).head())
+                    setMatchId(match.id)
+                    setStarter(match.player.user.userName)
                     setCoinTossed(false)
                 })
             },
@@ -293,9 +296,27 @@ function StartMatchContent({ renderWithTokenValidation, toast }: UserProps) {
                             </Stack> :
 
                             starter ? 
-                                <Stack direction='row' spacing='4px' alignSelf='center' fontSize='xl'>
-                                    <Text fontWeight='bold'>{starter!}</Text>
-                                    <Text>will be the first to play</Text>
+                                <Stack spacing='1rem' alignSelf='center' fontSize='xl'>
+                                    <Stack direction='row' spacing='4px' alignSelf='center' fontSize='xl'>
+                                        <Text fontWeight='bold'>{starter!}</Text>
+                                        <Text>will be the first to play</Text>
+                                    </Stack>
+
+                                    <Center>Now relax and wait for {oponent!.userName} to accept the match</Center>
+                                    <Center>Or you can go and do as you please. Don't worry, we'll let you know about {oponent!.userName}'s choice</Center>
+
+                                    <Stack direction='row' spacing='2rem' alignSelf='center'>
+                                        <MyHubButton width='13rem' />
+                                        <Button colorScheme="green"
+                                                leftIcon={<PlayIcon />}
+                                                variant="solid"
+                                                textColor='gray.700'
+                                                fontSize='xl'
+                                                width='13rem'
+                                                onClick={() => redirect(`/matches/${matchId}`)}>
+                                            Await oponent
+                                        </Button>
+                                    </Stack>
                                 </Stack> :
 
                                 coinTossed ? 
