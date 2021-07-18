@@ -61,7 +61,9 @@ export function CardContent({ renderOnCondition }: ShowCardProps) {
         )
     }
 
-    return renderOnCondition(!error && (isLoading || character), content)
+    let shouldRender = !error && (isLoading || character)
+
+    return renderOnCondition(!!shouldRender, content)
 
     function content() {
         return (
