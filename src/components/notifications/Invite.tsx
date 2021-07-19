@@ -26,7 +26,7 @@ function InvitePreviewContent({ matchId, username, index, redirect, toast, fontS
     const rejectRef = React.useRef<HTMLButtonElement>(null)
 
     function accept() {
-        removeNotification()
+        removeInvite()
 
         ServerConnector.acceptMatch(
             matchId, 
@@ -37,7 +37,7 @@ function InvitePreviewContent({ matchId, username, index, redirect, toast, fontS
     }
 
     function reject() {
-        removeNotification()
+        removeInvite()
         
         ServerConnector.rejectMatch(
             matchId,
@@ -47,8 +47,8 @@ function InvitePreviewContent({ matchId, username, index, redirect, toast, fontS
         onClose()
     }
 
-    function removeNotification() {
-        updateState({ type: 'socket/removeNotification', payload: index })
+    function removeInvite() {
+        updateState({ type: 'socket/removeInvite', payload: index })
     }
 
     return (

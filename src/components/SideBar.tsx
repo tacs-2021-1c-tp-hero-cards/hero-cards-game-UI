@@ -58,6 +58,11 @@ function SideBarContent({
     const isLoggedIn = tokenIsAlive()
     const isAdmin = user?.admin
 
+    const notifications = Collection.wrap(invites)
+                                    .concatWith(confirmations)
+                                    .concatWith(rejections)
+                                    .concatWith(abortions)
+
     return (
         <Box>
             <IconButton aria-label='Side bar' 
@@ -66,7 +71,7 @@ function SideBarContent({
                         size='lg' 
                         variant='ghost' 
                         icon={<HamburgerIcon />}
-                        colorScheme={Collection.wrap(invites).isEmpty() ? 'gray' : 'red'} />
+                        colorScheme={notifications.isEmpty() ? 'gray' : 'red'} />
 
             <Drawer isOpen={isOpen}
                     placement="left"

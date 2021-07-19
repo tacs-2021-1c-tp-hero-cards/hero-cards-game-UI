@@ -15,7 +15,7 @@ export function connect() {
 
         console.log(`Connected: ${frame}`)
 
-        // Notifications
+        // Invites
         stompClient.subscribe(`/topic/user/${token}/notifications`, handleInvite)
 
         // Confirmations
