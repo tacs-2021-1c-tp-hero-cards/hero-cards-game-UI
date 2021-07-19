@@ -1,7 +1,8 @@
 import React from "react"
 import { Stack, Button, useDisclosure, Box, Drawer, DrawerOverlay, DrawerContent, Image, DrawerBody, DrawerHeader, Text, Center, 
         StackDivider, 
-        IconButton} from "@chakra-ui/react"
+        IconButton,
+        Tooltip} from "@chakra-ui/react"
 import { RedirectProps, withRedirect } from "../commons/BehaviorAddOns"
 import { logOut } from "../commons/LogOut"
 import { LogOutIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon, AiIcon } from "./miscellaneous/icons";
@@ -65,13 +66,24 @@ function SideBarContent({
 
     return (
         <Box>
-            <IconButton aria-label='Side bar' 
-                        onClick={onOpen} 
-                        marginLeft='1rem'
-                        size='lg' 
-                        variant='ghost' 
-                        icon={<HamburgerIcon />}
-                        colorScheme={notifications.isEmpty() ? 'gray' : 'red'} />
+            <Tooltip    hasArrow 
+                        label={notifications.length} 
+                        placement='right' 
+                        backgroundColor='red' 
+                        borderRadius='0.5rem'
+                        fontSize='xl'
+                        textColor='black'
+                        isDisabled={notifications.isEmpty()} 
+                        isOpen={notifications.nonEmpty() && !isOpen}>
+
+                <IconButton aria-label='Side bar' 
+                            onClick={onOpen} 
+                            marginLeft='1rem'
+                            size='lg' 
+                            variant='ghost' 
+                            icon={<HamburgerIcon />}
+                            colorScheme={notifications.isEmpty() ? 'gray' : 'red'} />
+            </Tooltip>
 
             <Drawer isOpen={isOpen}
                     placement="left"
