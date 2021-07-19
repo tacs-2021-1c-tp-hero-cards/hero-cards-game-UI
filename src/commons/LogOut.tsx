@@ -1,13 +1,15 @@
 import { ServerConnector } from "../BackendConnector"
 import { updateState } from "../store/hooks"
+import store from "../store/Store"
 import { disconnect } from "../websocket/client"
-import { clearToken } from "./Token"
+import { clearToken, getToken } from "./Token"
 
 
 export function logOut(onSuccess: () => void, onFailure: () => void) {
     
     ServerConnector
         .logOut(
+            getToken() ?? store.getState().user.token,
             () => {
                 updateState({ type: 'user/clear' })
                 clearToken()

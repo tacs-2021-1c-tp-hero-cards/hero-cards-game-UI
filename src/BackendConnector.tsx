@@ -60,10 +60,16 @@ class BackendConnector {
       })
   }
 
-  logOut(onSuccess: () => void, onFailure: (error: any) => void) {
+  logOut(token: string, onSuccess: () => void, onFailure: (error: any) => void) {
+
+    const headers = token ? {
+      headers: {
+        'x-user-token': token
+      }
+    } : {}
 
     BackendConnector.connector
-      .post('/logOut', {}, this.headers())
+      .post('/logOut', {}, headers)
       .then(function (_) {
         onSuccess()
       })

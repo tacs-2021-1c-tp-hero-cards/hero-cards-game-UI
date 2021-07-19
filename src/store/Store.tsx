@@ -1,6 +1,6 @@
 import { AnyAction, createStore, Store } from "redux"
 import rootReducer from "./Reducer"
-import storage from "redux-persist/lib/storage"
+import storage from "redux-persist/lib/storage/session"
 import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1"
 import { persistReducer } from 'redux-persist'
 

@@ -14,6 +14,9 @@ import Collection from "../commons/Collections";
 import { useGetState } from '../store/hooks'
 import { RootState } from "../store/Store";
 import MyHubButton from './miscellaneous/MyHubButton'
+import { Confirmation } from "./notifications/Confirmation";
+import { Rejection } from "./notifications/Rejection";
+import { Abortion } from "./notifications/Abortion";
 
 
 export function SideBar(props: SideBarProps) { return (withRedirect(props) (SideBarContent))}
@@ -44,14 +47,12 @@ function SideBarContent({
     const { isOpen, onOpen, onClose } = useDisclosure()
     const firstField = React.useRef<HTMLButtonElement>(null)
 
-    function getInvites(state: RootState) {
-        return (state.socket.invites.map((n: Invite, index: number) => 
-                    <InvitePreview key={index} matchId={n.matchId} username={n.username} index={index} />
-                )
-        )
-    }
 
-    const invites = useGetState(getInvites, shallowEqual)
+    const invites = useGetState(state => state.socket.invites, shallowEqual)
+    const confirmations = useGetState(state => state.socket.confirmations, shallowEqual)
+    const rejections = useGetState(state => state.socket.rejections, shallowEqual)
+    const abortions = useGetState(state => state.socket.abortions, shallowEqual)
+
     const user = useGetState(state => state.user)
 
     const isLoggedIn = tokenIsAlive()
@@ -191,18 +192,67 @@ function SideBarContent({
                                         <></>
                                 }
 
-                                {
-                                    Collection.wrap(invites).nonEmpty() ? 
-                                        <Stack>
-                                            <Text>Notifications:</Text>
-                                            <Stack divider={<StackDivider borderColor='gray' />} spacing='0.5rem'>
-                                                {invites}
-                                            </Stack>
-                                        </Stack> :
-                                        <></>
-                                }
-                                
+                                <Stack>
+                                    {
+                                        Collection.wrap(invites).nonEmpty() ? 
+                                            <Stack>
+                                                <Text>Invites:</Text>
+                                                <Stack divider={<StackDivider borderColor='gray' />} spacing='0.5rem'>
+                                                    {
+                                                        invites.map((n: Invite, index: number) => 
+                                                            <InvitePreview key={index} matchId={n.matchId} username={n.username} index={index} />
+                                                        )
+                                                    }
+                                                </Stack>
+                                            </Stack> :
+                                            <></>
+                                    }
 
+                                    {
+                                        Collection.wrap(confirmations).nonEmpty() ? 
+                                            <Stack>
+                                                <Text>Confirmations:</Text>
+                                                <Stack divider={<StackDivider borderColor='gray' />} spacing='0.5rem'>
+                                                    {
+                                                        confirmations.map((n: Confirmation, index: number) => 
+                                                            <InvitePreview key={index} matchId={n.matchId} username={n.username} index={index} />
+                                                        )
+                                                    }
+                                                </Stack>
+                                            </Stack> :
+                                            <></>
+                                    }
+
+                                    {
+                                        Collection.wrap(rejections).nonEmpty() ? 
+                                            <Stack>
+                                                <Text>Rejections:</Text>
+                                                <Stack divider={<StackDivider borderColor='gray' />} spacing='0.5rem'>
+                                                    {
+                                                        rejections.map((n: Rejection, index: number) => 
+                                                            <InvitePreview key={index} matchId={n.matchId} username={n.username} index={index} />
+                                                        )
+                                                    }
+                                                </Stack>
+                                            </Stack> :
+                                            <></>
+                                    }
+
+                                    {
+                                        Collection.wrap(abortions).nonEmpty() ? 
+                                            <Stack>
+                                                <Text>Surrenders:</Text>
+                                                <Stack divider={<StackDivider borderColor='gray' />} spacing='0.5rem'>
+                                                    {
+                                                        abortions.map((n: Abortion, index: number) => 
+                                                            <InvitePreview key={index} matchId={n.matchId} username={n.username} index={index} />
+                                                        )
+                                                    }
+                                                </Stack>
+                                            </Stack> :
+                                            <></>
+                                    }
+                                </Stack>
                         </Stack>
                     </DrawerBody>
                 </DrawerContent>
