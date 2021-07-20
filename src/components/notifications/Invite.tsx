@@ -56,13 +56,15 @@ function InvitePreviewContent({ matchId, username, index, redirect, toast, fontS
                 spacing='3px' 
                 bgColor='gray.300'
                 padding='0.3rem'
-                borderRadius='0.25rem'
+                borderRadius='0.3rem'
                 cursor='pointer'
                 fontSize={fontSize ?? 'xl'}
                 onClick={() => setIsOpen(true)}>
                     
-            <Text fontWeight='bold' isTruncated>{username}</Text>
-            <Text>invited you</Text>
+            <Stack padding='0.2rem' paddingLeft='0.5rem' backgroundColor='blue.500' spacing='0.2rem' borderRadius='0.3rem' border='1px' borderColor='blue.600'>
+                <Text fontWeight='bold' isTruncated>{username}</Text>
+                <Text>invited you</Text>
+            </Stack>
 
             <AlertDialog    isOpen={isOpen}
                             leastDestructiveRef={rejectRef}
@@ -71,7 +73,7 @@ function InvitePreviewContent({ matchId, username, index, redirect, toast, fontS
                 <AlertDialogOverlay>
                 <AlertDialogContent>
                     <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                        <Text fontSize='2xl'>You have been invited to a match</Text>
+                        <Text fontSize='2xl'>You've been invited to a match</Text>
                     </AlertDialogHeader>
 
                     <AlertDialogBody>

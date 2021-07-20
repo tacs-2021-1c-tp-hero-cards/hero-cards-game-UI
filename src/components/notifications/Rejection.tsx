@@ -49,8 +49,10 @@ function RejectionPreviewContent({ matchId, username, index, redirect, fontSize 
                 fontSize={fontSize ?? 'xl'}
                 onClick={() => setIsOpen(true)}>
                     
-            <Text fontWeight='bold' isTruncated>{username}</Text>
-            <Text>has rejected you</Text>
+            <Stack padding='0.2rem' paddingLeft='0.5rem' backgroundColor='red.500' spacing='0.2rem' borderRadius='0.3rem' border='1px' borderColor='red.600'>
+                <Text fontWeight='bold' isTruncated>{username}</Text>
+                <Text>has rejected you</Text>
+            </Stack>
 
             <AlertDialog    isOpen={isOpen}
                             leastDestructiveRef={rejectRef}

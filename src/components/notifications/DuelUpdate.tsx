@@ -54,11 +54,13 @@ function DuelUpdatePreviewContent({ matchId, index, redirect, fontSize }: DuelUp
                 fontSize={fontSize ?? 'xl'}
                 onClick={() => setIsOpen(true)}>
 
-            <Stack direction='row' spacing='4px'>
-                <Text>Match</Text>
-                <Text fontWeight='bold' isTruncated>{matchId}</Text>
+            <Stack padding='0.2rem' paddingLeft='0.5rem' backgroundColor='orange.500' spacing='0.2rem' borderRadius='0.3rem' border='1px' borderColor='orange.600'>
+                <Stack direction='row' spacing='4px'>
+                    <Text>Match</Text>
+                    <Text fontWeight='bold' isTruncated>{matchId}</Text>
+                </Stack>
+                <Text>has updated</Text>
             </Stack>
-            <Text>has updated</Text>
 
             <AlertDialog    isOpen={isOpen}
                             leastDestructiveRef={rejectRef}

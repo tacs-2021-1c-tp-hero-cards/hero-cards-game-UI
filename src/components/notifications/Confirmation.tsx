@@ -49,8 +49,10 @@ function ConfirmationPreviewContent({ matchId, username, index, redirect, fontSi
                 fontSize={fontSize ?? 'xl'}
                 onClick={() => setIsOpen(true)}>
                     
-            <Text fontWeight='bold' isTruncated>{username}</Text>
-            <Text>has accepted you</Text>
+            <Stack padding='0.2rem' paddingLeft='0.5rem' backgroundColor='green.400' spacing='0.2rem' borderRadius='0.3rem' border='1px' borderColor='green.600'>
+                <Text fontWeight='bold' isTruncated>{username}</Text>
+                <Text>has accepted you</Text>
+            </Stack>
 
             <AlertDialog    isOpen={isOpen}
                             leastDestructiveRef={rejectRef}
