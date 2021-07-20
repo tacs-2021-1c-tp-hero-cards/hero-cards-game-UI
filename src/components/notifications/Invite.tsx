@@ -53,7 +53,6 @@ function InvitePreviewContent({ matchId, username, index, redirect, toast, fontS
 
     return (
         <Stack  key={index} 
-                direction='row' 
                 spacing='3px' 
                 bgColor='gray.300'
                 padding='0.3rem'
@@ -63,7 +62,7 @@ function InvitePreviewContent({ matchId, username, index, redirect, toast, fontS
                 onClick={() => setIsOpen(true)}>
                     
             <Text fontWeight='bold' isTruncated>{username}</Text>
-            <Text width='6rem'>invited you</Text>
+            <Text>invited you</Text>
 
             <AlertDialog    isOpen={isOpen}
                             leastDestructiveRef={rejectRef}

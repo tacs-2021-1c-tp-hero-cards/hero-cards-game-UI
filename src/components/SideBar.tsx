@@ -15,10 +15,10 @@ import Collection from "../commons/Collections";
 import { useGetState } from '../store/hooks'
 import { RootState } from "../store/Store";
 import MyHubButton from './miscellaneous/MyHubButton'
-import { Confirmation } from "./notifications/Confirmation";
-import { Rejection } from "./notifications/Rejection";
-import { Abortion } from "./notifications/Abortion";
-import { DuelUpdate } from "./notifications/DuelUpdate";
+import { Confirmation, ConfirmationPreview } from "./notifications/Confirmation";
+import { Rejection, RejectionPreview } from "./notifications/Rejection";
+import { Abortion, AbortionPreview } from "./notifications/Abortion";
+import { DuelUpdate, DuelUpdatePreview } from "./notifications/DuelUpdate";
 
 
 export function SideBar(props: SideBarProps) { return (withRedirect(props) (SideBarContent))}
@@ -235,7 +235,7 @@ function SideBarContent({
                                                 <Stack divider={<StackDivider borderColor='gray' />} spacing='0.5rem'>
                                                     {
                                                         confirmations.map((n: Confirmation, index: number) => 
-                                                            <InvitePreview key={index} matchId={n.matchId} username={n.username} index={index} />
+                                                            <ConfirmationPreview key={index} matchId={n.matchId} username={n.username} index={index} />
                                                         )
                                                     }
                                                 </Stack>
@@ -250,7 +250,7 @@ function SideBarContent({
                                                 <Stack divider={<StackDivider borderColor='gray' />} spacing='0.5rem'>
                                                     {
                                                         rejections.map((n: Rejection, index: number) => 
-                                                            <InvitePreview key={index} matchId={n.matchId} username={n.username} index={index} />
+                                                            <RejectionPreview key={index} matchId={n.matchId} username={n.username} index={index} />
                                                         )
                                                     }
                                                 </Stack>
@@ -265,7 +265,7 @@ function SideBarContent({
                                                 <Stack divider={<StackDivider borderColor='gray' />} spacing='0.5rem'>
                                                     {
                                                         abortions.map((n: Abortion, index: number) => 
-                                                            <InvitePreview key={index} matchId={n.matchId} username={n.username} index={index} />
+                                                            <AbortionPreview key={index} matchId={n.matchId} username={n.username} index={index} />
                                                         )
                                                     }
                                                 </Stack>
@@ -280,7 +280,7 @@ function SideBarContent({
                                                 <Stack divider={<StackDivider borderColor='gray' />} spacing='0.5rem'>
                                                     {
                                                         duelUpdates.map((n: DuelUpdate, index: number) => 
-                                                            <InvitePreview key={index} matchId={n.matchId} username={`${n.matchId}`} index={index} />
+                                                            <DuelUpdatePreview key={index} matchId={n.matchId} index={index} />
                                                         )
                                                     }
                                                 </Stack>
