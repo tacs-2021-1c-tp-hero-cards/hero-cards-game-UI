@@ -3,6 +3,7 @@ import { Confirmation } from '../components/notifications/Confirmation'
 import { Rejection } from '../components/notifications/Rejection'
 import { Abortion } from '../components/notifications/Abortion'
 import { DuelUpdate } from '../components/notifications/DuelUpdate'
+import { UserScore } from '../components/players/scores/UserScore'
 
 /**
  * Just for the record:
@@ -27,5 +28,6 @@ export type UserData = {
     username?: string,
     id?: number,
     admin?: boolean,
-    token?: string
+    token?: string,
+    stats?: UserScore
 }

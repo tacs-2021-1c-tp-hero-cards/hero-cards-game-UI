@@ -5,7 +5,7 @@ import { Stack, Button, useDisclosure, Box, Drawer, DrawerOverlay, DrawerContent
         Tooltip} from "@chakra-ui/react"
 import { RedirectProps, withRedirect } from "../commons/BehaviorAddOns"
 import { logOut } from "../commons/LogOut"
-import { LogOutIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon, AiIcon } from "./miscellaneous/icons";
+import { LogOutIcon, SearchIcon, PlayIcon, UserIcon, NewUserIcon, AiIcon, ScoreboardIcon } from "./miscellaneous/icons";
 import { HamburgerIcon } from "@chakra-ui/icons"
 import logo from '../logo.png'
 import { Invite, InvitePreview } from "./notifications/Invite"
@@ -30,7 +30,8 @@ export type SideBarProps = {
     hideDecksButton?: boolean,
     hideManageBotsButton?: boolean,
     hideCardsButton?: boolean,
-    hideMatchButton?: boolean
+    hideMatchButton?: boolean,
+    hideScoreboardButton?: boolean
 }
 
 type Props = RedirectProps & SideBarProps
@@ -43,7 +44,8 @@ function SideBarContent({
                             hideDecksButton, 
                             hideManageBotsButton, 
                             hideCardsButton,
-                            hideMatchButton 
+                            hideMatchButton,
+                            hideScoreboardButton 
                         }: Props) {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -194,6 +196,19 @@ function SideBarContent({
                                                 fontSize='xl'
                                                 onClick={() => redirect('/bots')}>
                                             Manage bots
+                                        </Button> : 
+                                        <></>
+                                }
+
+                                {
+                                    isLoggedIn && isAdmin && (!hideScoreboardButton ?? true) ? 
+                                        <Button colorScheme="blackAlpha"
+                                                leftIcon={<ScoreboardIcon />}
+                                                variant="solid"
+                                                textColor='gray.700'
+                                                fontSize='xl'
+                                                onClick={() => redirect('/scoreboard')}>
+                                            Scoreboard
                                         </Button> : 
                                         <></>
                                 }

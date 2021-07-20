@@ -4,7 +4,8 @@ const initialState: UserData = {
     username: undefined,
     id: undefined,
     admin: false,
-    token: undefined
+    token: undefined,
+    stats: undefined
 }
 
 export default function userReducer(state = initialState, action: any): UserData {
@@ -18,6 +19,14 @@ export default function userReducer(state = initialState, action: any): UserData
                 id: user.id,
                 admin: user.admin,
                 token: user.token
+            }
+        }
+        case 'user/updateStats' : {
+            let stats = action.payload
+            
+            return {
+                ...state,
+                stats: stats
             }
         }
         case 'user/clear' : {

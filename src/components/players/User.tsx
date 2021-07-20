@@ -1,6 +1,7 @@
 import React from "react"
 import { Stack, Text } from "@chakra-ui/react"
 import { UserIcon } from "../miscellaneous/icons"
+import { UserScore } from './scores/UserScore'
 
 export type User = {
     userName: string,
@@ -10,7 +11,7 @@ export type User = {
     id: number,
     userType: string,
     admin: boolean
-    //stats
+    stats: UserScore
 }
 
 

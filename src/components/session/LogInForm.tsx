@@ -24,15 +24,18 @@ function LogInFormContent({ redirect, toast }: LogInFormProps) {
     token: '',
     id: -1,
     userType: '',
-    admin: false
+    admin: false,
+    stats: {
+      winCount: 0,
+      loseCount: 0,
+      tieCount: 0,
+      inProgressCount: 0
+    }
   }
 
   function onSubmit(user: User, actions: any) {
     logIn(user, 
-      (user: User) => {
-        updateState({ type: 'user/updateUser', payload: user })
-        redirect('/user')
-      }, 
+      (user: User) => redirect('/user'), 
       () => toast(SubmitDataErrorToast)
     )
     

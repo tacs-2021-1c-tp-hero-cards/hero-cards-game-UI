@@ -17,13 +17,16 @@ export function logIn(user: User, onSuccess: (user: User) => void, onFailure: ()
                                     const activeUser = Collection.wrap(users).head()
 
                                     setToken(data.token)
-                                    console.log(data.token + activeUser)
                                     updateState({ type: 'user/updateUser', payload: activeUser })
-
-                                    console.log("dispatched")
 
                                     //Web socket connection
                                     connect()
+
+                                    ServerConnector.getHumanScore(
+                                        activeUser.id,
+                                        (score) => updateState({ type: 'user/updateStats', payload: score }),
+                                        (error) => onFailure()
+                                    )
 
                                     onSuccess(activeUser)
                                 },

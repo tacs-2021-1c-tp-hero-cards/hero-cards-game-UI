@@ -13,6 +13,7 @@ import DeckPage from "./pages/DeckPage"
 import CardPage from "./pages/CardPage"
 import StartMatchPage from "./pages/MatchesPage"
 import MatchPage from './pages/MatchPage'
+import ScoreboardPage from './pages/ScoreboardPage'
 import NotFoundPage from "./pages/NotFoundPage";
 import { updateTokenExpiry } from "./commons/Token";
 import { useIdleTimer } from "react-idle-timer";
@@ -49,6 +50,7 @@ function App() {
           <Route path='/decks/:deckId' component={DeckPage} />
           <Route path='/characters/:characterId' component={CardPage} />
           <Route path='/matches/:matchId' component={MatchPage} />
+          <Route exact path='/scoreboard' component={ScoreboardPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </Router>

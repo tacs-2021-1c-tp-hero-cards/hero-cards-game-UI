@@ -6,6 +6,7 @@ import { Match, MatchCreation } from "./components/matches/Match"
 import config from "./config.json"
 import { AI, AiData } from "./components/players/bots/AI";
 import { getToken } from "./commons/Token";
+import { ScoredUser, UserScore } from "./components/players/scores/UserScore";
 
 type Authentication = {
   token: string
@@ -297,6 +298,36 @@ class BackendConnector {
   abortMatch(matchId: string, onSuccess: (match: Match) => void, onFailure: (error: any) => void) {
     BackendConnector.connector
       .patch(`/matches/${matchId}/abortMatch`, {}, this.headers())
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
+  getScoreboard(onSuccess: (scores: ScoredUser[]) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .get('admin/stats/scoreboards', this.headers())
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
+  getHumanScore(userId: string, onSuccess: (score: UserScore) => void, onFailure: (error: any) => void) {
+    this.getUserScore(userId, 'HUMAN', onSuccess, onFailure)
+  }
+
+  getAiScore(userId: string, onSuccess: (score: UserScore) => void, onFailure: (error: any) => void) {
+    this.getUserScore(userId, 'IA', onSuccess, onFailure)
+  }
+
+  private getUserScore(userId: string, userType: string, onSuccess: (score: UserScore) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .get(`admin/stats/user/${userId}/${userType}`, this.headers())
       .then(function (response) {
         onSuccess(response.data)
       })

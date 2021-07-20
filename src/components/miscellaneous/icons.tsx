@@ -3,7 +3,7 @@ import { Icon } from "@chakra-ui/react";
 import { BiBot, BiMeteor } from "react-icons/bi"
 import { HiLightningBolt } from "react-icons/hi"
 import { RiSwordFill } from "react-icons/ri"
-import { GiBrain, GiMuscleUp } from "react-icons/gi"
+import { GiBrain, GiMuscleUp, GiPodium } from "react-icons/gi"
 import { FiEdit, FiMoon, FiSearch, FiTool, FiTrash2, FiUser, FiUserPlus, FiUsers, FiZap, FiRepeat, FiCornerUpLeft, 
     FiChevronsUp, FiChevronsDown, FiFlag } from "react-icons/fi"
 
@@ -26,6 +26,8 @@ export const DeleteIcon = (props: any) => <Icon {...props} as={FiTrash2} />
 export const EditIcon = (props: any) => <Icon {...props} as={FiEdit} />
 
 export const AiIcon = (props: any) => <Icon {...props} as={BiBot} />
+
+export const ScoreboardIcon = (props: any) => <Icon {...props} as={GiPodium} />
 
 export const RetryIcon = (props: any) => <Icon {...props} as={FiRepeat} />
 
