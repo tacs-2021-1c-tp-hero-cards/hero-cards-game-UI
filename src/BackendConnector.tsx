@@ -293,6 +293,17 @@ class BackendConnector {
         onFailure(error)
       })
   }
+  
+  abortMatch(matchId: string, onSuccess: (match: Match) => void, onFailure: (error: any) => void) {
+    BackendConnector.connector
+      .patch(`/matches/${matchId}/abortMatch`, {}, this.headers())
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
 }
 
 export const ServerConnector = new BackendConnector()

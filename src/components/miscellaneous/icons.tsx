@@ -5,7 +5,7 @@ import { HiLightningBolt } from "react-icons/hi"
 import { RiSwordFill } from "react-icons/ri"
 import { GiBrain, GiMuscleUp } from "react-icons/gi"
 import { FiEdit, FiMoon, FiSearch, FiTool, FiTrash2, FiUser, FiUserPlus, FiUsers, FiZap, FiRepeat, FiCornerUpLeft, 
-    FiChevronsUp, FiChevronsDown } from "react-icons/fi"
+    FiChevronsUp, FiChevronsDown, FiFlag } from "react-icons/fi"
 
 export const NewUserIcon = () => <Icon as={FiUserPlus} />
 
@@ -44,3 +44,5 @@ export const PowerIcon = () => <Icon as={BiMeteor}/>
 export const CombatIcon = () => <Icon as={RiSwordFill}/>
 
 export const StrengthIcon = () => <Icon as={GiMuscleUp}/>
+
+export const SurrenderIcon = () => <Icon as={FiFlag} />

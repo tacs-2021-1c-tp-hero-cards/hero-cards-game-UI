@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, AlertIcon, Box, Button, Center, CircularProgress, Stack, StackDivider, Text } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Center, CircularProgress, Stack, StackDivider, Table, Tbody, Td, Text, Tr } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
 import { ConditionalRenderSupportProps, ToastProps, TokenProps, withRenderCondition, withToast, withTokenValidation } from '../commons/BehaviorAddOns'
 import { MainHeader } from '../components/MainHeader'
@@ -11,8 +11,9 @@ import { shallowEqual } from 'react-redux'
 import { updateState, useGetState } from '../store/hooks'
 import Collection from '../commons/Collections'
 import { Card, CardBackwards } from '../components/cards/Card'
-import { CombatIcon, HeightIcon, IntelligenceIcon, PowerIcon, SpeedIcon, StrengthIcon, WeightIcon } from '../components/miscellaneous/icons'
+import { CombatIcon, HeightIcon, IntelligenceIcon, PowerIcon, SpeedIcon, StrengthIcon, SurrenderIcon, WeightIcon } from '../components/miscellaneous/icons'
 import { customToast } from '../commons/Toast'
+import { HistoricDuel } from '../components/matches/Duel'
 
 export default function MatchPage() { return( withRenderCondition({}) (withTokenValidation) (withToast) (MatchContent) )}
 
@@ -179,6 +180,14 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
         )
     }
 
+    function surrender() {
+        ServerConnector.abortMatch(
+            matchId,
+            setMatch,
+            (error) => toast(customToast('Error', 'error', 'There was a problem with the match'))
+        )
+    }
+
     function playDuel() {
 
         const nextCard = Collection.wrap(match!.player.availableCards).head()
@@ -273,6 +282,15 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
                                 onClick={() => chooseDuelType('STRENGTH')}>
                             Strenght
                         </Button>
+                        <Button size='lg' 
+                                width='15rem' 
+                                fontSize='xl'
+                                variant='solid'
+                                colorScheme='red'
+                                leftIcon={<SurrenderIcon />}
+                                onClick={() => surrender()}>
+                            Surrender
+                        </Button>
                     </Stack>
                 </Stack>
 
@@ -300,7 +318,6 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
                     </Stack>
                     
                 </Stack>
-
             </Stack>
         )
     }
@@ -321,7 +338,7 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
 
                     <Stack spacing='2rem' paddingLeft='3rem' paddingRight='3rem' paddingTop='1rem' paddingBottom='1rem' 
                             border='2px' borderRadius='1rem' borderColor='gray.400' backgroundColor='gray.200'>
-                        {nextCard ? <Card attributes={nextCard}/> : <></>}
+                        <Card attributes={nextCard}/>
                         <Center>Your card for this turn</Center>
                     </Stack>
 
@@ -373,17 +390,132 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
     }
 
     function renderFinalizedMatch() {
+
+        const player = match?.player
+        const opponent = match?.opponent
+
+        const playerWon = player!.prizeCards.length > opponent!.prizeCards.length
+        const tie = player!.prizeCards.length == opponent!.prizeCards.length
+
         return (
-            <Stack>
-                <Text>Finalized</Text>
+            <Stack spacing='2rem' fontSize='xl' paddingBottom='10rem'>
+                <Center fontSize='3xl' fontWeight='bold'>Finalized match</Center>
+                <Center fontSize='2xl'>Duel results</Center>
+
+                <Stack direction='row' spacing='10rem' paddingTop='2rem' alignSelf='center'>
+                    <Stack spacing='2rem' paddingLeft='3rem' paddingRight='3rem' paddingTop='1rem' paddingBottom='1rem' 
+                            border='2px' borderRadius='1rem' borderColor='gray.500' width='20rem'
+                            backgroundColor={playerWon ? 'green.400' : tie ? 'yellow.400' : 'red.600'}>
+                        <Center fontWeight='bold'>{player?.user.userName}</Center>
+
+                        <Stack direction='row' spacing='4px' alignSelf='center'>
+                            <Text>Cards won:</Text>
+                            <Text>{player?.prizeCards.length}</Text>
+                        </Stack>
+
+                        <Center fontSize='2xl' fontWeight='bold'>{playerWon ? 'WIN' : tie ? 'TIE' : 'LOST'}</Center>
+                    </Stack>
+
+                    <Center fontWeight='bold' fontSize='6xl'>VS</Center>
+
+                    <Stack spacing='2rem' paddingLeft='3rem' paddingRight='3rem' paddingTop='1rem' paddingBottom='1rem' 
+                            border='2px' borderRadius='1rem' borderColor='gray.500' width='20rem'
+                            backgroundColor={playerWon ? 'red.600' : tie ? 'yellow.400' : 'green.400'}>
+                        <Center fontWeight='bold'>{opponent?.user.userName}</Center>
+
+                        <Stack direction='row' spacing='4px' alignSelf='center'>
+                            <Text>Cards won:</Text>
+                            <Text>{opponent?.prizeCards.length}</Text>
+                        </Stack>
+
+                        <Center fontSize='2xl' fontWeight='bold'>{playerWon ? 'LOST' : tie ? 'TIE' : 'WIN'}</Center>
+                    </Stack>
+                </Stack>
+
+                <Center fontSize='4xl'>Duel recap</Center>
+
+                <Table variant='simple'> 
+                    <Tbody>
+                        {
+                            Collection.wrap(match!.duelHistoryList)
+                                .map( (duel, index) => 
+                                    <Tr key={index}>
+                                        <Td borderRadius='1rem'>
+                                            <HistoricDuel key={index} duel={duel} players={Collection.from({ username: player!.user.userName, playerId: player!.id }, { username: opponent!.user.userName, playerId: opponent!.id })}/>
+                                        </Td>
+                                    </Tr>
+                                ).collection
+                        }
+                    </Tbody>
+                </Table>
             </Stack>
         )
     }
 
     function renderCancelledMatch() {
+
+        const player = match?.player
+        const opponent = match?.opponent
+
+        const playerWon = player!.prizeCards.length > opponent!.prizeCards.length
+        const tie = player!.prizeCards.length == opponent!.prizeCards.length
+
+        const duelHistory = Collection.wrap(match!.duelHistoryList)
         return (
-            <Stack>
-                <Text>Cancelled</Text>
+            <Stack spacing='2rem' fontSize='xl' paddingBottom='10rem'>
+                <Center fontSize='3xl' fontWeight='bold'>Match cancelled by {player?.user.userName}</Center>
+                <Center fontSize='2xl'>Duel results</Center>
+
+                <Stack direction='row' spacing='10rem' paddingTop='2rem' alignSelf='center'>
+                    <Stack spacing='2rem' paddingLeft='3rem' paddingRight='3rem' paddingTop='1rem' paddingBottom='1rem' 
+                            border='2px' borderRadius='1rem' borderColor='gray.500' width='20rem'
+                            backgroundColor='red.600'>
+                        <Center fontWeight='bold'>{player?.user.userName}</Center>
+
+                        <Stack direction='row' spacing='4px' alignSelf='center'>
+                            <Text>Cards won:</Text>
+                            <Text>{player?.prizeCards.length}</Text>
+                        </Stack>
+
+                        <Center fontSize='2xl' fontWeight='bold'>SURRENDED</Center>
+                    </Stack>
+
+                    <Center fontWeight='bold' fontSize='6xl'>VS</Center>
+
+                    <Stack spacing='2rem' paddingLeft='3rem' paddingRight='3rem' paddingTop='1rem' paddingBottom='1rem' 
+                            border='2px' borderRadius='1rem' borderColor='gray.500' width='20rem'
+                            backgroundColor='green.400'>
+                        <Center fontWeight='bold'>{opponent?.user.userName}</Center>
+
+                        <Stack direction='row' spacing='4px' alignSelf='center'>
+                            <Text>Cards won:</Text>
+                            <Text>{opponent?.prizeCards.length}</Text>
+                        </Stack>
+
+                        <Center fontSize='2xl' fontWeight='bold'>WIN</Center>
+                    </Stack>
+                </Stack>
+
+                <Center fontSize='4xl'>Duel recap</Center>
+
+                {
+                    duelHistory.nonEmpty() ?
+                        <Table variant='simple'> 
+                            <Tbody>
+                                {
+                                    duelHistory
+                                        .map( (duel, index) => 
+                                            <Tr key={index}>
+                                                <Td borderRadius='1rem'>
+                                                    <HistoricDuel key={index} duel={duel} players={Collection.from({ username: player!.user.userName, playerId: player!.id }, { username: opponent!.user.userName, playerId: opponent!.id })}/>
+                                                </Td>
+                                            </Tr>
+                                        ).collection
+                                }
+                            </Tbody>
+                        </Table> :
+                        <Center>No duels played. Match rejected or cancelled before playing</Center>
+                }
             </Stack>
         )
     }
