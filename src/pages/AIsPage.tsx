@@ -43,7 +43,7 @@ function BotsContent({ renderWithTokenValidation, renderWithAdminValidation }: D
                                 </Box>
                             </Stack>
 
-                            <UsersSearchBox userType='AI' onUserClick={() => { /* TODO: DO SOMETHING!*/}}/>
+                            <UsersSearchBox userType='IA' onUserClick={() => { /* TODO: DO SOMETHING!*/}}/>
                         
                         </Stack>
                     </Stack>

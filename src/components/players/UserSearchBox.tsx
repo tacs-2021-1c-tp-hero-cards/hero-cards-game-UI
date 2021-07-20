@@ -269,12 +269,12 @@ export function UsersSearchBox({ userType, fontSize, onUserClick }: Props) {
                             
                                 <Text fontSize={fontSize ?? 'xl'}>No {lookingForAIs ? 'bots' : 'users'} to show</Text> : 
                                 
-                                <Table variant='striped' colorScheme='blue'> 
+                                <Table variant='striped' colorScheme='blue' width='35rem'> 
                                     <Tbody>
                                         { 
                                             users.map( user => 
-                                                <Tr key={user.id}>
-                                                    <Td borderRadius='1rem'>
+                                                <Tr key={user.id} width='40rem'>
+                                                    <Td borderRadius='1rem' key={user.id}>
                                                         {user}
                                                     </Td>
                                                 </Tr>
