@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { Match } from '../components/matches/Match'
 import { DeckPreview } from '../components/decks/Deck'
 import { shallowEqual } from 'react-redux'
-import { useGetState } from '../store/hooks'
+import { updateState, useGetState } from '../store/hooks'
 import Collection from '../commons/Collections'
 import { Card, CardBackwards } from '../components/cards/Card'
 import { CombatIcon, HeightIcon, IntelligenceIcon, PowerIcon, SpeedIcon, StrengthIcon, WeightIcon } from '../components/miscellaneous/icons'
@@ -29,16 +29,25 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
     const confirmations = useGetState(state => state.socket.confirmations, shallowEqual)
     const rejections = useGetState(state => state.socket.rejections, shallowEqual)
     const abortions = useGetState(state => state.socket.abortions, shallowEqual)
+    const duelUpdates = useGetState(state => state.socket.duelUpdates, shallowEqual)
 
     const user = useGetState(state => state.user)
 
-    if (!match && !searchingMatch) {
+    let confirmation = Collection.wrap(confirmations).findIndex(c => c.matchId == matchId)
+    let rejection = Collection.wrap(rejections).findIndex(r => r.matchId == matchId)
+    let abortion = Collection.wrap(abortions).findIndex(a => a.matchId == matchId)
+    let duelUpdate = Collection.wrap(duelUpdates).findIndex(u => u.matchId == matchId)
+
+    const matchUpdate = Collection.from(confirmation, rejection, abortion, duelUpdate).any(n => n != undefined)
+
+    let duelResult = Collection.wrap(duelUpdates).find(update => update.matchId == matchId)
+
+    if ((!match || matchUpdate) && !searchingMatch) {
         setSearchingMatch(true)
 
         ServerConnector.getMatch(
             matchId,
             (matchData) => {
-                console.log(matchData)
                 setMatch(matchData)
                 validateUserAccess(matchData)
                 setSearchingMatch(false)
@@ -50,6 +59,19 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
                 setIsLoading(false)
             }
         )
+
+        if(confirmation != undefined) {
+            updateState({ type: 'socket/removeConfirmation', payload: confirmation})
+        }
+        if(rejection != undefined) {
+            updateState({ type: 'socket/removeRejection', payload: rejection})
+        }
+        if(abortion != undefined) {
+            updateState({ type: 'socket/removeAbortion', payload: abortion})
+        }
+        if(duelUpdate != undefined) {
+            updateState({ type: 'socket/removeDuelUpdate', payload: duelUpdate})
+        }
     }
 
     function validateUserAccess(matchData: Match) {
@@ -181,7 +203,7 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
 
                     <Stack spacing='2rem' paddingLeft='3rem' paddingRight='3rem' paddingTop='1rem' paddingBottom='1rem' 
                             border='2px' borderRadius='1rem' borderColor='gray.400' backgroundColor='gray.200'>
-                        <CardBackwards />
+                        <Center><CardBackwards /></Center>
                         <Center>{oponent}'s card for this turn</Center>
                     </Stack>
                 </Stack>
@@ -314,7 +336,7 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
 
                     <Stack spacing='2rem' paddingLeft='3rem' paddingRight='3rem' paddingTop='1rem' paddingBottom='1rem' 
                             border='2px' borderRadius='1rem' borderColor='gray.400' backgroundColor='gray.200'>
-                        <CardBackwards />
+                        <Center><CardBackwards /></Center>
                         <Center>{oponent}'s card for this turn</Center>
                     </Stack>
                 </Stack>

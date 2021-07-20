@@ -18,6 +18,7 @@ import MyHubButton from './miscellaneous/MyHubButton'
 import { Confirmation } from "./notifications/Confirmation";
 import { Rejection } from "./notifications/Rejection";
 import { Abortion } from "./notifications/Abortion";
+import { DuelUpdate } from "./notifications/DuelUpdate";
 
 
 export function SideBar(props: SideBarProps) { return (withRedirect(props) (SideBarContent))}
@@ -53,6 +54,7 @@ function SideBarContent({
     const confirmations = useGetState(state => state.socket.confirmations, shallowEqual)
     const rejections = useGetState(state => state.socket.rejections, shallowEqual)
     const abortions = useGetState(state => state.socket.abortions, shallowEqual)
+    const duelUpdates = useGetState(state => state.socket.duelUpdates, shallowEqual)
 
     const user = useGetState(state => state.user)
 
@@ -63,6 +65,7 @@ function SideBarContent({
                                     .concatWith(confirmations)
                                     .concatWith(rejections)
                                     .concatWith(abortions)
+                                    .concatWith(duelUpdates)
 
     return (
         <Box>
@@ -263,6 +266,21 @@ function SideBarContent({
                                                     {
                                                         abortions.map((n: Abortion, index: number) => 
                                                             <InvitePreview key={index} matchId={n.matchId} username={n.username} index={index} />
+                                                        )
+                                                    }
+                                                </Stack>
+                                            </Stack> :
+                                            <></>
+                                    }
+
+                                    {
+                                        Collection.wrap(duelUpdates).nonEmpty() ? 
+                                            <Stack>
+                                                <Text>Duel updates:</Text>
+                                                <Stack divider={<StackDivider borderColor='gray' />} spacing='0.5rem'>
+                                                    {
+                                                        duelUpdates.map((n: DuelUpdate, index: number) => 
+                                                            <InvitePreview key={index} matchId={n.matchId} username={`${n.matchId}`} index={index} />
                                                         )
                                                     }
                                                 </Stack>
