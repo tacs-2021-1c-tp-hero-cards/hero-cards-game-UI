@@ -25,7 +25,7 @@ export function UserScorePreview({ score }: PreviewProps) {
     const isAI = score.userType == 'IA'
 
     return (
-        <Box>
+        <Box cursor='pointer'>
             <Stack  padding='0.5rem' 
                     backgroundColor='gray.500' 
                     border='2px' 
@@ -56,7 +56,7 @@ export function UserScorePreview({ score }: PreviewProps) {
                         onOpen={onOpen}
                         onClose={onClose} >
 
-                <PopoverContent padding='1rem' backgroundColor='lightblue' borderColor='gray.500'>
+                <PopoverContent padding='1rem' backgroundColor='lightblue' borderColor='gray.500' cursor='default'>
                     <PopoverArrow />
                     <PopoverCloseButton size='md' />
                     <PopoverHeader fontSize='2xl' fontWeight='bold'>
