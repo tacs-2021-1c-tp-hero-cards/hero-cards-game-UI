@@ -1,6 +1,7 @@
 import { Box, Center, Stack, StackDivider, Text, Image, Tooltip } from "@chakra-ui/react"
 import React from "react"
 import Collection from '../../commons/Collections'
+import logo from '../../logo.png'
 
 
 export type CardAttributes = {
@@ -385,6 +386,34 @@ export function CharacterInsights({ character, card }: InsightProps)  {
                 </Stack>
 
             </Stack>
+        </Stack>
+    )
+}
+
+export function CardBackwards() {
+    return (
+        <Stack  bg='orange.200'
+                padding='1rem'
+                borderRadius='0.5rem' 
+                border='4px' 
+                borderColor='gray.900'
+                backgroundColor='gray.700'
+                width='210px'
+                height='24.8rem' >
+
+                <Center marginTop='50%' 
+                        border='4px'
+                        borderColor='gray.800'
+                        borderRadius='1rem'
+                        backgroundColor='gray.600'>
+
+                    <Center padding='1rem'>
+                        <Image  src={logo} 
+                                objectFit='cover' 
+                                height='170px' />
+                    </Center>
+
+                </Center>
         </Stack>
     )
 }

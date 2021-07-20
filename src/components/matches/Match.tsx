@@ -1,5 +1,5 @@
-import { DeckHistoricData } from "./Deck";
-import { Player } from "./Player"
+import { DeckHistoricData } from "../decks/Deck";
+import { Player } from "../players/Player"
 import { HistoricDuel } from "./Duel"
 
 export type MatchCreation = {

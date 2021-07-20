@@ -278,6 +278,21 @@ class BackendConnector {
         onFailure(error)
       })
   }
+
+  nextDuel(matchId: string, duelType: string, onSuccess: (match: Match) => void, onFailure: (error: any) => void) {
+    const body = {
+      duelType: duelType
+    }
+
+    BackendConnector.connector
+      .patch(`/matches/${matchId}/nextDuel`, body, this.headers())
+      .then(function (response) {
+        onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
 }
 
 export const ServerConnector = new BackendConnector()
