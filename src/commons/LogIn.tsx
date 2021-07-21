@@ -4,6 +4,7 @@ import { User } from "../components/players/User"
 import Collection from "./Collections"
 import { connect } from "../websocket/client"
 import { updateState } from "../store/hooks"
+import getStats from "./GetStats"
 
 
 
@@ -22,11 +23,7 @@ export function logIn(user: User, onSuccess: (user: User) => void, onFailure: ()
                                     //Web socket connection
                                     connect()
 
-                                    ServerConnector.getHumanScore(
-                                        activeUser.id,
-                                        (score) => updateState({ type: 'user/updateStats', payload: score }),
-                                        (error) => onFailure()
-                                    )
+                                    getStats(activeUser.id, onFailure)
 
                                     onSuccess(activeUser)
                                 },
