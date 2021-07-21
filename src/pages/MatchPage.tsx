@@ -26,6 +26,7 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
     const [ isLoading, setIsLoading ] = useState<boolean>(true)
     const [ searchingMatch, setSearchingMatch] = useState<boolean>(false)
     const [ shouldShowMatch, setShouldShowMatch ] = useState<boolean>(true)
+    const [ error, setError ] = useState<boolean>(false)
 
     const confirmations = useGetState(state => state.socket.confirmations, shallowEqual)
     const rejections = useGetState(state => state.socket.rejections, shallowEqual)
@@ -41,9 +42,7 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
 
     const matchUpdate = Collection.from(confirmation, rejection, abortion, duelUpdate).any(n => n != undefined)
 
-    let duelResult = Collection.wrap(duelUpdates).find(update => update.matchId == matchId)
-
-    if ((!match || matchUpdate) && !searchingMatch) {
+    if ((!match || matchUpdate) && !searchingMatch && !error) {
         setSearchingMatch(true)
 
         ServerConnector.getMatch(
@@ -53,11 +52,13 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
                 validateUserAccess(matchData)
                 setSearchingMatch(false)
                 setIsLoading(false)
+                setError(false)
             },
             (error) => {
                 setShouldShowMatch(false)
                 setSearchingMatch(false)
                 setIsLoading(false)
+                setError(true)
             }
         )
 
