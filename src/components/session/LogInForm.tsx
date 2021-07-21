@@ -29,7 +29,8 @@ function LogInFormContent({ redirect, toast }: LogInFormProps) {
       winCount: 0,
       loseCount: 0,
       tieCount: 0,
-      inProgressCount: 0
+      inProgressCount: 0,
+      totalPoint: 0
     }
   }
 

@@ -23,7 +23,14 @@ function SignUpFormContent({ redirect, toast }: SignUpFormProps) {
     token: '',
     id: -1,
     admin: false,
-    userType: 'HUMAN'
+    userType: 'HUMAN',
+    stats: {
+      winCount: 0,
+      loseCount: 0,
+      tieCount: 0,
+      inProgressCount: 0,
+      totalPoint: 0
+    }
   }
 
   function onSubmit(user: User, actions: any) {
