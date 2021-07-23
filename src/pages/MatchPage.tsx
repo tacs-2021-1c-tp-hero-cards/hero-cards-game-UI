@@ -14,6 +14,7 @@ import { Card, CardBackwards } from '../components/cards/Card'
 import { CombatIcon, HeightIcon, IntelligenceIcon, PowerIcon, SpeedIcon, StrengthIcon, SurrenderIcon, WeightIcon } from '../components/miscellaneous/icons'
 import { customToast } from '../commons/Toast'
 import { HistoricDuel } from '../components/matches/Duel'
+import { sleep } from '../commons/Sleep'
 
 export default function MatchPage() { return( withRenderCondition({}) (withTokenValidation) (withToast) (MatchContent) )}
 
@@ -41,7 +42,7 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
     let duelUpdate = Collection.wrap(duelUpdates).findIndex(u => u.matchId == matchId)
 
     const matchUpdate = Collection.from(confirmation, rejection, abortion, duelUpdate).any(n => n != undefined)
-
+    
     if ((!match || matchUpdate) && !searchingMatch && !error) {
         setSearchingMatch(true)
 
@@ -53,6 +54,17 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
                 setSearchingMatch(false)
                 setIsLoading(false)
                 setError(false)
+
+
+                if (matchData.player.user.userType == 'IA' && matchData.status == 'IN_PROGRESS') {
+                    sleep(3000).then( _ =>
+                        ServerConnector.AiTurn(
+                            matchId, 
+                            setMatch,
+                            (error) => {}
+                        )
+                    )
+                }
             },
             (error) => {
                 setShouldShowMatch(false)
@@ -176,7 +188,19 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
         ServerConnector.nextDuel(
             matchId,
             attribute, 
-            setMatch,
+            (match) => {
+                setMatch(match)
+
+                if (match.player.user.userType == 'IA' && match.status == 'IN_PROGRESS') {
+                    sleep(3000).then( _ =>
+                        ServerConnector.AiTurn(
+                            matchId, 
+                            setMatch,
+                            (error) => toast(customToast('Error', 'error', 'There was a problem with the match'))
+                        )
+                    )
+                }
+            },
             (error) => toast(customToast('Error', 'error', 'There was a problem with the match'))
         )
     }
@@ -190,6 +214,9 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
     }
 
     function playDuel() {
+
+        const player = match?.player
+        const opponent = match?.opponent
 
         const nextCard = Collection.wrap(match!.player.availableCards).head()
         const prizeCards = Collection.wrap(match!.player.prizeCards)
@@ -319,11 +346,38 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
                     </Stack>
                     
                 </Stack>
+
+                {
+                    Collection.wrap(match!.duelHistoryList).nonEmpty() ?
+                        <Stack spacing='2rem'>
+
+                            <Center fontSize='4xl'>Past duels</Center>
+
+                            <Table variant='simple'> 
+                                <Tbody>
+                                    {
+                                        Collection.wrap(match!.duelHistoryList)
+                                            .sortBy((d1, d2) => d2.player.availableCards.length - d1.player.availableCards.length)
+                                            .map( (duel, index) => 
+                                                <Tr key={index}>
+                                                    <Td borderRadius='1rem'>
+                                                        <HistoricDuel key={index} hideAvailableCards duel={duel} players={Collection.from({ username: player!.user.userName, playerId: player!.id }, { username: opponent!.user.userName, playerId: opponent!.id })}/>
+                                                    </Td>
+                                                </Tr>
+                                            ).collection
+                                    }
+                                </Tbody>
+                            </Table>
+                        </Stack> : <></>
+                }
             </Stack>
         )
     }
 
     function awaitTurn() {
+
+        const player = match!.player
+        const opponent = match!.opponent
 
         const nextCard = Collection.wrap(match!.opponent.availableCards).head()
         const prizeCards = Collection.wrap(match!.opponent.prizeCards)
@@ -386,6 +440,29 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
                     
                 </Stack>
 
+                { 
+                    Collection.wrap(match!.duelHistoryList).nonEmpty() ?
+                        <Stack spacing='2rem'>
+
+                            <Center fontSize='4xl'>Past duels</Center>
+
+                            <Table variant='simple'> 
+                                <Tbody>
+                                    {
+                                        Collection.wrap(match!.duelHistoryList)
+                                        .sortBy((d1, d2) => d2.player.availableCards.length - d1.player.availableCards.length)
+                                            .map( (duel, index) => 
+                                                <Tr key={index}>
+                                                    <Td borderRadius='1rem'>
+                                                        <HistoricDuel key={index} hideAvailableCards duel={duel} players={Collection.from({ username: player!.user.userName, playerId: player!.id }, { username: opponent!.user.userName, playerId: opponent!.id })}/>
+                                                    </Td>
+                                                </Tr>
+                                            ).collection
+                                    }
+                                </Tbody>
+                            </Table>
+                        </Stack> : <></>
+                }
             </Stack>
         )
     }
@@ -439,6 +516,7 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
                     <Tbody>
                         {
                             Collection.wrap(match!.duelHistoryList)
+                                .sortBy((d1, d2) => d2.player.availableCards.length - d1.player.availableCards.length)
                                 .map( (duel, index) => 
                                     <Tr key={index}>
                                         <Td borderRadius='1rem'>

@@ -19,7 +19,8 @@ export type HistoricDuel = {
 
 type Props = {
     duel: HistoricDuel,
-    players: Collection<NamedPlayer>
+    players: Collection<NamedPlayer>,
+    hideAvailableCards?: boolean
 }
 
 type NamedPlayer = {
@@ -27,7 +28,7 @@ type NamedPlayer = {
     playerId: number
 }
 
-export function HistoricDuel({ duel, players }: Props) {
+export function HistoricDuel({ duel, players, hideAvailableCards }: Props) {
 
     const player = players.find(p => p.playerId == duel.player.id)
     const opponent = players.find(p => p.playerId == duel.opponent.id)
@@ -39,16 +40,20 @@ export function HistoricDuel({ duel, players }: Props) {
                 <Stack direction='row' spacing='10rem' paddingTop='3rem' alignSelf='center'>
 
                     <Stack padding='1rem' spacing='2rem' fontSize='xl'>
-                        <Center>Available cards</Center>
-                        <SimpleGrid columns={4} gap='1'>
-                            { 
-                                duel.player.availableCards.map( card => 
-                                    <CardPreview key={card.id} card={card} height='8rem' />
-                                )
-                            }
-                        </SimpleGrid>
-                        
-                        <Center>Prize cards</Center>
+                        { hideAvailableCards ? <></> : <Center>Available cards</Center> }
+                            
+                        {
+                            hideAvailableCards ? <></> :
+                                <SimpleGrid columns={4} gap='1'>
+                                    { 
+                                        duel.player.availableCards.map( card => 
+                                            <CardPreview key={card.id} card={card} height='8rem' />
+                                        )
+                                    }
+                                </SimpleGrid>
+                        }
+
+                        <Center minWidth='10rem'>Prize cards</Center>
                         <SimpleGrid columns={4} gap='1'>
                             { 
                                 duel.player.prizeCards.map( card => 
@@ -68,7 +73,8 @@ export function HistoricDuel({ duel, players }: Props) {
                     <Stack alignSelf='center' spacing='2rem'>
                         <Center fontWeight='bold' fontSize='6xl'>VS</Center>
 
-                        <Center fontSize='2xl'>Using {duel.duelType}</Center>
+                        <Center fontSize='2xl'>Using</Center>
+                        <Center fontSize='2xl'>{duel.duelType}</Center>
                     </Stack>
 
                     <Stack spacing='2rem' paddingLeft='3rem' paddingRight='3rem' paddingTop='1rem' paddingBottom='1rem' 
@@ -79,16 +85,20 @@ export function HistoricDuel({ duel, players }: Props) {
                     </Stack>
 
                     <Stack padding='1rem' spacing='2rem' fontSize='xl'>
-                        <Center>Available cards</Center>
-                        <SimpleGrid columns={4} gap='1'>
-                            { 
-                                duel.opponent.availableCards.map( card => 
-                                    <CardPreview key={card.id} card={card} height='8rem' />
-                                )
-                            }
-                        </SimpleGrid>
+                        { hideAvailableCards ? <></> : <Center>Available cards</Center> }
+                                
+                        {
+                            hideAvailableCards ? <></> : 
+                                <SimpleGrid columns={4} gap='1'>
+                                    { 
+                                        duel.opponent.availableCards.map( card => 
+                                            <CardPreview key={card.id} card={card} height='8rem' />
+                                        )
+                                    }
+                                </SimpleGrid>
+                        }
 
-                        <Center>Prize cards</Center>
+                        <Center minWidth='10rem'>Prize cards</Center>
                         <SimpleGrid columns={4} gap='1'>
                             { 
                                 duel.opponent.prizeCards.map( card => 

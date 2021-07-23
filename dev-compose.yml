@@ -21,7 +21,7 @@ services:
             MYSQL_DATABASE: heroCardsGame
     
     server:
-        image: tacs-card-games_server:latest
+        image: hero-cards-game-server:local
         restart: on-failure
         depends_on:
             - mysql_db
