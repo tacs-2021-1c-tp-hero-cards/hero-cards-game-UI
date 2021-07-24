@@ -67,95 +67,97 @@ function UserContent({ renderWithTokenValidation }: UserProps) {
                             </Text>
                         </Stack>
 
-                        <Stack spacing='3rem'>
-                            <Center fontSize='4xl'>Your statistics</Center>
+                        <Stack direction='row' spacing='2rem' boxSize='full'>
+                            <Stack spacing='3rem' boxSize='full'>
+                                <Center fontSize='4xl'>Your matches</Center>
 
-                            {
-                                user.stats ? 
-                                    <Stack backgroundColor='gray.400' padding='1rem' borderRadius='1rem' border='2px' borderColor='teal.500'>
-                                        <Stack direction='row' spacing='4px'>
-                                            <Text>You have a total of</Text>
-                                            <Text fontWeight='bold'>{user.stats.totalPoint}</Text>
-                                            <Text>points</Text>
-                                        </Stack>
-                                        
-                                        <Stack direction='row' spacing='4px'>
-                                            <Text>You've won</Text>
-                                            <Text fontWeight='bold'>{user.stats.winCount}</Text>
-                                            <Text>matches</Text>
-                                        </Stack>
+                                {
+                                    matches.nonEmpty() ? 
+                                        <Stack backgroundColor='gray.400' padding='1rem' borderRadius='1rem' border='2px' borderColor='cyan.500'>
+                                            <Table variant='striped' colorScheme='blackAlpha'>
+                                                <Tbody>
+                                                    { 
+                                                        matches.filter((match: UserMatch) => match.status == 'PENDING')
+                                                            .map((match: UserMatch) => 
+                                                                <Tr key={match.matchId} width='40rem'>
+                                                                    <Td borderRadius='0.5rem' key={match.matchId}>
+                                                                        <MatchPreview match={match} />
+                                                                    </Td>
+                                                                </Tr>
+                                                            ).collection
+                                                    }
+                                                    {
+                                                        matches.filter((match: UserMatch) => match.status == 'IN_PROGRESS')
+                                                            .map((match: UserMatch) => 
+                                                                <Tr key={match.matchId} width='40rem'>
+                                                                    <Td borderRadius='0.5rem' key={match.matchId}>
+                                                                        <MatchPreview match={match} />
+                                                                    </Td>
+                                                                </Tr>
+                                                            ).collection
+                                                    } 
+                                                    {
+                                                        matches.filter((match: UserMatch) => match.status != 'IN_PROGRESS' && match.status != 'PENDING')
+                                                            .map((match: UserMatch) => 
+                                                                <Tr key={match.matchId} width='40rem'>
+                                                                    <Td borderRadius='0.5rem' key={match.matchId}>
+                                                                        <MatchPreview match={match} />
+                                                                    </Td>
+                                                                </Tr>
+                                                            ).collection
+                                                    } 
+                                                </Tbody>
+                                            </Table>
+                                        </Stack> :
+                                        <Text>No macthes found...</Text>
+                                }
+                            </Stack>
 
-                                        <Stack direction='row' spacing='4px'>
-                                            <Text>You've lost</Text>
-                                            <Text fontWeight='bold'>{user.stats.loseCount}</Text>
-                                            <Text>matches</Text>
-                                        </Stack>
+                            <Stack spacing='3rem' width='40rem'>
+                                <Center fontSize='4xl'>Your statistics</Center>
 
-                                        <Stack direction='row' spacing='4px'>
-                                            <Text>You've tied</Text>
-                                            <Text fontWeight='bold'>{user.stats.tieCount}</Text>
-                                            <Text>matches</Text>
-                                        </Stack>
+                                {
+                                    user.stats ? 
+                                        <Stack backgroundColor='blue.100' padding='1rem' borderRadius='1rem' border='2px' borderColor='teal.500'>
+                                            <Stack direction='row' spacing='4px'>
+                                                <Text>You have a total of</Text>
+                                                <Text fontWeight='bold'>{user.stats.totalPoint}</Text>
+                                                <Text>points</Text>
+                                            </Stack>
+                                            
+                                            <Stack direction='row' spacing='4px'>
+                                                <Text>You've won</Text>
+                                                <Text fontWeight='bold'>{user.stats.winCount}</Text>
+                                                <Text>matches</Text>
+                                            </Stack>
 
-                                        <Stack direction='row' spacing='4px'>
-                                            <Text>You have</Text>
-                                            <Text fontWeight='bold'>{user.stats.inProgressCount}</Text>
-                                            <Text>matches in progress</Text>
-                                        </Stack>
+                                            <Stack direction='row' spacing='4px'>
+                                                <Text>You've lost</Text>
+                                                <Text fontWeight='bold'>{user.stats.loseCount}</Text>
+                                                <Text>matches</Text>
+                                            </Stack>
 
-                                        <Stack direction='row' spacing='4px'>
-                                            <Text>You have created</Text>
-                                            <Text fontWeight='bold'>{Collection.wrap(user.matches).count(m => m.owned)}</Text>
-                                            <Text>matches</Text>
-                                        </Stack>
-                                    </Stack> :
-                                    <Text>No stats could be retrieved...</Text>
-                            }
-                        </Stack>
-                        
-                        <Stack spacing='3rem'>
-                            <Center fontSize='4xl'>Your matches</Center>
+                                            <Stack direction='row' spacing='4px'>
+                                                <Text>You've tied</Text>
+                                                <Text fontWeight='bold'>{user.stats.tieCount}</Text>
+                                                <Text>matches</Text>
+                                            </Stack>
 
-                            {
-                                matches.nonEmpty() ? 
-                                    <Stack backgroundColor='gray.400' padding='1rem' borderRadius='1rem' border='2px' borderColor='cyan.500'>
-                                        <Table variant='striped' colorScheme='blackAlpha'>
-                                            <Tbody>
-                                                { 
-                                                    matches.filter((match: UserMatch) => match.status == 'PENDING')
-                                                        .map((match: UserMatch) => 
-                                                            <Tr key={match.matchId} width='40rem'>
-                                                                <Td borderRadius='0.5rem' key={match.matchId}>
-                                                                    <MatchPreview match={match} />
-                                                                </Td>
-                                                            </Tr>
-                                                        ).collection
-                                                }
-                                                {
-                                                    matches.filter((match: UserMatch) => match.status == 'IN_PROGRESS')
-                                                        .map((match: UserMatch) => 
-                                                            <Tr key={match.matchId} width='40rem'>
-                                                                <Td borderRadius='0.5rem' key={match.matchId}>
-                                                                    <MatchPreview match={match} />
-                                                                </Td>
-                                                            </Tr>
-                                                        ).collection
-                                                } 
-                                                {
-                                                    matches.filter((match: UserMatch) => match.status != 'IN_PROGRESS' && match.status != 'PENDING')
-                                                        .map((match: UserMatch) => 
-                                                            <Tr key={match.matchId} width='40rem'>
-                                                                <Td borderRadius='0.5rem' key={match.matchId}>
-                                                                    <MatchPreview match={match} />
-                                                                </Td>
-                                                            </Tr>
-                                                        ).collection
-                                                } 
-                                            </Tbody>
-                                        </Table>
-                                    </Stack> :
-                                    <Text>No macthes found...</Text>
-                            }
+                                            <Stack direction='row' spacing='4px'>
+                                                <Text>You have</Text>
+                                                <Text fontWeight='bold'>{user.stats.inProgressCount}</Text>
+                                                <Text>matches in progress</Text>
+                                            </Stack>
+
+                                            <Stack direction='row' spacing='4px'>
+                                                <Text>You have created</Text>
+                                                <Text fontWeight='bold'>{Collection.wrap(user.matches).count(m => m.owned)}</Text>
+                                                <Text>matches</Text>
+                                            </Stack>
+                                        </Stack> :
+                                        <Text>No stats could be retrieved...</Text>
+                                }
+                            </Stack>
                         </Stack>
                 </Stack>
             </Stack>
