@@ -4,6 +4,7 @@ import { Rejection } from '../components/notifications/Rejection'
 import { Abortion } from '../components/notifications/Abortion'
 import { DuelUpdate } from '../components/notifications/DuelUpdate'
 import { UserScore } from '../components/players/scores/UserScore'
+import { UserMatch } from '../components/matches/Match'
 
 /**
  * Just for the record:
@@ -29,5 +30,6 @@ export type UserData = {
     id?: number,
     admin?: boolean,
     token?: string,
-    stats?: UserScore
+    stats?: UserScore,
+    matches?: UserMatch[]
 }

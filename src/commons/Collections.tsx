@@ -55,6 +55,10 @@ export default class Collection<T> {
         return new Collection(this.collection.filter(func))
     }
 
+    count(func: (value: T) => boolean): number {
+        return this.filter(func).length
+    }
+
     slice(start?: number, end?: number): Collection<T> {
         return new Collection(this.collection.slice(start, end))
     }

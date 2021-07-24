@@ -1,9 +1,12 @@
 import React from 'react'
-import { Box, Center, Stack, StackDivider, Text } from "@chakra-ui/react"
+import { Box, Center, Stack, StackDivider, Table, Tbody, Td, Text, Tr } from "@chakra-ui/react"
 import { MainHeader } from '../components/MainHeader'
 import { TokenProps, withTokenValidation } from '../commons/BehaviorAddOns'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/Store'
+import Collection from '../commons/Collections'
+import { MatchPreview } from '../components/matches/Match'
+import { UserMatch } from '../components/matches/Match'
 
 export default function UserPage() { return( withTokenValidation({}) (UserContent) )}
 
@@ -16,6 +19,8 @@ function UserContent({ renderWithTokenValidation }: UserProps) {
     }
 
     const user = useSelector(getUser)
+
+    const matches: Collection<UserMatch> = user.matches ? Collection.wrap(user.matches) : Collection.empty()
 
     return( renderWithTokenValidation(content) )
 
@@ -97,8 +102,59 @@ function UserContent({ renderWithTokenValidation }: UserProps) {
                                             <Text fontWeight='bold'>{user.stats.inProgressCount}</Text>
                                             <Text>matches in progress</Text>
                                         </Stack>
+
+                                        <Stack direction='row' spacing='4px'>
+                                            <Text>You have created</Text>
+                                            <Text fontWeight='bold'>{Collection.wrap(user.matches).count(m => m.owned)}</Text>
+                                            <Text>matches</Text>
+                                        </Stack>
                                     </Stack> :
                                     <Text>No stats could be retrieved...</Text>
+                            }
+                        </Stack>
+                        
+                        <Stack spacing='3rem'>
+                            <Center fontSize='4xl'>Your matches</Center>
+
+                            {
+                                matches.nonEmpty() ? 
+                                    <Stack backgroundColor='gray.400' padding='1rem' borderRadius='1rem' border='2px' borderColor='cyan.500'>
+                                        <Table variant='striped' colorScheme='blackAlpha'>
+                                            <Tbody>
+                                                { 
+                                                    matches.filter((match: UserMatch) => match.status == 'PENDING')
+                                                        .map((match: UserMatch) => 
+                                                            <Tr key={match.matchId} width='40rem'>
+                                                                <Td borderRadius='0.5rem' key={match.matchId}>
+                                                                    <MatchPreview match={match} />
+                                                                </Td>
+                                                            </Tr>
+                                                        ).collection
+                                                }
+                                                {
+                                                    matches.filter((match: UserMatch) => match.status == 'IN_PROGRESS')
+                                                        .map((match: UserMatch) => 
+                                                            <Tr key={match.matchId} width='40rem'>
+                                                                <Td borderRadius='0.5rem' key={match.matchId}>
+                                                                    <MatchPreview match={match} />
+                                                                </Td>
+                                                            </Tr>
+                                                        ).collection
+                                                } 
+                                                {
+                                                    matches.filter((match: UserMatch) => match.status != 'IN_PROGRESS' && match.status != 'PENDING')
+                                                        .map((match: UserMatch) => 
+                                                            <Tr key={match.matchId} width='40rem'>
+                                                                <Td borderRadius='0.5rem' key={match.matchId}>
+                                                                    <MatchPreview match={match} />
+                                                                </Td>
+                                                            </Tr>
+                                                        ).collection
+                                                } 
+                                            </Tbody>
+                                        </Table>
+                                    </Stack> :
+                                    <Text>No macthes found...</Text>
                             }
                         </Stack>
                 </Stack>

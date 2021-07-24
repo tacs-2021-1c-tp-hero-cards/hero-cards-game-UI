@@ -478,7 +478,7 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
         return (
             <Stack spacing='2rem' fontSize='xl' paddingBottom='10rem'>
                 <Center fontSize='3xl' fontWeight='bold'>Finalized match</Center>
-                <Center fontSize='2xl'>Duel results</Center>
+                <Center fontSize='4xl'>Results</Center>
 
                 <Stack direction='row' spacing='10rem' paddingTop='2rem' alignSelf='center'>
                     <Stack spacing='2rem' paddingLeft='3rem' paddingRight='3rem' paddingTop='1rem' paddingBottom='1rem' 
@@ -543,7 +543,7 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
         return (
             <Stack spacing='2rem' fontSize='xl' paddingBottom='10rem'>
                 <Center fontSize='3xl' fontWeight='bold'>Match cancelled by {player?.user.userName}</Center>
-                <Center fontSize='2xl'>Duel results</Center>
+                <Center fontSize='4xl'>Results</Center>
 
                 <Stack direction='row' spacing='10rem' paddingTop='2rem' alignSelf='center'>
                     <Stack spacing='2rem' paddingLeft='3rem' paddingRight='3rem' paddingTop='1rem' paddingBottom='1rem' 
@@ -593,7 +593,7 @@ export function MatchContent({ renderOnCondition, renderWithTokenValidation, toa
                                 }
                             </Tbody>
                         </Table> :
-                        <Center>No duels played. Match rejected or cancelled before playing</Center>
+                        <Center>No duels played</Center>
                 }
             </Stack>
         )

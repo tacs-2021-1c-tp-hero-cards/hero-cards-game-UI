@@ -5,6 +5,8 @@ import Collection from "./Collections"
 import { connect } from "../websocket/client"
 import { updateState } from "../store/hooks"
 import getStats from "./GetStats"
+import getUserMatches from './GetUserMatches'
+import notifyInvites from './NotifyInvites'
 
 
 
@@ -24,6 +26,7 @@ export function logIn(user: User, onSuccess: (user: User) => void, onFailure: ()
                                     connect()
 
                                     getStats(activeUser.id, onFailure)
+                                    getUserMatches(activeUser.id, notifyInvites, onFailure)
 
                                     onSuccess(activeUser)
                                 },

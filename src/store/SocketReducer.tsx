@@ -25,10 +25,16 @@ export default function socketReducer(state = initialState, action: any): Socket
         // INVITES
         case 'socket/pushInvite' : {
             const previousInvites = Collection.wrap(state.invites)
-            console.log(previousInvites)
             return {
                 ...state,
                 invites: previousInvites.add(action.payload).collection
+            }
+        }
+        case 'socket/addInvites' : {
+            const previousInvites = Collection.wrap(state.invites)
+            return {
+                ...state,
+                invites: previousInvites.concatWith(action.payload).collection
             }
         }
         case 'socket/removeInvite' : {

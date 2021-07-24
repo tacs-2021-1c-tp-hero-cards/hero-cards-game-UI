@@ -3,6 +3,7 @@ import { withRedirect, RedirectProps } from '../../commons/BehaviorAddOns'
 import { Button } from "@chakra-ui/button"
 import { UserIcon } from "./icons"
 import getStats from "../../commons/GetStats"
+import getUserMatches from "../../commons/GetUserMatches"
 
 type HubButtonProps = {
     width?: string
@@ -22,6 +23,7 @@ function HubButton({ width, redirect }: Props) {
                 width={width}
                 onClick={() => {
                     getStats()
+                    getUserMatches()
                     redirect('/user')
                 }}>
             My hub

@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { User } from "./components/players/User";
 import { CardAttributes, CharacterDetails } from "./components/cards/Card";
 import { DeckData, NewDeck, UpdatedDeck } from "./components/decks/Deck";
-import { Match, MatchCreation } from "./components/matches/Match"
+import { Match, MatchCreation, UserMatch } from "./components/matches/Match"
 import config from "./config.json"
 import { AI, AiData } from "./components/players/bots/AI";
 import { getToken } from "./commons/Token";
@@ -255,6 +255,30 @@ class BackendConnector {
       .get(`/matches/${matchId}`, this.headers())
       .then(function (response) {
         onSuccess(response.data)
+      })
+      .catch(function (error) {
+        onFailure(error)
+      })
+  }
+
+  getUserMatches(userId: number, onSuccess: (match: UserMatch[]) => void, onFailure: (error: any) => void, onlyOwned?: boolean) {
+    BackendConnector.connector
+      .get(`/users/${userId}/matches${onlyOwned ? `?only-created-by-user=${onlyOwned}` : ''}`, this.headers())
+      .then(function (response) {
+
+        const matches: UserMatch[] = response.data.map( (data: any) => 
+          ({
+            matchId: data.matchId,
+            status: data.matchStatus,
+            opponent: data.userOpponent.userName,
+            owned: data.matchCreatedByUser
+          })
+        )
+
+        console.log(response.data)
+        console.log(matches)
+
+        onSuccess(matches)
       })
       .catch(function (error) {
         onFailure(error)
