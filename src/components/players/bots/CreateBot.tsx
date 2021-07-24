@@ -10,12 +10,12 @@ import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTok
 import { customToast, SubmitDataErrorToast } from "../../../commons/Toast"
 import { AiData } from "./AI"
 
-type InnerProps = { alignSelf: string }
+type InnerProps = { alignSelf?: string, buttonWidth?: string, buttonSize?: string, fontSize?: string }
 type DrawerProps = RedirectProps & TokenProps & ToastProps & InnerProps
 
 export function CreateBot(props: InnerProps) { return( withRedirect(props) (withTokenValidation) (withToast) (CreateBotContent) )}
 
-function CreateBotContent({ alignSelf, renderWithTokenValidation, redirect, toast }: DrawerProps) {
+function CreateBotContent({ alignSelf, buttonWidth, buttonSize, fontSize, renderWithTokenValidation, redirect, toast }: DrawerProps) {
     const initialRef = React.useRef(null)
     
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -50,14 +50,14 @@ function CreateBotContent({ alignSelf, renderWithTokenValidation, redirect, toas
     function content() {
         return (
             <Box alignSelf={alignSelf}>
-                <Button leftIcon={<AddIcon />} colorScheme='green' onClick={onOpen} >
+                <Button leftIcon={<AddIcon />} colorScheme='green' onClick={onOpen} width={buttonWidth!} size={buttonSize} fontSize={fontSize}>
                     Create
                 </Button>
                 <Drawer isOpen={isOpen} size='sm' placement="right" onClose={onClose} initialFocusRef={initialRef} >
                     <DrawerOverlay />
                     <DrawerContent>
                         <DrawerCloseButton />
-                        <DrawerHeader borderBottomWidth="1px">
+                        <DrawerHeader borderBottomWidth="1px" fontSize='4xl'>
                             Create a new bot
                         </DrawerHeader>
     
@@ -96,10 +96,13 @@ function CreateBotContent({ alignSelf, renderWithTokenValidation, redirect, toas
                         </DrawerBody>
     
                         <DrawerFooter borderTopWidth="1px">
-                            <Button ref={initialRef} variant="outline" mr={3} onClick={onClose}>
+                            <Button ref={initialRef} variant="outline" mr={3} onClick={onClose} fontSize='xl' size='md'>
                                 Cancel
                             </Button>
-                            <Button colorScheme="blue" type='submit' form='createBot'  isLoading={createLoading} loadingText="Creating">Create</Button>
+                            <Button colorScheme="blue" type='submit' form='createBot'  isLoading={createLoading} 
+                                    loadingText="Creating" fontSize='xl' size='md'>
+                                Create
+                            </Button>
                         </DrawerFooter>
                     </DrawerContent>
                 </Drawer>

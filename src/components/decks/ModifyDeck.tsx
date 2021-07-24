@@ -208,7 +208,7 @@ function ModifyDeckContent({
                     <DrawerOverlay />
                     <DrawerContent>
                         <DrawerCloseButton />
-                        <DrawerHeader borderBottomWidth="1px">
+                        <DrawerHeader borderBottomWidth="1px" fontSize='4xl'>
                             Modify deck
                         </DrawerHeader>
     
@@ -327,10 +327,13 @@ function ModifyDeckContent({
                         </DrawerBody>
     
                         <DrawerFooter borderTopWidth="1px">
-                            <Button ref={initialRef} variant="outline" mr={3} onClick={onClose}>
+                            <Button ref={initialRef} variant="outline" mr={3} onClick={onClose} fontSize='xl' size='md'>
                                 Cancel
                             </Button>
-                            <Button colorScheme="blue" type='submit' form='modifyDeck'  isLoading={modifyLoading} loadingText="Modifying">Modify</Button>
+                            <Button colorScheme="blue" type='submit' form='modifyDeck'  isLoading={modifyLoading} 
+                                    loadingText="Modifying" fontSize='xl' size='md'>
+                                Modify
+                            </Button>
                         </DrawerFooter>
                     </DrawerContent>
                 </Drawer>

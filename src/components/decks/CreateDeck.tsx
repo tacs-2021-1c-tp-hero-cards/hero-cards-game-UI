@@ -14,14 +14,14 @@ import { SubmitableInput } from "../miscellaneous/SubmitableInput"
 import { RedirectProps, ToastProps, TokenProps, withRedirect, withToast, withTokenValidation } from "../../commons/BehaviorAddOns"
 import { customToast, SubmitDataErrorToast } from "../../commons/Toast"
 
-type InnerProps = { alignSelf: string }
+type InnerProps = { alignSelf?: string, buttonWidth?: string, buttonSize?: string, fontSize?: string }
 type DrawerProps = RedirectProps & TokenProps & ToastProps & InnerProps
 
 type CheckedCardAttributes = CardAttributes & { checked: boolean }
 
 export function CreateDeck(props: InnerProps) { return( withRedirect(props) (withTokenValidation) (withToast) (CreateDeckContent) )}
 
-function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toast }: DrawerProps) {
+function CreateDeckContent({ alignSelf, buttonWidth, buttonSize, fontSize, renderWithTokenValidation, redirect, toast }: DrawerProps) {
     const initialRef = React.useRef(null)
     
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -186,14 +186,14 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
     function content() {
         return (
             <Box alignSelf={alignSelf}>
-                <Button leftIcon={<AddIcon />} colorScheme='green' onClick={openDrawer} >
+                <Button leftIcon={<AddIcon />} colorScheme='green' onClick={openDrawer} width={buttonWidth!} size={buttonSize} fontSize={fontSize}>
                     Create
                 </Button>
                 <Drawer isOpen={isOpen} size='xl' placement="right" onClose={closeDrawer} initialFocusRef={initialRef} >
                     <DrawerOverlay />
                     <DrawerContent>
                         <DrawerCloseButton />
-                        <DrawerHeader borderBottomWidth="1px">
+                        <DrawerHeader borderBottomWidth="1px" fontSize='4xl'>
                             Create a new deck
                         </DrawerHeader>
     
@@ -310,10 +310,13 @@ function CreateDeckContent({ alignSelf, renderWithTokenValidation, redirect, toa
                         </DrawerBody>
     
                         <DrawerFooter borderTopWidth="1px">
-                            <Button ref={initialRef} variant="outline" mr={3} onClick={onClose}>
+                            <Button ref={initialRef} variant="outline" mr={3} onClick={onClose} fontSize='xl' size='md'>
                                 Cancel
                             </Button>
-                            <Button colorScheme="blue" type='submit' form='createDeck'  isLoading={createLoading} loadingText="Creating">Create</Button>
+                            <Button colorScheme="blue" type='submit' form='createDeck' 
+                                    isLoading={createLoading} loadingText="Creating" fontSize='xl' size='md'>
+                                Create
+                            </Button>
                         </DrawerFooter>
                     </DrawerContent>
                 </Drawer>
